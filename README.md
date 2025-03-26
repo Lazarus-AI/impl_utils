@@ -45,6 +45,15 @@ This will create a new notebook type. So, the next time you create a notebook, i
 Running the above command is necessary to make the "scratch_pad" notebook that is included and already set up to work with this toolkit.
 
 
+### PDF Conversion
+
+To power PDF conversions locally, we need LibreOffice installed. You can do that easily through brew.
+
+```commandline
+brew install libreoffice
+```
+
+
 ### Common Recipes
 
 Upload a document to firebase and get a signed url:
