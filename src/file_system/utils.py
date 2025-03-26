@@ -1,4 +1,7 @@
+import glob
+import json
 import os
+import zipfile
 
 from config import WORKING_FOLDER
 
@@ -19,3 +22,56 @@ def append_to_filename(file_path, append_text):
         file_path = file_path.replace(f".{extension}", f"{append_text}.{extension}")
 
     return file_path
+
+
+def get_all_files_with_ext(path, ext):
+    return glob.glob(path + f"/**/*.{ext}", recursive=True)
+
+
+def unzip(path, recursive=False, delete=False):
+    if not path.endswith(".zip"):
+        return
+
+    extract_folder = path[0:-4]
+    if os.path.isdir(extract_folder):
+        return
+
+    with zipfile.ZipFile(path, "r") as zip_reference:
+        zip_reference.extractall(extract_folder)
+
+    if delete:
+        try:
+            os.remove(path)
+        except Exception:
+            pass
+
+    if recursive:
+        # Look for any subfiles that may be zipped
+        zip_files = get_all_files_with_ext(extract_folder, "zip")
+        for zip_file in zip_files:
+            unzip(zip_file, delete=True)
+
+
+def tidy_json_files(path):
+    # iterates through all json files and tidies them
+    json_files = get_all_files_with_ext(path, "json")
+    for json_file in json_files:
+        with open(json_file, "r") as file:
+            data = file.read()
+            json_data = json.loads(data)
+
+        pretty_json = json.dumps(json_data, indent=4)
+        with open(json_file, "w") as file:
+            file.write(pretty_json)
+
+
+def tidy_text_files(path):
+    # iterates through all text files and tidies them
+    txt_files = get_all_files_with_ext(path, "txt")
+    for txt_file in txt_files:
+        with open(txt_file, "r") as file:
+            data = file.read()
+
+        txt = data.encode("utf-8").decode("unicode_escape")
+        with open(txt_file, "w") as file:
+            file.write(txt)
