@@ -1,9 +1,12 @@
-from config import WORKING_FOLDER
-from transformations.pdf.utils import convert_to_pdf
+from file_system.utils import in_working
+from transformations.pdf.utils import get_number_of_pages, merge_pdfs, trim_pdf
 
 if __name__ == "__main__":
-    folder = WORKING_FOLDER
+    file = in_working("lazarus/employee_handbook.pdf")
+    page_count = get_number_of_pages(file)
 
-    results = convert_to_pdf(folder, recursive=True)
-    for result in results:
-        print(f"Converted: {result[0]} to {result[1]}")
+    _, alpha = trim_pdf(file, 1, 1)
+    _, omega = trim_pdf(file, page_count, page_count)
+    print(alpha, omega)
+    result = merge_pdfs([alpha, omega])
+    print(f"Merged pdf: {result}")
