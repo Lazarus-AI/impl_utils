@@ -1,0 +1,8 @@
+[flake8]
+extend-ignore = E203, W503
+per-file-ignores =
+    integration_tests/test_utils/test_data.py:E501
+    integration_tests/test_utils/cd.py:E501
+    integration_tests/test_utils/pa.py:E501
+
+max-line-length = 110
