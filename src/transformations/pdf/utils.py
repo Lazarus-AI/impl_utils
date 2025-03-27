@@ -6,6 +6,7 @@ from PyPDF2 import PdfMerger, PdfReader, PdfWriter
 from config import WORKING_FOLDER
 from file_system.utils import append_to_filename
 from transformations.pdf.libre_office import convert_file_to_pdf, convert_folder_to_pdf
+from transformations.pdf.transformations import PDFTidy
 
 
 def convert_to_pdf(path, output_dir=WORKING_FOLDER, recursive=False):
@@ -81,3 +82,8 @@ def get_number_of_pages(pdf_path):
     except Exception as e:
         print(f"Error: {e}")
         return None
+
+
+def tidy_pdf(pdf_path, destination_path=None, deskew=True, auto_crop=True):
+    tidier = PDFTidy(pdf_path)
+    return tidier.tidy(destination_path=destination_path, deskew=deskew, auto_crop=auto_crop)

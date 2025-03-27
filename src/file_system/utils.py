@@ -3,16 +3,34 @@ import json
 import os
 import zipfile
 
-from config import WORKING_FOLDER
+from config import DOWNLOAD_FOLDER, TEMP_FOLDER, WORKING_FOLDER
 
 
 def in_working(file_path=""):
     return os.path.join(WORKING_FOLDER, file_path)
 
 
+def in_downloads(file_path=""):
+    return os.path.join(DOWNLOAD_FOLDER, file_path)
+
+
+def in_tmp(file_path=""):
+    return os.path.join(TEMP_FOLDER, file_path)
+
+
+def mkdir(file_path):
+    if not os.path.exists(file_path):
+        os.makedirs(file_path)
+
+
+def get_filename(file_path):
+    # Get filename without extension
+    return os.path.splitext(os.path.basename(file_path))[0]
+
+
 def get_extension(file_path):
     if "." in file_path:
-        return os.path.splitext(file_path)[1].strip(".")
+        return os.path.splitext(file_path)[1].strip(".").lower()
     return ""
 
 
@@ -53,7 +71,8 @@ def unzip(path, recursive=False, delete=False):
 
 
 def tidy_json_files(path):
-    # iterates through all json files and tidies them
+    # iterates through all json files and tidies them by
+    # loading the json and reformatting them all pretty like.
     json_files = get_all_files_with_ext(path, "json")
     for json_file in json_files:
         with open(json_file, "r") as file:
