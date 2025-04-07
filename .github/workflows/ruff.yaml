@@ -1,0 +1,14 @@
+name: Lint Tests
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.10", "3.11", "3.12", "3.13" ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Ruff
+        uses: astral-sh/ruff-action@v3
