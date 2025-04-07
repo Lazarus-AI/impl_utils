@@ -1,6 +1,11 @@
 import os.path
 
-from config import DOWNLOAD_FOLDER, FIREBASE_PERSONAL_ROOT_FOLDER, FIREBASE_STORAGE_URL, WORKING_FOLDER
+from config import (
+    DOWNLOAD_FOLDER,
+    FIREBASE_PERSONAL_ROOT_FOLDER,
+    FIREBASE_STORAGE_URL,
+    WORKING_FOLDER,
+)
 from sync.firebase.client import FirebaseStorageManager
 
 
@@ -12,7 +17,9 @@ def list_files(firebase_path=FIREBASE_PERSONAL_ROOT_FOLDER, recursive=False):
 def upload(local_path=WORKING_FOLDER, firebase_path=FIREBASE_PERSONAL_ROOT_FOLDER, recursive=False):
     firebase_manager = FirebaseStorageManager(FIREBASE_STORAGE_URL)
     if os.path.isdir(local_path):
-        return firebase_manager.upload_folder_to_path(firebase_path, local_path, recursive=recursive)
+        return firebase_manager.upload_folder_to_path(
+            firebase_path, local_path, recursive=recursive
+        )
 
     return firebase_manager.upload_file_to_path(firebase_path, local_path)
 
