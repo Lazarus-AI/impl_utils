@@ -14,6 +14,11 @@ def list_files(firebase_path=FIREBASE_PERSONAL_ROOT_FOLDER, recursive=False):
     return firebase_manager.list_all_files_in_path(firebase_path, recursive=recursive)
 
 
+def file_exists(firebase_path):
+    firebase_manager = FirebaseStorageManager(FIREBASE_STORAGE_URL)
+    return firebase_manager.exists(firebase_path)
+
+
 def upload(local_path=WORKING_FOLDER, firebase_path=FIREBASE_PERSONAL_ROOT_FOLDER, recursive=False):
     firebase_manager = FirebaseStorageManager(FIREBASE_STORAGE_URL)
     if os.path.isdir(local_path):

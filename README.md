@@ -44,6 +44,11 @@ This will create a new notebook type. So, the next time you create a notebook, i
 
 Running the above command is necessary to make the "scratch_pad" notebook that is included and already set up to work with this toolkit.
 
+To start jupyter:
+```commandline
+jupyter notebook
+```
+
 
 ### PDF Conversion
 

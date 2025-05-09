@@ -1,0 +1,147 @@
+import base64
+import json
+
+import requests
+
+from config import (
+    RIKAI2_AUTH_KEY,
+    RIKAI2_ORG_ID,
+    RIKAI2_URL,
+    RIKY2_AUTH_KEY,
+    RIKY2_ORG_ID,
+    RIKY2_URL,
+    WEBHOOK_URL,
+)
+from file_system.utils import get_filename
+from models.constants import POST
+
+
+class ModelAPI:
+    def __init__(self):
+        self.method = POST
+        self.url = ""
+        self.org_id = ""
+        self.auth_key = ""
+        self.webhook = WEBHOOK_URL
+
+        self.file = None
+        self.return_file_name = None
+        self.prompts = []
+
+    @property
+    def name(self):
+        return self.__class__.__name__
+
+    def get_headers(self):
+        return {"orgId": self.org_id, "authKey": self.auth_key, "Content-Type": "application/json"}
+
+    def _get_file_base64(self, path):
+        with open(self.file, "rb") as file:
+            encoded_string = base64.b64encode(file.read())
+            return encoded_string.decode("utf-8")
+
+    def add_file_to_payload(self, payload):
+        raise NotImplementedError
+
+    def build_payload(self):
+        raise NotImplementedError
+
+    def set_file(self, file):
+        self.file = file
+        self.return_file_name = f"{get_filename(file)}_{self.name}"
+
+    def set_return_file_name(self, file_name):
+        self.return_file_name = file_name
+
+    def add_prompt(self, prompt):
+        self.prompts.append(prompt)
+
+    def run(self, file=None, prompts=None):
+        if file:
+            self.set_file(file)
+
+        if prompts:
+            self.prompts = prompts
+
+        payload = self.build_payload()
+        response = requests.request(
+            self.method, self.url, headers=self.get_headers(), data=json.dumps(payload)
+        )
+        return response.json()
+
+
+class Rikai2(ModelAPI):
+    def __init__(self):
+        super().__init__()
+        self.url = RIKAI2_URL
+        self.org_id = RIKAI2_ORG_ID
+        self.auth_key = RIKAI2_AUTH_KEY
+        self.webhook = WEBHOOK_URL
+
+        # Settings
+        self.advanced_explainability = False
+        self.advanced_vision = False
+        self.force_ocr = False
+        self.verbose = True
+
+    def add_file_to_payload(self, payload):
+        if not self.file:
+            raise Exception("No file set")
+
+        if self.file.startswith("http"):
+            payload["inputURL"] = self.file
+            return payload
+
+        # Assume local file
+        payload["base64"] = self._get_file_base64(self.file)
+        return payload
+
+    def build_payload(self):
+        webhook = self.webhook
+        if self.return_file_name:
+            webhook = f"{webhook}?filename={self.return_file_name}"
+
+        payload = {
+            "forceOCR": self.force_ocr,
+            "outputUrl": webhook,
+            "question": self.prompts,
+            "settings": {
+                "advanced_explainability": self.advanced_explainability,
+                "advanced_vision": self.advanced_vision,
+                "verbose": self.verbose,
+            },
+            "webhook": webhook,
+        }
+        payload = self.add_file_to_payload(payload)
+        return payload
+
+
+class Riky2(ModelAPI):
+    def __init__(self):
+        super().__init__()
+        self.url = RIKY2_URL
+        self.org_id = RIKY2_ORG_ID
+        self.auth_key = RIKY2_AUTH_KEY
+        self.webhook = WEBHOOK_URL
+
+    def add_file_to_payload(self, payload):
+        if not self.file:
+            raise Exception("No file set")
+
+        if self.file.startswith("http"):
+            payload["inputURL"] = self.file
+            return payload
+
+        # Assume local file
+        payload["base64"] = self._get_file_base64(self.file)
+        return payload
+
+    def build_payload(self):
+        payload = {
+            "outputUrl": self.webhook,
+            "question": self.prompts,
+            "webhook": self.webhook,
+        }
+
+        payload = self.add_file_to_payload(payload)
+        return payload

@@ -29,6 +29,10 @@ class FirebaseStorageManager:
     def is_folder(self, blob):
         return blob.name.endswith("/")
 
+    def exists(self, data_path):
+        blob = self.bucket.blob(data_path)
+        return blob.exists()
+
     def list_all_files_in_path(self, data_path, recursive=False):
         blobs = self.bucket.list_blobs()
         file_paths = []
@@ -120,38 +124,6 @@ class FirebaseStorageManager:
             return response.text
         except requests.exceptions.RequestException as e:
             return {"error": str(e)}, 500
-
-    # Write a list of data to a CSV file and upload it to the bucket with the specified data path
-    # def write_list_to_csv(self, data_list, csv_file_name):
-    #     """
-    #     Writes a list of data to a CSV file and uploads it to the bucket with the specified data path.
-    #
-    #     Args:
-    #     data_list (list): The list of data to be written to the CSV file.
-    #     csv_file_name (str): The name of the CSV file to be uploaded.
-    #
-    #     Returns:
-    #     dict: A dictionary containing a message indicating success or an error message.
-    #
-    #     Raises:
-    #     Exception: If an error occurs during the writing or uploading process.
-    #     """
-    #     try:
-    #         # Create a temporary CSV file
-    #         with open(csv_file_name, mode="a", newline="") as csvfile:
-    #             writer = csv.writer(csvfile)
-    #             writer.writerows(data_list)
-    #
-    #         # Upload the CSV file to the bucket
-    #         blob_name = os.path.join(data_path, csv_file_name)
-    #         blob = self.bucket.blob(blob_name)
-    #         blob.upload_from_filename(csv_file_name)
-    #         print(f"CSV file '{csv_file_name}' uploaded to {blob_name}")
-    #
-    #         return {"message": "CSV file uploaded successfully"}
-    #     except Exception as e:
-    #         print(e)
-    #         return {"error": str(e)}, 500
 
     def copy_files(self, data_path, destination_folder):
         results = []

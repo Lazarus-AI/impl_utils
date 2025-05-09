@@ -20,6 +20,30 @@ WORKING_FOLDER = normalize_path(os.environ.get("WORKING_FOLDER"))
 DOWNLOAD_FOLDER = normalize_path(os.environ.get("DOWNLOAD_FOLDER"))
 TEMP_FOLDER = normalize_path(os.environ.get("TEMP_FOLDER"))
 
+# Rikai2 Variables
+RIKAI2_ORG_ID = os.environ.get("RIKAI2_ORG_ID", "")
+RIKAI2_AUTH_KEY = os.environ.get("RIKAI2_AUTH_KEY", "")
+RIKAI2_URL = os.environ.get("RIKAI2_URL", "")
+RIKAI2_STATUS_URL = os.environ.get("RIKAI2_STATUS_URL", "")
+
+# Riky2 Variables
+RIKY2_ORG_ID = os.environ.get("RIKY2_ORG_ID", "")
+RIKY2_AUTH_KEY = os.environ.get("RIKY2_AUTH_KEY", "")
+RIKY2_URL = os.environ.get("RIKY2_URL", "")
+RIKY2_STATUS_URL = os.environ.get("RIKY2_STATUS_URL", "")
+
+# RikyExtract Variables
+RIKY_EXTRACT_ORG_ID = os.environ.get("RIKY_EXTRACT_ORG_ID", "")
+RIKY_EXTRACT_AUTH_KEY = os.environ.get("RIKY_EXTRACT_AUTH_KEY", "")
+RIKY_EXTRACT_URL = os.environ.get("RIKY_EXTRACT_URL", "")
+RIKY_EXTRACT_STATUS_URL = os.environ.get("RIKY_EXTRACT_STATUS_URL", "")
+
+# Webhook
+WEBHOOK_URL = os.environ.get("WEBHOOK_URL", "")
+
+# Batch Settings
+BATCH_TIMEOUT = int(os.environ.get("BATCH_TIMEOUT", 300))  # 5 minutes in seconds
+
 # Firebase Environment Variables
 FIREBASE_STORAGE_URL = os.environ.get("FIREBASE_STORAGE_URL", "")
 FIREBASE_WEBHOOK_OUTPUT_FOLDER = os.environ.get("FIREBASE_WEBHOOK_OUTPUT_FOLDER", "")

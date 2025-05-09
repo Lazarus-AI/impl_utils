@@ -18,9 +18,17 @@ def in_tmp(file_path=""):
     return os.path.join(TEMP_FOLDER, file_path)
 
 
+def is_dir(file_path=""):
+    return os.path.isdir(file_path)
+
+
 def mkdir(file_path):
     if not os.path.exists(file_path):
         os.makedirs(file_path)
+
+
+def get_folder(file_path):
+    return os.path.dirname(file_path)
 
 
 def get_filename(file_path):
@@ -40,6 +48,10 @@ def append_to_filename(file_path, append_text):
         file_path = file_path.replace(f".{extension}", f"{append_text}.{extension}")
 
     return file_path
+
+
+def get_all_files(dir, recursive=False):
+    return glob.glob(dir + "/*", recursive=recursive)
 
 
 def get_all_files_with_ext(path, ext):
