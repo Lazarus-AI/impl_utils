@@ -84,3 +84,34 @@ Also, run pre-commit when adding new code:
 ```commandline
 pre-commit install
 ```
+
+## Concepts
+
+### Folders
+Our AIs need documents to work on. When we want to programmatically work with files we need to work with file paths.
+
+We wanted to take the confusion out of trying to figure out absolute file paths so there are a number of helpers to make this easier.
+
+We have 3 folders that are specified in the code:
+
+#### Working folder
+This is the folder that you are putting the materials that you want to work with. Feel free to organize this how you choose.
+
+Set the `WORKING_FOLDER` in your `.env` file to this folder. To short cut referring to files in this folder, there's a function called `in_working()`
+
+```python
+from file_system.utils import in_working
+
+file_path = in_working('sub_folder/file.pdf')
+```
+
+### Download folder
+`DOWNLOAD_FOLDER` in the `.env` folder represents a folder where we can download files.
+
+Honestly, we're not really using this folder. 
+
+### Temp folder
+
+`TEMP_FOLDER` in the `.env` folder represents a folder where we can put temporary files. A few of the transformation functions need to put a file somewhere while they do their work. 
+
+These files would clutter up the working folder before producing a final result.

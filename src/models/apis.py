@@ -1,5 +1,6 @@
 import base64
 import json
+from http import HTTPStatus
 
 import requests
 
@@ -10,6 +11,9 @@ from config import (
     RIKY2_AUTH_KEY,
     RIKY2_ORG_ID,
     RIKY2_URL,
+    RIKY_EXTRACT_AUTH_KEY,
+    RIKY_EXTRACT_ORG_ID,
+    RIKY_EXTRACT_URL,
     WEBHOOK_URL,
 )
 from file_system.utils import get_filename
@@ -67,6 +71,9 @@ class ModelAPI:
         response = requests.request(
             self.method, self.url, headers=self.get_headers(), data=json.dumps(payload)
         )
+        if response.status_code != HTTPStatus.OK:
+            print(response.status_code, response.json())
+
         return response.json()
 
 
@@ -137,11 +144,53 @@ class Riky2(ModelAPI):
         return payload
 
     def build_payload(self):
+        webhook = self.webhook
+        if self.return_file_name:
+            webhook = f"{webhook}?filename={self.return_file_name}"
+
         payload = {
-            "outputUrl": self.webhook,
+            "outputUrl": webhook,
             "question": self.prompts,
-            "webhook": self.webhook,
+            "webhook": webhook,
         }
 
+        payload = self.add_file_to_payload(payload)
+        return payload
+
+
+class RikaiExtract(ModelAPI):
+    def __init__(self):
+        super().__init__()
+        self.url = RIKY_EXTRACT_URL
+        self.org_id = RIKY_EXTRACT_ORG_ID
+        self.auth_key = RIKY_EXTRACT_AUTH_KEY
+        self.webhook = WEBHOOK_URL
+
+        # Settings
+        self.return_confidence = True
+
+    def add_file_to_payload(self, payload):
+        if not self.file:
+            raise Exception("No file set")
+
+        if self.file.startswith("http"):
+            payload["inputURL"] = self.file
+            return payload
+
+        # Assume local file
+        payload["base64"] = self._get_file_base64(self.file)
+        return payload
+
+    def build_payload(self):
+        webhook = self.webhook
+        if self.return_file_name:
+            webhook = f"{webhook}?filename={self.return_file_name}"
+
+        payload = {
+            "outputUrl": webhook,
+            "question": self.prompts,
+            "settings": {"returnConfidence": self.return_confidence},
+            "webhook": webhook,
+        }
         payload = self.add_file_to_payload(payload)
         return payload

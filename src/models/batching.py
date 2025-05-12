@@ -3,7 +3,7 @@ import time
 from math import floor
 
 from config import BATCH_TIMEOUT, FIREBASE_WEBHOOK_OUTPUT_FOLDER
-from file_system.utils import get_all_files, get_folder, is_dir
+from file_system.utils import get_all_files, get_folder, is_dir, tidy_json_file
 from sync.firebase.utils import delete, download, file_exists
 
 
@@ -67,7 +67,9 @@ class RunAndWait:
         download_folder = get_folder(self.model_api.file)
         download(download_folder, self.data_path)
         delete(self.data_path)
-        print(f"Saved file to: {download_folder}/{self.model_api.return_file_name}.json")
+        file_name = f"{download_folder}/{self.model_api.return_file_name}.json"
+        tidy_json_file(file_name)
+        print(f"Saved file to: {file_name}")
 
     def run(self):
         self.send()

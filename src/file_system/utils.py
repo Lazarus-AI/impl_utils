@@ -87,13 +87,17 @@ def tidy_json_files(path):
     # loading the json and reformatting them all pretty like.
     json_files = get_all_files_with_ext(path, "json")
     for json_file in json_files:
-        with open(json_file, "r") as file:
-            data = file.read()
-            json_data = json.loads(data)
+        tidy_json_file(json_file)
 
-        pretty_json = json.dumps(json_data, indent=4)
-        with open(json_file, "w") as file:
-            file.write(pretty_json)
+
+def tidy_json_file(file_path):
+    with open(file_path, "r") as file:
+        data = file.read()
+        json_data = json.loads(data)
+
+    pretty_json = json.dumps(json_data, indent=4)
+    with open(file_path, "w") as file:
+        file.write(pretty_json)
 
 
 def tidy_text_files(path):
