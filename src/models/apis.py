@@ -30,7 +30,7 @@ class ModelAPI:
 
         self.file = None
         self.return_file_name = None
-        self.prompts = []
+        self.prompt = ''
 
     @property
     def name(self):
@@ -57,15 +57,12 @@ class ModelAPI:
     def set_return_file_name(self, file_name):
         self.return_file_name = file_name
 
-    def add_prompt(self, prompt):
-        self.prompts.append(prompt)
-
-    def run(self, file=None, prompts=None):
+    def run(self, file=None, prompt=None):
         if file:
             self.set_file(file)
 
-        if prompts:
-            self.prompts = prompts
+        if prompt:
+            self.prompt = prompt
 
         payload = self.build_payload()
         response = requests.request(
@@ -111,7 +108,7 @@ class Rikai2(ModelAPI):
         payload = {
             "forceOCR": self.force_ocr,
             "outputUrl": webhook,
-            "question": self.prompts,
+            "question": self.prompt,
             "settings": {
                 "advanced_explainability": self.advanced_explainability,
                 "advanced_vision": self.advanced_vision,
@@ -150,7 +147,7 @@ class Riky2(ModelAPI):
 
         payload = {
             "outputUrl": webhook,
-            "question": self.prompts,
+            "question": self.prompt,
             "webhook": webhook,
         }
 
@@ -188,7 +185,7 @@ class RikaiExtract(ModelAPI):
 
         payload = {
             "outputUrl": webhook,
-            "question": self.prompts,
+            "question": self.prompt,
             "settings": {"returnConfidence": self.return_confidence},
             "webhook": webhook,
         }

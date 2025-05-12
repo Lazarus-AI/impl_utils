@@ -100,7 +100,7 @@ This is the folder that you are putting the materials that you want to work with
 Set the `WORKING_FOLDER` in your `.env` file to this folder. To short cut referring to files in this folder, there's a function called `in_working()`
 
 ```python
-from file_system.utils import in_working
+from file_system.utils import in_working, in_downloads, in_tmp
 
 file_path = in_working('sub_folder/file.pdf')
 ```

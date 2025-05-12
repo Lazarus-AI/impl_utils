@@ -8,10 +8,10 @@ from sync.firebase.utils import delete, download, file_exists
 
 
 class Batcher:
-    def __init__(self, model_api, file_path=None, prompts=None):
+    def __init__(self, model_api, file_path=None, prompt=None):
         self.model_api = model_api
         self.file_path = file_path
-        self.prompts = prompts
+        self.prompt = prompt
 
     def get_files(self):
         if is_dir(self.file_path):
@@ -26,7 +26,7 @@ class Batcher:
         for file in files:
             client = self.model_api
             client.set_file(file)
-            client.prompts = self.prompts
+            client.prompt = self.prompt
             runner = RunAndWait(client)
             thread = threading.Thread(target=runner.run)
             thread.start()
