@@ -18,9 +18,17 @@ def in_tmp(file_path=""):
     return os.path.join(TEMP_FOLDER, file_path)
 
 
+def is_dir(file_path=""):
+    return os.path.isdir(file_path)
+
+
 def mkdir(file_path):
     if not os.path.exists(file_path):
         os.makedirs(file_path)
+
+
+def get_folder(file_path):
+    return os.path.dirname(file_path)
 
 
 def get_filename(file_path):
@@ -40,6 +48,10 @@ def append_to_filename(file_path, append_text):
         file_path = file_path.replace(f".{extension}", f"{append_text}.{extension}")
 
     return file_path
+
+
+def get_all_files(dir, recursive=False):
+    return glob.glob(dir + "/*", recursive=recursive)
 
 
 def get_all_files_with_ext(path, ext):
@@ -75,13 +87,17 @@ def tidy_json_files(path):
     # loading the json and reformatting them all pretty like.
     json_files = get_all_files_with_ext(path, "json")
     for json_file in json_files:
-        with open(json_file, "r") as file:
-            data = file.read()
-            json_data = json.loads(data)
+        tidy_json_file(json_file)
 
-        pretty_json = json.dumps(json_data, indent=4)
-        with open(json_file, "w") as file:
-            file.write(pretty_json)
+
+def tidy_json_file(file_path):
+    with open(file_path, "r") as file:
+        data = file.read()
+        json_data = json.loads(data)
+
+    pretty_json = json.dumps(json_data, indent=4)
+    with open(file_path, "w") as file:
+        file.write(pretty_json)
 
 
 def tidy_text_files(path):
