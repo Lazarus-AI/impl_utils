@@ -5,6 +5,7 @@
 .secrets
 *.csv
 .ipynb_checkpoints
+*.ipynb
 
 working
 downloads
