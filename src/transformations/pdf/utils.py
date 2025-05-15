@@ -1,10 +1,12 @@
 import os
+from typing import List
 
 import PyPDF2
 from PyPDF2 import PdfMerger, PdfReader, PdfWriter
 
 from config import WORKING_FOLDER
 from file_system.utils import append_to_filename
+from transformations.pdf.bounding_boxes import BoundingBox, draw_box_on_pdf
 from transformations.pdf.libre_office import convert_file_to_pdf, convert_folder_to_pdf
 from transformations.pdf.transformations import PDFTidy
 
@@ -87,3 +89,23 @@ def get_number_of_pages(pdf_path):
 def tidy_pdf(pdf_path, destination_path=None, deskew=True, auto_crop=True):
     tidier = PDFTidy(pdf_path)
     return tidier.tidy(destination_path=destination_path, deskew=deskew, auto_crop=auto_crop)
+
+
+def draw_bounding_boxes(pdf_path, bounding_boxes: List[BoundingBox], destination_path=None):
+    if not bounding_boxes:
+        return None
+
+    if destination_path is None:
+        destination_path = append_to_filename(pdf_path, f"_bounding_boxes")
+
+    draw_box_on_pdf(
+        input_pdf_path=pdf_path,
+        output_pdf_path=destination_path,
+        bounding_boxes=bounding_boxes,
+    )
+
+    return destination_path
+
+
+def draw_bounding_boxes_from_json(pdf_path, json_path, json_maps):
+    pass
