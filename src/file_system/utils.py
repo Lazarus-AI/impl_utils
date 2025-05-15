@@ -107,6 +107,16 @@ def tidy_text_files(path):
         with open(txt_file, "r") as file:
             data = file.read()
 
-        txt = data.encode("utf-8").decode("unicode_escape")
-        with open(txt_file, "w") as file:
-            file.write(txt)
+        try:
+            txt = data.encode("utf-8").decode("unicode_escape")
+            with open(txt_file, "w") as file:
+                file.write(txt)
+        except UnicodeDecodeError:
+            pass
+
+
+def load_json_from_file(json_file):
+    with open(json_file, "r") as file:
+        data = file.read()
+        json_data = json.loads(data)
+        return json_data
