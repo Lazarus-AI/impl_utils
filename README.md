@@ -29,6 +29,15 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+#### Additional installs
+
+To use OCR, you'll need poppler installed on your computer.
+
+For a mac:
+```commandline
+brew install poppler
+```
+
 ### Using Jupyter Notebook
 
 If you want to use these methods in a jupyter notebook, you'll need to install a new kernal based on virtual environment.
@@ -108,10 +117,10 @@ file_path = in_working('sub_folder/file.pdf')
 ### Download folder
 `DOWNLOAD_FOLDER` in the `.env` folder represents a folder where we can download files.
 
-Honestly, we're not really using this folder. 
+Honestly, we're not really using this folder.
 
 ### Temp folder
 
-`TEMP_FOLDER` in the `.env` folder represents a folder where we can put temporary files. A few of the transformation functions need to put a file somewhere while they do their work. 
+`TEMP_FOLDER` in the `.env` folder represents a folder where we can put temporary files. A few of the transformation functions need to put a file somewhere while they do their work.
 
 These files would clutter up the working folder before producing a final result.
