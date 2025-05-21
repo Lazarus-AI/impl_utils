@@ -2,10 +2,11 @@ import os
 from typing import List
 
 import PyPDF2
+from pdf2image import convert_from_path
 from PyPDF2 import PdfMerger, PdfReader, PdfWriter
 
 from config import WORKING_FOLDER
-from file_system.utils import append_to_filename
+from file_system.utils import append_to_filename, get_filename, get_folder, mkdir
 from transformations.pdf.bounding_boxes import BoundingBox, draw_box_on_pdf
 from transformations.pdf.libre_office import convert_file_to_pdf, convert_folder_to_pdf
 from transformations.pdf.transformations import PDFTidy
@@ -107,5 +108,21 @@ def draw_bounding_boxes(pdf_path, bounding_boxes: List[BoundingBox], destination
     return destination_path
 
 
-def draw_bounding_boxes_from_json(pdf_path, json_path, json_maps):
-    pass
+def convert_pdf_to_images(pdf_path, start_page=None, end_page=None, output_folder=None):
+    if not output_folder:
+        filename = get_filename(pdf_path)
+        folder = get_folder(pdf_path)
+        folder = f"{folder}/{filename}_images"
+        mkdir(folder)
+        output_folder = folder
+
+    convert_from_path(
+        pdf_path=pdf_path,
+        dpi=300,
+        first_page=start_page,
+        last_page=end_page,
+        fmt="jpeg",
+        output_folder=output_folder,
+        output_file="page_",
+    )
+    return output_folder
