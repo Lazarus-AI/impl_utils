@@ -6,7 +6,6 @@ from enum import StrEnum, auto
 
 import boto3
 from boto3.s3.transfer import TransferConfig
-from pydantic import BaseModel # automatically validates and serializes the data 
 
 ENV = os.environ
 
@@ -41,25 +40,23 @@ class ProgressPercentage(object):
             sys.stdout.flush()
 
 
-class S3Transfer(BaseModel):
-    # Pydantic requires initialization of all fields here rather than in the __init__ method
-    bucket_id: str
-    s3_path: str
-    local_path: str
+class S3Transfer:
     
-    def upload(self):
+    @staticmethod
+    def upload(local_path: str, bucket_id: str, s3_path: str):
         S3_CLIENT.upload_file(
-            self.local_path,
-            self.bucket_id,
-            self.s3_path,
+            local_path,
+            bucket_id,
+            s3_path,
             Config=S3_TRANSFER_CONFIG,
-            Callback=ProgressPercentage(self.local_path),
+            Callback=ProgressPercentage(local_path),
         )
 
-    def download(self):
+    @staticmethod
+    def download(bucket_id: str, s3_path: str, local_path: str):
         S3_CLIENT.download_file(
-            self.bucket_id,
-            self.s3_path,
-            self.local_path,
+            bucket_id,
+            s3_path,
+            local_path,
             Config=S3_TRANSFER_CONFIG,
         )

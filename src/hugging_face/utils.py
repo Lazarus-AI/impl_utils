@@ -55,13 +55,13 @@ def save_model_state_dict(model_id: str, output_dir: str, overwrite: bool = True
     If the directory exists and overwrite is False, the files will not be saved again.
     """
         
-    model, tokenizer = get_model_from_hf(model_id) 
+    model, tokenizer = download_model_from_hf(model_id) 
     save_model_state_dict(model, tokenizer, output_dir, overwrite)
 
     
-def get_model_from_hf(model_id: str) -> tuple[AutoTokenizer, AutoModelForCausalLM]:
+def download_model_from_hf(model_id: str) -> tuple[AutoTokenizer, AutoModelForCausalLM]:
     """
-    Load a model from HuggingFace. If the model is already downloaded, it will be loaded from the local HF cache.
+    Download a model from HuggingFace. If the model is already downloaded, it will be loaded from the local HF cache.
     Otherwise, the model will be downloaded from HuggingFace.
     
     The HF_TOKEN will be loaded from the .env file or from the environment variable HF_TOKEN. If the token is not found, 
