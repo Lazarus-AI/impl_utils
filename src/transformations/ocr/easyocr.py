@@ -3,7 +3,7 @@ import warnings
 import easyocr
 
 from file_system.utils import get_all_files_with_ext, get_extension, get_filename
-from transformations.pdf.bounding_boxes import BoundingBox
+from general.pydantic_models import BoundingBox
 from transformations.pdf.utils import convert_pdf_to_images
 
 

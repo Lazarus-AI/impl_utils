@@ -1,18 +1,14 @@
 from typing import List
 
 import pymupdf
-from pydantic import BaseModel
+
+from general.pydantic_models import BoundingBox
 
 COLOR = {
     "red": (1.0, 0, 0),
     "blue": (0, 0, 1.0),
     "green": (0, 1.0, 0),
 }
-
-
-class BoundingBox(BaseModel):
-    page_number: int  # 1 Indexed
-    box: dict
 
 
 def draw_box_on_pdf(

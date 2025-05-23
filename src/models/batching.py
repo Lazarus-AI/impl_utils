@@ -1,20 +1,29 @@
 import threading
 import time
 from math import floor
+from typing import Optional, Union
 
 from config import BATCH_TIMEOUT, FIREBASE_WEBHOOK_OUTPUT_FOLDER
 from file_system.utils import get_all_files, get_folder, is_dir, tidy_json_file
+from models.apis import ModelAPI
 from sync.firebase.utils import delete, download, file_exists
 
 
 class Batcher:
-    def __init__(self, model_api, file_path=None, prompt=None):
+    def __init__(
+        self,
+        model_api: ModelAPI,
+        file_path: Union[list, str],
+        prompt: Optional[str] = None,
+    ):
         self.model_api = model_api
         self.file_path = file_path
         self.prompt = prompt
 
     def get_files(self):
-        if is_dir(self.file_path):
+        if isinstance(self.file_path, list):
+            files = self.file_path
+        elif is_dir(self.file_path):
             files = get_all_files(self.file_path)
         else:
             files = [self.file_path]
@@ -37,7 +46,7 @@ class Batcher:
 
 
 class RunAndWait:
-    def __init__(self, model_api):
+    def __init__(self, model_api: ModelAPI):
         self.model_api = model_api
         self.data_path = f"{FIREBASE_WEBHOOK_OUTPUT_FOLDER}{self.model_api.return_file_name}.json"
 
@@ -45,7 +54,7 @@ class RunAndWait:
         print(f"Processing: {self.model_api.file}")
         self.model_api.run()
 
-    def wait(self):
+    def wait(self) -> bool:
         # Wait until the file shows up in firebase
         check_period = 5
         iterations = floor(BATCH_TIMEOUT / check_period)

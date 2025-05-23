@@ -1,7 +1,7 @@
 import math
 import os
 import shutil
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 from uuid import uuid4
 
 import cv2
@@ -21,7 +21,9 @@ class PDFTidy:
         self.tmp_dir = in_tmp(f"images_{id}")
         mkdir(self.tmp_dir)
 
-    def tidy(self, destination_path=None, deskew=True, auto_crop=True):
+    def tidy(
+        self, destination_path: Optional[str] = None, deskew: bool = True, auto_crop: bool = True
+    ) -> str:
         if destination_path is None:
             destination_path = append_to_filename(self.pdf_path, "_tidied")
 
