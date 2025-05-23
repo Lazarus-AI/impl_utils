@@ -1,32 +1,42 @@
 import os
-from typing import List
+from typing import List, Optional, Union
 
 import PyPDF2
 from pdf2image import convert_from_path
 from PyPDF2 import PdfMerger, PdfReader, PdfWriter
 
-from config import WORKING_FOLDER
 from file_system.utils import append_to_filename, get_filename, get_folder, mkdir
-from transformations.pdf.bounding_boxes import BoundingBox, draw_box_on_pdf
+from general.pydantic_models import BoundingBox
+from transformations.pdf.bounding_boxes import draw_box_on_pdf
 from transformations.pdf.libre_office import convert_file_to_pdf, convert_folder_to_pdf
 from transformations.pdf.transformations import PDFTidy
 
 
-def convert_to_pdf(path, output_dir=WORKING_FOLDER, recursive=False):
+def convert_to_pdf(
+    path: Union[str, List], output_dir: Optional[str] = None, recursive=False
+) -> List[str]:
     results = []
-    if not os.path.exists(path):
-        return results
+    if isinstance(path, list):
+        for path_item in path:
+            results.append(convert_file_to_pdf(path_item, output_dir))
+            return results
 
-    if path.startswith("."):
-        return results
+    if isinstance(path, str):
+        if not os.path.exists(path):
+            return results
 
-    if os.path.isfile(path):
-        return convert_file_to_pdf(path, output_dir)
+        if path.startswith("."):
+            return results
 
-    return convert_folder_to_pdf(path, output_dir, recursive=recursive)
+        if os.path.isfile(path):
+            return [convert_file_to_pdf(path, output_dir)]
+
+        return convert_folder_to_pdf(path, output_dir, recursive=recursive)  # type: ignore
+
+    return results
 
 
-def merge_pdfs(pdf_paths, output_path=None):
+def merge_pdfs(pdf_paths: List, output_path: Optional[str] = None) -> str:
     if not output_path:
         output_path = append_to_filename(pdf_paths[0], "_merged_file")
     merger = PdfMerger()
@@ -43,7 +53,9 @@ def merge_pdfs(pdf_paths, output_path=None):
     return output_path
 
 
-def trim_pdf(input_path, start_page, end_page, output_path=None):
+def trim_pdf(
+    input_path: str, start_page: int, end_page: int, output_path: Optional[str] = None
+) -> str:
     if output_path is None:
         output_path = append_to_filename(input_path, f"_{start_page}-{end_page}")
 
@@ -68,10 +80,10 @@ def trim_pdf(input_path, start_page, end_page, output_path=None):
     with open(output_path, "wb") as output_pdf:
         writer.write(output_pdf)
 
-    return input_path, output_path
+    return output_path
 
 
-def get_number_of_pages(pdf_path):
+def get_number_of_pages(pdf_path: str) -> Optional[int]:
     """
     Returns the number of pages in a PDF file.
 
@@ -87,12 +99,19 @@ def get_number_of_pages(pdf_path):
         return None
 
 
-def tidy_pdf(pdf_path, destination_path=None, deskew=True, auto_crop=True):
+def tidy_pdf(
+    pdf_path: str,
+    destination_path: Optional[str] = None,
+    deskew: bool = True,
+    auto_crop: bool = True,
+) -> str:
     tidier = PDFTidy(pdf_path)
-    return tidier.tidy(destination_path=destination_path, deskew=deskew, auto_crop=auto_crop)
+    return tidier.tidy(destination_path=destination_path, deskew=deskew, auto_crop=auto_crop)  # type: ignore
 
 
-def draw_bounding_boxes(pdf_path, bounding_boxes: List[BoundingBox], destination_path=None):
+def draw_bounding_boxes(
+    pdf_path: str, bounding_boxes: List[BoundingBox], destination_path: Optional[str] = None
+) -> Optional[str]:
     if not bounding_boxes:
         return None
 
@@ -108,7 +127,12 @@ def draw_bounding_boxes(pdf_path, bounding_boxes: List[BoundingBox], destination
     return destination_path
 
 
-def convert_pdf_to_images(pdf_path, start_page=None, end_page=None, output_folder=None):
+def convert_pdf_to_images(
+    pdf_path: str,
+    start_page: Optional[int] = None,
+    end_page: Optional[int] = None,
+    output_folder: Optional[str] = None,
+) -> str:
     if not output_folder:
         filename = get_filename(pdf_path)
         folder = get_folder(pdf_path)

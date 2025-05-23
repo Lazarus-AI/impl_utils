@@ -39,7 +39,7 @@ repos:
       - id: name-tests-test
         args:
           - --pytest-test-first
-        exclude: ^tests/mocks|^tests/utils|^tests/plugins|^tests/fixtures
+        exclude: ^tests/mocks|^tests/utils|^tests/plugins|^tests/fixtures|.*\.ipynb
       - id: pretty-format-json
         args:
           - --autofix
