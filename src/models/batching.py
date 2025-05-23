@@ -1,3 +1,4 @@
+import logging
 import threading
 import time
 from math import floor
@@ -5,8 +6,11 @@ from typing import Optional, Union
 
 from config import BATCH_TIMEOUT, FIREBASE_WEBHOOK_OUTPUT_FOLDER
 from file_system.utils import get_all_files, get_folder, is_dir, tidy_json_file
+from general.core import log_timing
 from models.apis import ModelAPI
 from sync.firebase.utils import delete, download, file_exists
+
+logger = logging.getLogger(__name__)
 
 
 class Batcher:
@@ -51,25 +55,21 @@ class RunAndWait:
         self.data_path = f"{FIREBASE_WEBHOOK_OUTPUT_FOLDER}{self.model_api.return_file_name}.json"
 
     def send(self):
-        print(f"Processing: {self.model_api.file}")
+        logging.info(f"Processing: {self.model_api.file}")
         self.model_api.run()
 
+    @log_timing
     def wait(self) -> bool:
         # Wait until the file shows up in firebase
         check_period = 5
         iterations = floor(BATCH_TIMEOUT / check_period)
         is_successful = False
-        print(f"Looking for: {self.data_path}")
-        print("Waiting", end="")
-        elapsed = 0
+        logging.info(f"Waiting to download: {self.data_path}")
         for i in range(iterations):
             if file_exists(self.data_path):
                 is_successful = True
                 break
             time.sleep(check_period)
-            print(".", end="")
-            elapsed = i * check_period
-        print(f"{elapsed}s")
         return is_successful
 
     def save_file(self):
@@ -78,7 +78,7 @@ class RunAndWait:
         delete(self.data_path)
         file_name = f"{download_folder}/{self.model_api.return_file_name}.json"
         tidy_json_file(file_name)
-        print(f"Saved file to: {file_name}")
+        logging.info(f"Saved response to: {file_name}")
 
     def run(self):
         self.send()
