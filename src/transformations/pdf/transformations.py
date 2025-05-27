@@ -11,6 +11,7 @@ from deskew import determine_skew
 from PIL import Image
 
 from file_system.utils import append_to_filename, get_filename, in_tmp, mkdir
+from general.core import log_timing
 
 
 class PDFTidy:
@@ -21,6 +22,7 @@ class PDFTidy:
         self.tmp_dir = in_tmp(f"images_{id}")
         mkdir(self.tmp_dir)
 
+    @log_timing
     def tidy(
         self, destination_path: Optional[str] = None, deskew: bool = True, auto_crop: bool = True
     ) -> str:

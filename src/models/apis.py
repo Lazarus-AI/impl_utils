@@ -1,5 +1,6 @@
 import base64
 import json
+import logging
 from http import HTTPStatus
 
 import requests
@@ -19,6 +20,8 @@ from config import (
 from file_system.utils import get_filename
 from models.constants import POST
 
+
+logger = logging.getLogger(__name__)
 
 class ModelAPI:
     def __init__(self):
@@ -69,7 +72,7 @@ class ModelAPI:
             self.method, self.url, headers=self.get_headers(), data=json.dumps(payload)
         )
         if response.status_code != HTTPStatus.OK:
-            print(response.status_code, response.json())
+            logging.info(f'{response.status_code}: {response.json()}')
 
         return response.json()
 

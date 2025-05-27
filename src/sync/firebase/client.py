@@ -1,4 +1,5 @@
 import glob
+import logging
 import os
 
 import requests
@@ -8,6 +9,7 @@ from config import FIREBASE_KEY, WORKING_FOLDER
 
 cred = credentials.Certificate(FIREBASE_KEY)
 
+logger = logging.getLogger(__name__)
 
 class FirebaseStorageManager:
     def __init__(self, storage_url):
@@ -156,6 +158,6 @@ class FirebaseStorageManager:
         try:
             app = get_app()
             delete_app(app)
-            print("Firebase connection closed.")
+            logging.info("Firebase connection closed.")
         except ValueError:
-            print("No active Firebase app to close.")
+            logging.info("No active Firebase app to close.")

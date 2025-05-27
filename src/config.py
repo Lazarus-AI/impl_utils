@@ -14,6 +14,9 @@ def normalize_path(path):
         return os.path.abspath(path)
     return os.path.abspath(os.path.join(PROJECT_ROOT_FOLDER, path))
 
+# Global variables
+DEBUG_MODE = os.environ.get('DEBUG_MODE', '').lower() == 'true'
+
 
 # Local folders
 WORKING_FOLDER = normalize_path(os.environ.get("WORKING_FOLDER"))
