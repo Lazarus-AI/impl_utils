@@ -68,7 +68,7 @@ def agentql_scrape_urls(DATA_QUERY, input_url, output_path):
                 page = agentql.wrap(browser.new_page())
                 page.goto(input_url)
                 data = page.query_data(DATA_QUERY)
-                with open(output_path, 'w') as f: #it's a bit jank to put urls as name of json, but if it works it works.
+                with open(output_path, 'w') as f:
                     json.dump(data, f, indent=4)
                 browser.close()
             print(f"Processed {input_url}")
