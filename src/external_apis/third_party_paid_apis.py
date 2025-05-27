@@ -46,7 +46,7 @@ DATA_QUERY =  """
 }
 """
 
-#can only run this from python script. there's an async version but I also am doing parallelism here.
+#can only run this from python script. there's an async version but just run the script.
 def agentql_scrape_urls(DATA_QUERY, input_url, output_path):
     #what is this: rikai extract for websites. Agentql can do a lot more, but I think the scraping part is most useful for us.
     #refer to https://docs.agentql.com/agentql-query for query language documentation
