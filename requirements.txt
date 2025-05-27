@@ -139,3 +139,4 @@ virtualenv==20.30.0
 wcwidth==0.2.13
 xattr==1.1.4
 zstandard==0.23.0
+pydantic==2.5.3
