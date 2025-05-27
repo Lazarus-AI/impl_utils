@@ -2,6 +2,8 @@ import time
 import functools
 import logging
 
+from config import DEBUG_MODE
+
 logger = logging.getLogger(__name__)
 
 def log_timing(func):
@@ -10,6 +12,7 @@ def log_timing(func):
         start = time.time()
         result = func(*args, **kwargs)
         end = time.time()
-        logger.info(f"{func.__name__} took {end - start:.4f} seconds")
+        if DEBUG_MODE:
+            logger.info(f"{func.__name__} took {end - start:.4f} seconds")
         return result
     return wrapper

@@ -6,7 +6,7 @@ import cloudconvert
 import requests
 
 from config import CLOUD_CONVERT_API_KEY
-
+from general.core import log_timing
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 # You'll need to set the API key in the .env file before using.
 # If you don't want the file to leave your system consider using
 # the libre office converter
+@log_timing
 def convert_directory_to_pdfs(source_dir, dest_dir):
     """
     Converts all files in the source directory to PDFs using the CloudConvert API.
