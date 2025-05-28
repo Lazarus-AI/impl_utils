@@ -4,6 +4,7 @@ import json
 import os
 
 def ping_gmaps(address: str = None, city: str = None, state: str = None):
+    #pings gmaps client with an address, good for checking endpoint for an address (or just seeing if it's up in general)
     gmaps = googlemaps.Client(key=os.environ.get("GMAPS_API_KEY"))
     if address and city and state:
         gmaps_addr = gmaps.places_autocomplete_query(f"{address} {city},{state}")
@@ -24,6 +25,7 @@ def ping_gmaps(address: str = None, city: str = None, state: str = None):
 def ping_smarty(
     address: str = None, city: str = None, state: str = None, zip: str = None
 ):
+    #pings smarty client with an address, good for checking endpoint for an address (or just seeing if it's up in general)
     SMARTY_ENDPOINT = "https://us-street.api.smartystreets.com/street-address"
     params = {
         "auth-id": os.environ.get("SMARTY_AUTH_ID"),
@@ -62,5 +64,8 @@ def ping_smarty(
             {"message": f"Smarty Address Lookup Failure: {smarty_res}", "error": str(e)}
         )
 
-def ping_npi():
-    pass
+def ping_npi(npi):
+    #pings npi registry with an npi number, good for checking endpoint for an npi (or just seeing if it's up in general)
+    url = f"https://npiregistry.cms.hhs.gov/api/?number={npi}&pretty=&version=2.1"
+    resp = requests.get(url).json()
+    return resp
