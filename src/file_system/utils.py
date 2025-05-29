@@ -21,6 +21,8 @@ def in_tmp(file_path=""):
 def is_dir(file_path=""):
     return os.path.isdir(file_path)
 
+def file_exists(file_path):
+    return os.path.exists(file_path)
 
 def mkdir(file_path):
     if not os.path.exists(file_path):
