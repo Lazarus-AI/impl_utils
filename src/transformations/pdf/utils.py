@@ -1,3 +1,4 @@
+import logging
 import os
 from typing import List, Optional, Union
 
@@ -11,6 +12,8 @@ from transformations.pdf.bounding_boxes import draw_box_on_pdf
 from transformations.pdf.libre_office import convert_file_to_pdf, convert_folder_to_pdf
 from transformations.pdf.transformations import PDFTidy
 
+
+logger = logging.getLogger(__name__)
 
 def convert_to_pdf(
     path: Union[str, List], output_dir: Optional[str] = None, recursive=False
@@ -44,9 +47,9 @@ def merge_pdfs(pdf_paths: List, output_path: Optional[str] = None) -> str:
         try:
             merger.append(pdf)
         except PyPDF2.errors.EmptyFileError:
-            print(f"Skipping empty PDF file: {pdf}")
+            logging.info(f"Skipping empty PDF file: {pdf}")
         except PyPDF2.errors.PdfReadError:
-            print(f"Skipping corrupted PDF file: {pdf}")
+            logging.info(f"Skipping corrupted PDF file: {pdf}")
 
     merger.write(output_path)
     merger.close()
@@ -95,7 +98,7 @@ def get_number_of_pages(pdf_path: str) -> Optional[int]:
             reader = PyPDF2.PdfReader(file)
             return len(reader.pages)
     except Exception as e:
-        print(f"Error: {e}")
+        logging.error(f"Error: {e}")
         return None
 
 

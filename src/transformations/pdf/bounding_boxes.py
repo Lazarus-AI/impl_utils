@@ -1,8 +1,11 @@
+import logging
 from typing import List
 
 import pymupdf
 
 from general.pydantic_models import BoundingBox
+
+logger = logging.getLogger(__name__)
 
 COLOR = {
     "red": (1.0, 0, 0),
@@ -28,7 +31,11 @@ def draw_box_on_pdf(
         color (tuple, optional): RGB color of the rectangle (0-1 range). Defaults to red (1.0, 0, 0).
         line_width (int, optional): Width of the rectangle's border. Defaults to 1.
     """
-    doc = pymupdf.open(input_pdf_path)
+    try:
+        doc = pymupdf.open(input_pdf_path)
+    except:
+        logger.error(f"File not found: {input_pdf_path}")
+        return
 
     for bounding_box in bounding_boxes:
         # Note page number is 1 indexed. docs is 0 indexed
