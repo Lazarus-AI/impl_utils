@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>file_system package &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="general package" href="general.html" />
+    <link rel="prev" title="Lazarus Implementation Toolkit documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">file_system package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-file_system.utils">file_system.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.append_to_filename"><code class="docutils literal notranslate"><span class="pre">append_to_filename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.file_exists"><code class="docutils literal notranslate"><span class="pre">file_exists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.get_all_files"><code class="docutils literal notranslate"><span class="pre">get_all_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.get_all_files_with_ext"><code class="docutils literal notranslate"><span class="pre">get_all_files_with_ext()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.get_extension"><code class="docutils literal notranslate"><span class="pre">get_extension()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.get_filename"><code class="docutils literal notranslate"><span class="pre">get_filename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.get_folder"><code class="docutils literal notranslate"><span class="pre">get_folder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.in_downloads"><code class="docutils literal notranslate"><span class="pre">in_downloads()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.in_working"><code class="docutils literal notranslate"><span class="pre">in_working()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.is_dir"><code class="docutils literal notranslate"><span class="pre">is_dir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.load_json_from_file"><code class="docutils literal notranslate"><span class="pre">load_json_from_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.mkdir"><code class="docutils literal notranslate"><span class="pre">mkdir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.tidy_json_file"><code class="docutils literal notranslate"><span class="pre">tidy_json_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.tidy_json_files"><code class="docutils literal notranslate"><span class="pre">tidy_json_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.tidy_text_files"><code class="docutils literal notranslate"><span class="pre">tidy_text_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file_system.utils.unzip"><code class="docutils literal notranslate"><span class="pre">unzip()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">file_system package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/file_system.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="file-system-package">
+<h1>file_system package<a class="headerlink" href="#file-system-package" title="Link to this heading"></a></h1>
+<section id="module-file_system.utils">
+<span id="file-system-utils-module"></span><h2>file_system.utils module<a class="headerlink" href="#module-file_system.utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.append_to_filename">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">append_to_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">append_text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#append_to_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.append_to_filename" title="Link to this definition"></a></dt>
+<dd><p>Appends text to the filename of the given file path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – The file path.</p></li>
+<li><p><strong>append_text</strong> – The text to append to the filename.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The modified file path with appended text.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.file_exists">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">file_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#file_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.file_exists" title="Link to this definition"></a></dt>
+<dd><p>Checks if the given file path exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The path to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the path exists, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.get_all_files">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">get_all_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#get_all_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.get_all_files" title="Link to this definition"></a></dt>
+<dd><p>Returns a list of all files in the given directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dir</strong> – The directory path.</p></li>
+<li><p><strong>recursive</strong> – If True, includes subdirectories.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of file paths.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.get_all_files_with_ext">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">get_all_files_with_ext</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#get_all_files_with_ext"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.get_all_files_with_ext" title="Link to this definition"></a></dt>
+<dd><p>Returns a list of all files with a specific extension in the given directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – The directory path.</p></li>
+<li><p><strong>ext</strong> – The file extension.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of file paths with the specified extension.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.get_extension">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">get_extension</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#get_extension"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.get_extension" title="Link to this definition"></a></dt>
+<dd><p>Returns the extension of the given file path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The file path.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The file extension (without the dot).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.get_filename">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">get_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#get_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.get_filename" title="Link to this definition"></a></dt>
+<dd><p>Returns the filename without the extension from the given file path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The file path.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The filename without the extension.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.get_folder">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">get_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#get_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.get_folder" title="Link to this definition"></a></dt>
+<dd><p>Returns the directory containing the given file path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The file path.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The directory of the file path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.in_downloads">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">in_downloads</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#in_downloads"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.in_downloads" title="Link to this definition"></a></dt>
+<dd><p>Returns the path to a file within the download directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The relative path to the file within the download directory.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The full path to the file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.in_working">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">in_working</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#in_working"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.in_working" title="Link to this definition"></a></dt>
+<dd><p>Returns the path to a file within the working directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The relative path to the file within the working directory.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The full path to the file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.is_dir">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">is_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#is_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.is_dir" title="Link to this definition"></a></dt>
+<dd><p>Checks if the given file path is a directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The path to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the path is a directory, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.load_json_from_file">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">load_json_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#load_json_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.load_json_from_file" title="Link to this definition"></a></dt>
+<dd><p>Loads and returns the data from a JSON file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>json_file</strong> – The path to the JSON file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The data loaded from the JSON file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.mkdir">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">mkdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#mkdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.mkdir" title="Link to this definition"></a></dt>
+<dd><p>Creates a directory if it does not already exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The path of the directory to create.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.tidy_json_file">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">tidy_json_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#tidy_json_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.tidy_json_file" title="Link to this definition"></a></dt>
+<dd><p>Tidies a single JSON file by formatting it with proper indentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The path to the JSON file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.tidy_json_files">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">tidy_json_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#tidy_json_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.tidy_json_files" title="Link to this definition"></a></dt>
+<dd><p>Tidies all JSON files in the given directory by formatting them with proper indentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> – The directory path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.tidy_text_files">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">tidy_text_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#tidy_text_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.tidy_text_files" title="Link to this definition"></a></dt>
+<dd><p>Tidies all text files in the given directory by removing escape characters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> – The directory path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="file_system.utils.unzip">
+<span class="sig-prename descclassname"><span class="pre">file_system.utils.</span></span><span class="sig-name descname"><span class="pre">unzip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/file_system/utils.html#unzip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#file_system.utils.unzip" title="Link to this definition"></a></dt>
+<dd><p>Unzips a file to a specified directory and optionally deletes the original zip file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – The path to the zip file.</p></li>
+<li><p><strong>recursive</strong> – If True, recursively unzips any subfiles that may be zipped.</p></li>
+<li><p><strong>delete</strong> – If True, deletes the original zip file after extraction.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Lazarus Implementation Toolkit documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="general.html" class="btn btn-neutral float-right" title="general package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

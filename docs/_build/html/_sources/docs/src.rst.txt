@@ -1,0 +1,34 @@
+src package
+===========
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   src.file_system
+   src.general
+   src.grading
+   src.models
+   src.sync
+   src.transformations
+
+Submodules
+----------
+
+src.config module
+-----------------
+
+.. automodule:: src.config
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: src
+   :members:
+   :show-inheritance:
+   :undoc-members:

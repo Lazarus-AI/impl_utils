@@ -18,3 +18,11 @@ exclude = ["config"]
 files  = '*.py'
 warn_return_any = true
 warn_unused_configs = true
+
+[tool.numpydoc_validation]
+checks = [
+    "all",   # report on all checks, except the below
+    "SS05",
+    "EX01",
+    "SA01",
+]

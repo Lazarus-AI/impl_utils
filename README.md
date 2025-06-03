@@ -119,8 +119,10 @@ file_path = in_working('sub_folder/file.pdf')
 
 Honestly, we're not really using this folder.
 
-### Temp folder
+### Updating the docs
 
-`TEMP_FOLDER` in the `.env` folder represents a folder where we can put temporary files. A few of the transformation functions need to put a file somewhere while they do their work.
-
-These files would clutter up the working folder before producing a final result.
+```commandline
+cd docs
+sphinx-apidoc -o . ../src
+make html
+```

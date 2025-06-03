@@ -1,8 +1,21 @@
-from transformations.csv.builder import CSVBuilder
-import pandas as pd
 import os
 
+import pandas as pd
+
+from transformations.csv.builder import CSVBuilder
+
+
 def build_csv_from_json_files(file_path, columns, destination_path=None):
+    """Builds a CSV file from JSON files.
+
+    :param file_path: (str) The path to the JSON file.
+    :param columns: (list) A list of tuples containing column names and JSON data maps.
+    :param destination_path: (str) The path to save the CSV file. If None, the CSV file
+        will be saved with the same name as the JSON file but with a .csv extension.
+
+    :returns: (str) The path to the saved CSV file.
+
+    """
     if not destination_path:
         destination_path = f"{file_path}.csv"
 
@@ -13,7 +26,16 @@ def build_csv_from_json_files(file_path, columns, destination_path=None):
     builder.export(destination_path)
     return destination_path
 
+
 def xls_to_csvs_and_concat(input_path, output_path):
+    """Converts an Excel file to CSV files and concatenates them.
+
+    :param input_path: (str) The path to the input Excel file.
+    :param output_path: (str) The path to save the concatenated CSV file.
+
+    :returns: (str) The path to the saved concatenated CSV file.
+
+    """
     # Load Excel file
     xls = pd.ExcelFile(input_path)
 

@@ -9,11 +9,22 @@ from transformations.pdf.utils import draw_bounding_boxes
 
 
 def run_annotate_ui(folder_path):
+    """Runs the annotation UI for the specified folder.
+
+    :param folder_path: The path to the folder containing PDF files to be annotated.
+
+    """
     AnnotationJob(folder_path)
     ui.run()
 
 
 def apply_annotations_to_pdf(folder_path):
+    """Applies annotations to PDF files in the specified folder.
+
+    :param folder_path: The path to the folder containing PDF files and an
+        "annotations.json" file.
+
+    """
     annotation_path = os.path.join(folder_path, "annotations.json")
     with open(annotation_path, "r") as file:
         folder_annotations = json.loads(file.read())
