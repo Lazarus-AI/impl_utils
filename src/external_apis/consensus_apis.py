@@ -1,16 +1,25 @@
-import requests
-import googlemaps
-import json
 import os
+from typing import Any
 
-def ping_gmaps(address: str = None, city: str = None, state: str = None):
+import googlemaps
+
+
+def ping_gmaps(address: str = None, city: str = None, state: str = None) -> Any:
+    """
+    Ping Google Maps API to validate address information.
+
+    :param address: The address for which to fetch information.
+    :param city: The city where the address is located.
+    :param state: The state where the address is located.
+    :return: A tuple containing the main address, city, and state.
+    """
     gmaps = googlemaps.Client(key=os.environ.get("GMAPS_API_KEY"))
     if address and city and state:
         gmaps_addr = gmaps.places_autocomplete_query(f"{address} {city},{state}")
     elif address and city:
         gmaps_addr = gmaps.places_autocomplete_query(f"{address} {city}")
     else:
-        print("Not enough inputs available for Smarty")
+        print("Not enough inputs available for google maps api")
         return None
 
     gmaps_res = gmaps_addr[0]["structured_formatting"]
@@ -20,47 +29,3 @@ def ping_gmaps(address: str = None, city: str = None, state: str = None):
     gmaps_state = gmaps_otherinfo[1]
 
     return (gmaps_address, gmaps_city, gmaps_state)
-
-# def ping_smarty(
-#     address: str = None, city: str = None, state: str = None, zip: str = None
-# ):
-#     SMARTY_ENDPOINT = "https://us-street.api.smartystreets.com/street-address"
-#     params = {
-#         "auth-id": os.environ.get("SMARTY_AUTH_ID"),
-#         "auth-token": os.environ.get("SMARTY_AUTH_TOKEN"),
-#         "license": os.environ.get("SMARTY_LICENSE"),
-#     }
-
-#     if address and city and state:
-#         params.update({"street": address, "city": city, "state": state})
-
-#     elif address and zip:
-#         params.update({"street": address, "zipcode": zip})
-#     else:
-#         print("Not enough inputs available for Smarty")
-#         return None
-
-#     try:
-#         smarty_response = requests.get(
-#             SMARTY_ENDPOINT,
-#             params=params,
-#         )
-#         smarty_res = smarty_response.json()
-#         if not smarty_res:
-#             raise Exception(
-#                 f"Could not get result back from Smarty - Response: {smarty_response.text}"
-#             )
-#         if "errors" in smarty_res:
-#             raise Exception(
-#                 f"Got errors from Smarty - Errors: {json.dumps(smarty_res['errors'])}"
-#             )
-
-#         return smarty_res[0]
-
-#     except Exception as e:
-#         raise Exception(
-#             {"message": f"Smarty Address Lookup Failure: {smarty_res}", "error": str(e)}
-#         )
-
-def ping_npi():
-    pass
