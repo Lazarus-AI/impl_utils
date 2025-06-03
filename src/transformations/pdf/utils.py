@@ -111,6 +111,13 @@ def tidy_pdf(
     tidier = PDFTidy(pdf_path)
     return tidier.tidy(destination_path=destination_path, deskew=deskew, auto_crop=auto_crop)  # type: ignore
 
+def rasterize_pdf(
+    pdf_path: str,
+    destination_path: Optional[str] = None,
+):
+    tidier = PDFTidy(pdf_path)
+    return tidier.tidy(destination_path=destination_path, deskew=False, auto_crop=False)  # type: ignore
+
 
 def draw_bounding_boxes(
     pdf_path: str, bounding_boxes: List[BoundingBox], destination_path: Optional[str] = None
