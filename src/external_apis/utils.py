@@ -1,9 +1,9 @@
 from typing import Any
 
-import requests
+from external_apis.consensus_apis import ping_npi
 
 
-def ping_npi(npi: str) -> Any:
+def validate_npi_using_npi_registry(npi: str) -> Any:
     """
     Ping the NPI Registry to get information for a given NPI number.
 
@@ -13,6 +13,4 @@ def ping_npi(npi: str) -> Any:
     Returns:
     dict: A dictionary containing the response from the NPI Registry.
     """
-    url = f"https://npiregistry.cms.hhs.gov/api/?number={npi}&pretty=&version=2.1"
-    resp = requests.get(url).json()
-    return resp
+    return ping_npi(npi)
