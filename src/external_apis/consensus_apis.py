@@ -3,7 +3,7 @@ from typing import Any
 import requests
 
 
-def ping_npi(npi: str) -> Any:
+def get_npi_registry(npi: str) -> Any:
     """
     Ping the NPI Registry to get information for a given NPI number.
 
