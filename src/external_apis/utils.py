@@ -1,6 +1,6 @@
 from typing import Any
 
-from external_apis.consensus_apis import ping_smarty
+from external_apis.consensus_apis import send_smarty_request
 
 
 def validate_address_using_smarty(
@@ -16,4 +16,4 @@ def validate_address_using_smarty(
     :return: The closest matching address to the information given in the input determined by the Smarty API, or None if inputs are insufficient.
     :raises Exception: If there are errors in the response or if the response is empty.
     """
-    return ping_smarty(address, city, state, zip)
+    return send_smarty_request(address, city, state, zip)

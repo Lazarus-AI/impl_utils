@@ -5,7 +5,9 @@ from typing import Any
 import requests
 
 
-def ping_smarty(address: str = None, city: str = None, state: str = None, zip: str = None) -> Any:
+def send_smarty_request(
+    address: str = None, city: str = None, state: str = None, zip: str = None
+) -> Any:
     """
     Ping the Smarty API to validate address information.
 
