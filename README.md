@@ -31,7 +31,7 @@ pip install -r requirements.txt
 
 #### Additional installs
 
-To use OCR, you'll need poppler installed on your computer.
+To use OCR and some PDF conversions, you'll need poppler installed on your computer.
 
 For a mac:
 ```commandline
