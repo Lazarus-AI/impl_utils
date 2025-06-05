@@ -88,4 +88,4 @@ def get_npi_registry(npi: str) -> Any:
     """
     url = f"https://npiregistry.cms.hhs.gov/api/?number={npi}&pretty=&version=2.1"
     resp = requests.get(url).json()
-    return resp
+    return bool(resp.get("result_count"))
