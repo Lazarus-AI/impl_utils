@@ -5,10 +5,11 @@ import pandas as pd
 from file_system.utils import (
     get_all_files_with_ext,
     get_filename,
+    get_folder,
     is_dir,
     load_json_from_file,
+    mkdir,
 )
-from general.core import jupyter_src_path_fix
 from general.utils import get_data_from_json_map
 
 
@@ -48,26 +49,26 @@ class CSVBuilder:
         self.save_to_csv(file_path)
 
 
-@jupyter_src_path_fix
 def xls_to_csvs_and_concat(
-    file_name: str,
-    input_dir: str = None,
+    input_path: str,
     output_dir: str = None,
-    store_intermediate_files: bool = True,
-):
+    output_as_one_file: bool = False,
+) -> list[str]:
     """
-    Converts an Excel file to a CSV file, concatenating data from all sheets.
+    Convert an Excel file to CSV files and optionally concatenate them.
 
-    :param file_name: The name of the Excel file to convert.
-    :param input_dir: The directory containing the input Excel file. If None, uses the value from the environment variable "WORKING_FOLDER".
-    :param output_dir: The directory where the output CSV file will be saved. If None, uses the value from the environment variable "DOWNLOAD_FOLDER".
-    :param store_intermediate_files: If True, stores intermediate CSV files for each sheet in the output directory.
-    :raises Exception: If there are no common columns across sheets.
+    :param input_path (str): The path to the input Excel file.
+    :param output_dir (str, optional): The directory to save the CSV files. If not provided, the directory of the input file will be used.
+    :param output_as_one_file (bool, optional): If True, all CSVs will be concatenated into a single CSV file. Default is False.
+    :return list[str]: A list of paths to the saved CSV files.
+    :raises Exception: If output_as_one_file = True and there are no common columns across the sheets
     """
-    os.makedirs(output_dir, exist_ok=True)
 
     # Load excel
-    xls = pd.ExcelFile(os.path.join(input_dir, file_name))
+    xls = pd.ExcelFile(input_path)
+    file_name = get_filename(input_path)
+    if not output_dir:
+        output_dir = get_folder(input_path)
 
     # Read all sheets into DataFrames
     dataframes = {
@@ -75,24 +76,25 @@ def xls_to_csvs_and_concat(
         for sheet_name in xls.sheet_names
     }
 
-    # Stores intermediate files if bool is set to True
-    if store_intermediate_files:
+    # Concatenates files if bool is True, else just transforms each individual spreadsheet into a csv
+    if not output_as_one_file:
+        mkdir(output_dir)
+        final_spreadsheet_list: list[str] = []
         for sheet_name, df in dataframes.items():
             output_path = os.path.join(output_dir, f"{file_name}_{sheet_name}.csv")
             df.to_csv(output_path, index=False)
+            final_spreadsheet_list.append(output_path)
+        return final_spreadsheet_list
+    else:
+        # Find shared columns across all sheets
+        common_columns_set = set.intersection(*(set(df.columns) for df in dataframes.values()))
+        if not common_columns_set:
+            raise ValueError("No common columns across sheets")
+        common_columns = list(common_columns_set)  # preserve order
+        # Subset and concatenate rows by shared columns
+        subset_dfs = [df[common_columns] for df in dataframes.values()]
+        combined_df = pd.concat(subset_dfs, ignore_index=True)
 
-    # Find shared columns across all sheets
-    common_columns_set = set.intersection(*(set(df.columns) for df in dataframes.values()))
-    if not common_columns_set:
-        raise ValueError("No common columns across sheets!")
-
-    common_columns = list(common_columns_set)  # preserve order
-
-    # Subset and concatenate rows by shared columns
-    subset_dfs = [df[common_columns] for df in dataframes.values()]
-    combined_df = pd.concat(subset_dfs, ignore_index=True)
-
-    # Write final output
-    combined_df.to_csv(os.path.join(output_dir, f"{file_name}_combined.csv"), index=False)
-
-    return
+        mkdir(output_dir)
+        combined_df.to_csv(os.path.join(output_dir, f"{file_name}_combined.csv"), index=False)
+        return [os.path.join(output_dir, f"{file_name}_combined.csv")]

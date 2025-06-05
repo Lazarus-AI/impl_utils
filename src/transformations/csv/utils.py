@@ -1,3 +1,5 @@
+from typing import cast
+
 from transformations.csv.builder import CSVBuilder, xls_to_csvs_and_concat
 
 
@@ -13,19 +15,18 @@ def build_csv_from_json_files(file_path, columns, destination_path=None):
     return destination_path
 
 
-def concatenate_excel_to_csvs(
-    file_name: str,
-    input_dir: str = None,
+def excel_to_csv(
+    input_path: str,
     output_dir: str = None,
-    store_intermediate_files: bool = True,
-):
+    output_as_one_file: bool = False,
+) -> list[str]:
     """
-    Converts an Excel file to a CSV file, concatenating data from all sheets.
+    Convert an Excel file to CSV files and optionally concatenate them.
 
-    :param file_name: The name of the Excel file to convert.
-    :param input_dir: The directory containing the input Excel file. If None, uses the value from the environment variable "WORKING_FOLDER".
-    :param output_dir: The directory where the output CSV file will be saved. If None, uses the value from the environment variable "DOWNLOAD_FOLDER".
-    :param store_intermediate_files: If True, stores intermediate CSV files for each sheet in the output directory.
-    :raises Exception: If there are no common columns across sheets.
+    :param input_path (str): The path to the input Excel file.
+    :param output_dir (str, optional): The directory to save the CSV files. If not provided, the directory of the input file will be used.
+    :param output_as_one_file (bool, optional): If True, all CSVs will be concatenated into a single CSV file. Default is False.
+    :return list[str]: A list of paths to the saved CSV files.
+    :raises Exception: If output_as_one_file = True and there are no common columns across the sheets
     """
-    xls_to_csvs_and_concat(file_name, input_dir, output_dir, store_intermediate_files)
+    return cast(list[str], xls_to_csvs_and_concat(input_path, output_dir, output_as_one_file))
