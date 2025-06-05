@@ -1,6 +1,7 @@
 import json
 import os
 from typing import Any
+
 import googlemaps
 import requests
 
@@ -52,7 +53,6 @@ def send_smarty_request(
         )
 
 
-
 def ping_gmaps(address: str = None, city: str = None, state: str = None) -> Any:
     """
     Ping Google Maps API to validate address information.
@@ -63,6 +63,13 @@ def ping_gmaps(address: str = None, city: str = None, state: str = None) -> Any:
     :return: A tuple containing the main address, city, and state.
     """
     gmaps = googlemaps.Client(key=os.environ.get("GMAPS_API_KEY"))
+    if address and city and state:
+        gmaps_addr = gmaps.places_autocomplete_query(f"{address} {city},{state}")
+    elif address and city:
+        gmaps_addr = gmaps.places_autocomplete_query(f"{address} {city}")
+    else:
+        return None
+
     gmaps_res = gmaps_addr[0]["structured_formatting"]
     gmaps_address = gmaps_res["main_text"]
     gmaps_otherinfo = gmaps_res["secondary_text"].split(", ")
@@ -70,3 +77,15 @@ def ping_gmaps(address: str = None, city: str = None, state: str = None) -> Any:
     gmaps_state = gmaps_otherinfo[1]
 
     return (gmaps_address, gmaps_city, gmaps_state)
+
+
+def get_npi_registry(npi: str) -> Any:
+    """
+    Ping the NPI Registry to get information for a given NPI number.
+
+    :param npi: The NPI number to query.
+    :return: A dictionary containing the response from the NPI Registry.
+    """
+    url = f"https://npiregistry.cms.hhs.gov/api/?number={npi}&pretty=&version=2.1"
+    resp = requests.get(url).json()
+    return resp

@@ -1,6 +1,6 @@
 from typing import Any
 
-from external_apis.consensus_apis import send_smarty_request, ping_gmaps
+from external_apis.consensus_apis import send_smarty_request, ping_gmaps, get_npi_registry
 
 
 def validate_address_using_smarty(
@@ -29,3 +29,13 @@ def validate_address_using_gmaps(address: str = None, city: str = None, state: s
     :return: A tuple containing the main address, city, and state.
     """
     return ping_gmaps(address, city, state)
+
+  
+def validate_npi(npi: str) -> Any:
+    """
+    Ping the NPI Registry to get information for a given NPI number.
+
+    :param npi: The NPI number to query.
+    :return: A dictionary containing the response from the NPI Registry.
+    """
+    return get_npi_registry(npi)
