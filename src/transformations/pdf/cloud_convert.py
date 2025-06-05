@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 
@@ -5,12 +6,15 @@ import cloudconvert
 import requests
 
 from config import CLOUD_CONVERT_API_KEY
+from general.core import log_timing
 
+logger = logging.getLogger(__name__)
 
 # This is the cloud convert method for converting a director to pdfs
 # You'll need to set the API key in the .env file before using.
 # If you don't want the file to leave your system consider using
 # the libre office converter
+@log_timing
 def convert_directory_to_pdfs(source_dir, dest_dir):
     """
     Converts all files in the source directory to PDFs using the CloudConvert API.
@@ -49,14 +53,14 @@ def convert_directory_to_pdfs(source_dir, dest_dir):
             if input_format == "pdf":
                 try:
                     shutil.copy2(input_file_path, dest_file_path)
-                    print(f"Copied PDF {input_file_path} to {dest_file_path}")
+                    logging.info(f"Copied PDF {input_file_path} to {dest_file_path}")
                 except Exception as e:
-                    print(f"Failed to copy PDF {input_file_path}: {e}")
+                    logging.info(f"Failed to copy PDF {input_file_path}: {e}")
                 continue
 
             # Skip unsupported file formats
             if input_format not in supported_formats:
-                print(f"Skipping unsupported file format: {input_file_path}")
+                logging.info(f"Skipping unsupported file format: {input_file_path}")
                 continue
 
             try:
@@ -86,7 +90,7 @@ def convert_directory_to_pdfs(source_dir, dest_dir):
                     None,
                 )
                 if not import_task:
-                    print(f"Failed to find import task for {input_file_path}")
+                    logging.info(f"Failed to find import task for {input_file_path}")
                     continue
 
                 # Upload the file
@@ -111,7 +115,7 @@ def convert_directory_to_pdfs(source_dir, dest_dir):
                     None,
                 )
                 if not export_task:
-                    print(f"Failed to find export task for {input_file_path}")
+                    logging.info(f"Failed to find export task for {input_file_path}")
                     continue
 
                 # Get the file URL from the export task
@@ -123,7 +127,7 @@ def convert_directory_to_pdfs(source_dir, dest_dir):
                     with open(dest_file_path, "wb") as f:
                         for chunk in r.iter_content(chunk_size=8192):
                             f.write(chunk)
-                print(f"Converted {input_file_path} to {dest_file_path}")
+                logging.info(f"Converted {input_file_path} to {dest_file_path}")
             except Exception as e:
-                print(f"Failed to convert {input_file_path}: {e}")
-    print("Conversion process completed.")
+                logging.info(f"Failed to convert {input_file_path}: {e}")
+    logging.info("Conversion process completed.")

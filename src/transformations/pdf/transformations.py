@@ -1,75 +1,76 @@
 import math
-import os
-import shutil
-from typing import Optional, Tuple, Union
-from uuid import uuid4
+import tempfile
+from typing import List, Optional, Tuple, Union
 
 import cv2
 import numpy as np
-import pymupdf
 from deskew import determine_skew
+from pdf2image import convert_from_path
 from PIL import Image
 
-from file_system.utils import append_to_filename, get_filename, in_tmp, mkdir
+from file_system.utils import append_to_filename
+from general.core import log_timing
 
 
 class PDFTidy:
+    """
+    A class to tidy up PDF files by converting them to images, deskewing, cropping, and then recompiling them into a PDF.
+    """
+
     def __init__(self, pdf_path):
+        """
+        Initializes the PDFTidy object with the path to a PDF file.
+        :param pdf_path: The path to the PDF file.
+        """
         self.pdf_path = pdf_path
         self.image_files = []
-        id = uuid4()
-        self.tmp_dir = in_tmp(f"images_{id}")
-        mkdir(self.tmp_dir)
 
+    @log_timing
     def tidy(
         self, destination_path: Optional[str] = None, deskew: bool = True, auto_crop: bool = True
     ) -> str:
+        """
+        Tidies the PDF file by converting it to images, optionally deskewing and cropping, and then recompiling them into a PDF.
+        :param destination_path: The destination path for the tidied PDF file. If None, the original filename with "_tidied" appended is used.
+        :param deskew: If True, the images will be deskewed.
+        :param auto_crop: If True, the images will be automatically cropped.
+        :return: The path to the tidied PDF file.
+        """
         if destination_path is None:
             destination_path = append_to_filename(self.pdf_path, "_tidied")
 
-        self.convert_to_images()
-        for image_file in self.image_files:
-            if deskew:
-                self.deskew(image_file)
+        with tempfile.TemporaryDirectory() as path:
+            image_files = convert_from_path(self.pdf_path, output_folder=path)
+            for image_file in image_files:
+                if deskew:
+                    self.deskew(image_file)
 
-            if auto_crop:
-                self.auto_crop(image_file)
+                if auto_crop:
+                    self.auto_crop(image_file)
 
-        self.compile_images_to_pdf(destination_path)
-        self.clean()
+            compile_images_to_pdf(image_files, destination_path)
+
         return destination_path
 
-    def get_image_name(self, postfix=""):
-        filename_without_extension = get_filename(self.pdf_path)
-        return f"{filename_without_extension}_{postfix}.png"
-
-    def convert_to_images(self):
-        pdf_document = pymupdf.open(self.pdf_path)
-        if len(pdf_document) == 0:
-            raise Exception("Cannot read PDF")
-
-        image_count = 0
-        for page in pdf_document:
-            image = page.get_pixmap(dpi=200)  # specify dpi here max 200
-            image_name = self.get_image_name(str(image_count))
-            image_path = os.path.join(self.tmp_dir, image_name)
-            image.save(image_path)
-            self.image_files.append(image_path)
-            image_count = image_count + 1
-        pdf_document.close()
-        return self.image_files
-
-    def deskew(self, image_path):
-        image = cv2.imread(image_path)
+    def deskew(self, image: Image):
+        """
+        Deskews the image by correcting its orientation.
+        :param image: The PIL Image to deskew.
+        """
+        image = cv2.imread(image)
         if image is None:
             raise Exception("Error: Unable to read the image. Check filepath or filename")
         grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         angle = determine_skew(grayscale)
         rotated = self.rotate(image, angle, (0, 0, 0))
-        cv2.imwrite(image_path, rotated)
+        cv2.imwrite(image, rotated)
 
-    def auto_crop(self, image_path):
-        img = cv2.imread(image_path)
+    def auto_crop(self, image: Image):
+        """
+        Automatically crops the image to remove unnecessary whitespace.
+        :param image: The PIL Image to crop.
+        """
+        img = cv2.imread(image)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         blurred = cv2.GaussianBlur(gray, (5, 5), 0)
         _, thresh = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -77,11 +78,18 @@ class PDFTidy:
         max_contour = max(contours, key=cv2.contourArea)
         x, y, w, h = cv2.boundingRect(max_contour)
         cropped_image = img[y : y + h, x : x + w]
-        cv2.imwrite(image_path, cropped_image)
+        cv2.imwrite(image, cropped_image)
 
     def rotate(
         self, image: np.ndarray, angle: float, background: Union[int, Tuple[int, int, int]]
     ) -> np.ndarray:
+        """
+        Rotates the image by the specified angle.
+        :param image: The numpy array representing the image.
+        :param angle: The angle to rotate the image by.
+        :param background: The background color to use for the rotated image.
+        :return: The rotated numpy array image.
+        """
         old_width, old_height = image.shape[:2]
         angle_radian = math.radians(angle)
         width = abs(np.sin(angle_radian) * old_height) + abs(np.cos(angle_radian) * old_width)
@@ -97,17 +105,20 @@ class PDFTidy:
             borderValue=background,
         )
 
-    def compile_images_to_pdf(self, destination_path):
-        images = []
-        for image_file in self.image_files:
-            image = Image.open(image_file)
-            image.convert("RGB")
-            images.append(image)
 
-        image = images.pop(0)
-        image.save(destination_path, save_all=True, append_images=images)
-        return destination_path
+def compile_images_to_pdf(image_files: List[Image], destination_path: str):
+    """
+    Compiles a list of images into a PDF file.
+    :param image_files: The list of PIL Image objects to compile.
+    :param destination_path: The destination path for the compiled PDF file.
+    :return: The path to the compiled PDF file.
+    """
+    images = []
+    for image_file in image_files:
+        image = Image.open(image_file)
+        image.convert("RGB")
+        images.append(image)
 
-    def clean(self):
-        if os.path.exists(self.tmp_dir):
-            shutil.rmtree(self.tmp_dir)
+    image = images.pop(0)
+    image.save(destination_path, save_all=True, append_images=images)
+    return destination_path
