@@ -16,7 +16,6 @@ def log_timing(func: Callable) -> Callable:
     :returns: The decorated function.
 
     """
-
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         start = time.time()

@@ -1,4 +1,5 @@
 import os
+from transformations.csv.builder import CSVBuilder, xls_to_csvs_and_concat
 
 import pandas as pd
 
@@ -62,4 +63,19 @@ def xls_to_csvs_and_concat(input_path, output_path):
     # Write final output
     combined_df.to_csv(output_path, index=False)
 
-    return output_path
+    
+def excel_to_csv(
+    input_path: str,
+    output_dir: str = None,
+    output_as_one_file: bool = False,
+) -> list[str]:
+    """
+    Convert an Excel file to CSV files and optionally concatenate them.
+
+    :param input_path (str): The path to the input Excel file.
+    :param output_dir (str, optional): The directory to save the CSV files. If not provided, the directory of the input file will be used.
+    :param output_as_one_file (bool, optional): If True, all CSVs will be concatenated into a single CSV file. Default is False.
+    :return list[str]: A list of paths to the saved CSV files.
+    :raises Exception: If output_as_one_file = True and there are no common columns across the sheets
+    """
+    return xls_to_csvs_and_concat(input_path, output_dir, output_as_one_file)  # type: ignore
