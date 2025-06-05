@@ -1,5 +1,3 @@
-from typing import cast
-
 from transformations.csv.builder import CSVBuilder, xls_to_csvs_and_concat
 
 
@@ -29,4 +27,4 @@ def excel_to_csv(
     :return list[str]: A list of paths to the saved CSV files.
     :raises Exception: If output_as_one_file = True and there are no common columns across the sheets
     """
-    return cast(list[str], xls_to_csvs_and_concat(input_path, output_dir, output_as_one_file))
+    return xls_to_csvs_and_concat(input_path, output_dir, output_as_one_file)  # type: ignore
