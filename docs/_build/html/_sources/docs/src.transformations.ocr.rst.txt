@@ -1,0 +1,29 @@
+src.transformations.ocr package
+===============================
+
+Submodules
+----------
+
+src.transformations.ocr.easyocr module
+--------------------------------------
+
+.. automodule:: src.transformations.ocr.easyocr
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.transformations.ocr.utils module
+------------------------------------
+
+.. automodule:: src.transformations.ocr.utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: src.transformations.ocr
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,53 @@
+src.transformations.pdf package
+===============================
+
+Submodules
+----------
+
+src.transformations.pdf.bounding\_boxes module
+----------------------------------------------
+
+.. automodule:: src.transformations.pdf.bounding_boxes
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.transformations.pdf.cloud\_convert module
+---------------------------------------------
+
+.. automodule:: src.transformations.pdf.cloud_convert
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.transformations.pdf.libre\_office module
+--------------------------------------------
+
+.. automodule:: src.transformations.pdf.libre_office
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.transformations.pdf.transformations module
+----------------------------------------------
+
+.. automodule:: src.transformations.pdf.transformations
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.transformations.pdf.utils module
+------------------------------------
+
+.. automodule:: src.transformations.pdf.utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: src.transformations.pdf
+   :members:
+   :show-inheritance:
+   :undoc-members:

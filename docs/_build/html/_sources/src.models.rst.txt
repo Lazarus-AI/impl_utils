@@ -1,0 +1,45 @@
+src.models package
+==================
+
+Submodules
+----------
+
+src.models.apis module
+----------------------
+
+.. automodule:: src.models.apis
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.models.batching module
+--------------------------
+
+.. automodule:: src.models.batching
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.models.constants module
+---------------------------
+
+.. automodule:: src.models.constants
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.models.utils module
+-----------------------
+
+.. automodule:: src.models.utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: src.models
+   :members:
+   :show-inheritance:
+   :undoc-members:

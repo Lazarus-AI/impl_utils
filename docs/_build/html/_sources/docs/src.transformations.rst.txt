@@ -1,0 +1,20 @@
+src.transformations package
+===========================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   src.transformations.csv
+   src.transformations.ocr
+   src.transformations.pdf
+
+Module contents
+---------------
+
+.. automodule:: src.transformations
+   :members:
+   :show-inheritance:
+   :undoc-members:

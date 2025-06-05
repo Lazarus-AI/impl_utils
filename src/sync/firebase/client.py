@@ -11,13 +11,15 @@ cred = credentials.Certificate(FIREBASE_KEY)
 
 logger = logging.getLogger(__name__)
 
-class FirebaseStorageManager:
-    def __init__(self, storage_url):
-        """
-        Initializes a new instance of the FirebaseStorageManager class.
 
-        Args:
-        storage_url (str): The URL of the Firebase storage bucket.
+class FirebaseStorageManager:
+    """A class for managing Firebase storage operations."""
+
+    def __init__(self, storage_url):
+        """Initializes a new instance of the FirebaseStorageManager class.
+
+        :param storage_url: (str) The URL of the Firebase storage bucket.
+
         """
 
         try:
@@ -29,13 +31,36 @@ class FirebaseStorageManager:
         self.bucket = storage.bucket(name=self.storage_url)
 
     def is_folder(self, blob):
+        """Checks if the blob is a folder.
+
+        :param blob: (google.cloud.storage.blob.Blob) The blob to check.
+
+        :returns: (bool) True if the blob is a folder, False otherwise.
+
+        """
         return blob.name.endswith("/")
 
     def exists(self, data_path):
+        """Checks if a file or folder exists in the specified path.
+
+        :param data_path: (str) The path to check.
+
+        :returns: (bool) True if the file or folder exists, False otherwise.
+
+        """
         blob = self.bucket.blob(data_path)
         return blob.exists()
 
     def list_all_files_in_path(self, data_path, recursive=False):
+        """Lists all files in the specified path.
+
+        :param data_path: (str) The path to list files from.
+        :param recursive: (bool) If True, include subdirectories; otherwise, only list
+            files in the specified directory.
+
+        :returns: (list) A list of file paths.
+
+        """
         blobs = self.bucket.list_blobs()
         file_paths = []
         for blob in blobs:
@@ -48,6 +73,15 @@ class FirebaseStorageManager:
         return list(set(file_paths))
 
     def download_all_files_from_path(self, data_path, local_folder):
+        """Downloads all files from the specified path to the local folder.
+
+        :param data_path: (str) The path to download files from.
+        :param local_folder: (str) The local folder to download files to.
+
+        :returns: (list) A list of tuples containing the original file path and the
+            local file path.
+
+        """
         results = []
         if not os.path.exists(local_folder):
             os.makedirs(local_folder)
@@ -62,6 +96,15 @@ class FirebaseStorageManager:
         return results
 
     def upload_file_to_path(self, data_path, local_file_path):
+        """Uploads a file to the specified path.
+
+        :param data_path: (str) The path to upload the file to.
+        :param local_file_path: (str) The local file path to upload.
+
+        :returns: (tuple) A tuple containing the input file path and the destination
+            blob name.
+
+        """
         relative_dir_path = local_file_path.replace(WORKING_FOLDER, "").strip("/")
         upload_path = str(os.path.join(data_path, relative_dir_path))
         blob = self.bucket.blob(upload_path)
@@ -69,6 +112,17 @@ class FirebaseStorageManager:
         return local_file_path, blob.name
 
     def upload_folder_to_path(self, data_path, local_folder, recursive=False):
+        """Uploads a folder to the specified path.
+
+        :param data_path: (str) The path to upload the folder to.
+        :param local_folder: (str) The local folder to upload.
+        :param recursive: (bool) If True, upload subdirectories; otherwise, only upload
+            files in the specified directory.
+
+        :returns: (list) A list of tuples containing the input file path and the
+            destination blob name.
+
+        """
         results = []
         if not os.path.exists(local_folder):
             return results
@@ -84,6 +138,13 @@ class FirebaseStorageManager:
         return results
 
     def delete_files_in_path(self, data_path):
+        """Deletes all files in the specified path.
+
+        :param data_path: (str) The path to delete files from.
+
+        :returns: (list) A list of deleted file names.
+
+        """
         results = []
         blobs = self.bucket.list_blobs()
         for blob in blobs:
@@ -94,6 +155,14 @@ class FirebaseStorageManager:
         return results
 
     def get_presigned_url(self, data_path, expiration=3600):
+        """Generates a presigned URL for accessing a file.
+
+        :param data_path: (str) The path to the file.
+        :param expiration: (int) The expiration time in seconds for the presigned URL.
+
+        :returns: (str) The presigned URL, or None if the file does not exist.
+
+        """
         if data_path.endswith("/"):
             return None
 
@@ -108,17 +177,15 @@ class FirebaseStorageManager:
 
     # Read content of a file from a presigned URL
     def read_file_from_presigned_url(self, presigned_url):
-        """
-        Reads content of a file from a presigned URL.
+        """Reads content of a file from a presigned URL.
 
-        Args:
-        presigned_url (str): The presigned URL of the file to be read.
+        :param presigned_url: (str) The presigned URL of the file to be read.
 
-        Returns:
-        str: The content of the file, or an error message.
+        :returns: str: The content of the file, or an error message.
 
-        Raises:
-        requests.exceptions.RequestException: If an error occurs during the HTTP request.
+        :raises requests.exceptions.RequestException: If an error occurs during the HTTP
+            request.
+
         """
         try:
             response = requests.get(presigned_url)
@@ -128,6 +195,15 @@ class FirebaseStorageManager:
             return {"error": str(e)}, 500
 
     def copy_files(self, data_path, destination_folder):
+        """Copies files from the specified path to a destination folder.
+
+        :param data_path: (str) The path to copy files from.
+        :param destination_folder: (str) The destination folder to copy files to.
+
+        :returns: (list) A list of tuples containing the source file name and the
+            destination file name.
+
+        """
         results = []
         destination_bucket = storage.bucket(name=self.storage_url)
 
@@ -145,16 +221,9 @@ class FirebaseStorageManager:
 
         return results
 
-        return {"message": "All files copied successfully"}
-
     # Close the Firebase connection
     def close_connection(self):
-        """
-        Closes the Firebase connection.
-
-        Returns:
-        None
-        """
+        """Closes the Firebase connection."""
         try:
             app = get_app()
             delete_app(app)

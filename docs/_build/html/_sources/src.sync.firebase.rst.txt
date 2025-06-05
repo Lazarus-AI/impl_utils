@@ -1,0 +1,29 @@
+src.sync.firebase package
+=========================
+
+Submodules
+----------
+
+src.sync.firebase.client module
+-------------------------------
+
+.. automodule:: src.sync.firebase.client
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.sync.firebase.utils module
+------------------------------
+
+.. automodule:: src.sync.firebase.utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: src.sync.firebase
+   :members:
+   :show-inheritance:
+   :undoc-members:

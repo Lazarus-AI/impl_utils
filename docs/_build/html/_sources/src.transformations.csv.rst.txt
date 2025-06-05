@@ -1,0 +1,29 @@
+src.transformations.csv package
+===============================
+
+Submodules
+----------
+
+src.transformations.csv.builder module
+--------------------------------------
+
+.. automodule:: src.transformations.csv.builder
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.transformations.csv.utils module
+------------------------------------
+
+.. automodule:: src.transformations.csv.utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: src.transformations.csv
+   :members:
+   :show-inheritance:
+   :undoc-members:

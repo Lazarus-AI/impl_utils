@@ -1,0 +1,18 @@
+src.sync package
+================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   src.sync.firebase
+
+Module contents
+---------------
+
+.. automodule:: src.sync
+   :members:
+   :show-inheritance:
+   :undoc-members:

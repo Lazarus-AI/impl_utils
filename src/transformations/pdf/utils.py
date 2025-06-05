@@ -18,6 +18,14 @@ logger = logging.getLogger(__name__)
 def convert_to_pdf(
     path: Union[str, List], output_dir: Optional[str] = None, recursive=False
 ) -> List[str]:
+    """
+    Converts a file or directory of files to PDF.
+
+    :param path: The file or directory path to convert.
+    :param output_dir: The output directory for the converted PDF files. If None, uses the same directory as the input files.
+    :param recursive: If True, recursively convert files in subdirectories.
+    :return: A list of paths to the converted PDF files.
+    """
     results = []
     if isinstance(path, list):
         for path_item in path:
@@ -40,6 +48,13 @@ def convert_to_pdf(
 
 
 def merge_pdfs(pdf_paths: List, output_path: Optional[str] = None) -> str:
+    """
+    Merges multiple PDF files into a single PDF file.
+
+    :param pdf_paths: A list of paths to the PDF files to merge.
+    :param output_path: The output path for the merged PDF file. If None, uses a default name.
+    :return: The path to the merged PDF file.
+    """
     if not output_path:
         output_path = append_to_filename(pdf_paths[0], "_merged_file")
     merger = PdfMerger()
@@ -59,6 +74,15 @@ def merge_pdfs(pdf_paths: List, output_path: Optional[str] = None) -> str:
 def trim_pdf(
     input_path: str, start_page: int, end_page: int, output_path: Optional[str] = None
 ) -> str:
+    """
+    Trims a PDF file to the specified start and end pages.
+
+    :param input_path: The path to the input PDF file.
+    :param start_page: The starting page number (1-based).
+    :param end_page: The ending page number (1-based).
+    :param output_path: The output path for the trimmed PDF file. If None, uses a default name.
+    :return: The path to the trimmed PDF file.
+    """
     if output_path is None:
         output_path = append_to_filename(input_path, f"_{start_page}-{end_page}")
 
@@ -108,6 +132,15 @@ def tidy_pdf(
     deskew: bool = True,
     auto_crop: bool = True,
 ) -> str:
+    """
+    Tidies a PDF file by deskewing and/or auto-cropping.
+
+    :param pdf_path: The path to the input PDF file.
+    :param destination_path: The output path for the tidied PDF file. If None, uses a default name.
+    :param deskew: If True, deskews the PDF.
+    :param auto_crop: If True, auto-crops the PDF.
+    :return: The path to the tidied PDF file.
+    """
     tidier = PDFTidy(pdf_path)
     return tidier.tidy(destination_path=destination_path, deskew=deskew, auto_crop=auto_crop)  # type: ignore
 
@@ -115,6 +148,12 @@ def rasterize_pdf(
     pdf_path: str,
     destination_path: Optional[str] = None,
 ):
+    """
+    Rasterizes a PDF file to images.
+
+    :param pdf_path: The path to the input PDF file.
+    :param destination_path: The output path for the rasterized images. If None, uses a default name.
+    """
     tidier = PDFTidy(pdf_path)
     return tidier.tidy(destination_path=destination_path, deskew=False, auto_crop=False)  # type: ignore
 
@@ -122,6 +161,14 @@ def rasterize_pdf(
 def draw_bounding_boxes(
     pdf_path: str, bounding_boxes: List[BoundingBox], destination_path: Optional[str] = None
 ) -> Optional[str]:
+    """
+    Draws bounding boxes on a PDF file.
+
+    :param pdf_path: The path to the input PDF file.
+    :param bounding_boxes: A list of bounding boxes to draw.
+    :param destination_path: The output path for the PDF with bounding boxes. If None, uses a default name.
+    :return: The path to the PDF with bounding boxes, or None if no bounding boxes are provided.
+    """
     if not bounding_boxes:
         return None
 
@@ -143,6 +190,15 @@ def convert_pdf_to_images(
     end_page: Optional[int] = None,
     output_folder: Optional[str] = None,
 ) -> str:
+    """
+    Converts a PDF file to images.
+
+    :param pdf_path: The path to the input PDF file.
+    :param start_page: The starting page number (1-based) to convert. If None, converts all pages.
+    :param end_page: The ending page number (1-based) to convert. If None, converts all pages.
+    :param output_folder: The output folder for the images. If None, uses a default name.
+    :return: The path to the output folder containing the images.
+    """
     if not output_folder:
         filename = get_filename(pdf_path)
         folder = get_folder(pdf_path)
@@ -160,3 +216,4 @@ def convert_pdf_to_images(
         output_file="page_",
     )
     return output_folder
+

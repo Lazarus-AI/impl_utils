@@ -1,0 +1,21 @@
+src.file\_system package
+========================
+
+Submodules
+----------
+
+src.file\_system.utils module
+-----------------------------
+
+.. automodule:: src.file_system.utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: src.file_system
+   :members:
+   :show-inheritance:
+   :undoc-members:

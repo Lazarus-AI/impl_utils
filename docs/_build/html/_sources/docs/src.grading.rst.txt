@@ -1,0 +1,29 @@
+src.grading package
+===================
+
+Submodules
+----------
+
+src.grading.pdf\_highlighter module
+-----------------------------------
+
+.. automodule:: src.grading.pdf_highlighter
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+src.grading.utils module
+------------------------
+
+.. automodule:: src.grading.utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: src.grading
+   :members:
+   :show-inheritance:
+   :undoc-members:
