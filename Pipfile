@@ -153,6 +153,7 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 extract-msg = "*"
 xhtml2pdf = "*"
+pytest = "*"
 
 [dev-packages]
 
