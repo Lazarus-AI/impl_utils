@@ -147,9 +147,10 @@ zstandard = "==0.23.0"
 pdf2image= "==1.17.0"
 openpyxl= "==3.1.2"
 googlemaps= "==4.10.0"
-fpdf = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
+extract-msg = "*"
+xhtml2pdf = "*"
 
 [dev-packages]
 
