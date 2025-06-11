@@ -16,9 +16,12 @@ Then edit the `.env` and set up the appropriate secrets.
 
 The `WORKING_FOLDER` is where you are wanting to put the files you intend to edit and be actively working on.
 The `DOWNLOAD_FOLDER` is where you want to store files that you've downloaded from external services like firebase. There's no rule that this couldn't also be your working folder or a subfolder inside of it.
-The ``
 
 If you have keys that you want to use, put them in the `.secrets` folder in the root. This folder will not be committed to github should you update the code.
+
+### Docs
+
+You can read the documentation [here](docs/_build/index.html)
 
 ### Virtual Environment
 
@@ -153,8 +156,10 @@ file_path = in_working('sub_folder/file.pdf')
 
 Honestly, we're not really using this folder.
 
-### Temp folder
+### Updating the docs
 
-`TEMP_FOLDER` in the `.env` folder represents a folder where we can put temporary files. A few of the transformation functions need to put a file somewhere while they do their work.
-
-These files would clutter up the working folder before producing a final result.
+```commandline
+cd docs
+sphinx-apidoc -o . ../src
+make html
+```

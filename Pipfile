@@ -107,7 +107,6 @@ pycparser = "==2.22"
 pydot = "==4.0.0"
 pygments = "==2.19.1"
 pyjwt = "==2.10.1"
-pymupdf = "==1.25.4"
 pyparsing = "==3.2.1"
 pypdf2 = "==3.0.1"
 pyproject-hooks = "==1.2.0"
@@ -150,6 +149,10 @@ openpyxl= "==3.1.2"
 googlemaps= "==4.10.0"
 fpdf= "==1.7.2"
 msal= "==1.32.3"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+extract-msg = "*"
+xhtml2pdf = "*"
 
 [dev-packages]
 

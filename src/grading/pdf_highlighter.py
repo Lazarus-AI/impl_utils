@@ -12,18 +12,17 @@ from transformations.pdf.utils import get_number_of_pages
 
 
 class Box:
-    """
-    Represents a rectangular box with coordinates and color.
-    """
+    """Represents a rectangular box with coordinates and color."""
 
     def __init__(self, left, top, bottom=None, right=None, color="red"):
-        """
-        Initializes the Box with left, top, bottom, right, and color.
+        """Initializes the Box with left, top, bottom, right, and color.
+
         :param left: The left coordinate of the box.
         :param top: The top coordinate of the box.
         :param bottom: The bottom coordinate of the box.
         :param right: The right coordinate of the box.
         :param color: The color of the box.
+
         """
         self.left = left
         self.top = top
@@ -32,18 +31,20 @@ class Box:
         self.right = right
 
     def add_lower_right_corner(self, x, y):
-        """
-        Adds the lower right corner to the box.
+        """Adds the lower right corner to the box.
+
         :param x: The x-coordinate of the lower right corner.
         :param y: The y-coordinate of the lower right corner.
+
         """
         self.bottom = y
         self.right = x
 
     def make_svg_string(self):
-        """
-        Generates an SVG string representation of the box.
-        :return: The SVG string.
+        """Generates an SVG string representation of the box.
+
+        :returns: The SVG string.
+
         """
         # randomly assigning id with uuid
         return (
@@ -55,10 +56,12 @@ class Box:
 
     @staticmethod
     def get_coords_from_svg(svg):
-        """
-        Extracts coordinates from an SVG string and returns them as a list of dictionaries.
+        """Extracts coordinates from an SVG string and returns them as a list of dictionaries.
+
         :param svg: The SVG string.
-        :return: A list of dictionaries with box coordinates.
+
+        :returns: A list of dictionaries with box coordinates.
+
         """
         # first break into boxes, then convert each box into a dict for saving
         elements = re.split("[</>]+", svg)[1:-1]  # box svg strings
@@ -76,14 +79,13 @@ class Box:
 
 
 class AnnotationJob:
-    """
-    Handles the annotation of PDF files.
-    """
+    """Handles the annotation of PDF files."""
 
     def __init__(self, pdf_folder):
-        """
-        Initializes the AnnotationJob with a folder containing PDF files.
+        """Initializes the AnnotationJob with a folder containing PDF files.
+
         :param pdf_folder: The path to the folder containing PDF files.
+
         """
         self.pdf_folder = pdf_folder
         self.pdf_files = get_all_files_with_ext(self.pdf_folder, "pdf")
@@ -104,9 +106,7 @@ class AnnotationJob:
         self.build_ui()
 
     def build_ui(self):
-        """
-        Builds the user interface using NiceGUI components.
-        """
+        """Builds the user interface using NiceGUI components."""
         with ui.row().classes("w-full"):
             ui.button("<", color="grey").on_click(self.previous_pdf)
             ui.label().classes("text-4xl font-extrabold").bind_text_from(self, "pdf_index_label")
@@ -138,32 +138,33 @@ class AnnotationJob:
 
     @property
     def page_label(self):
-        """
-        Returns the current page number and total number of pages.
-        :return: The page label string.
+        """Returns the current page number and total number of pages.
+
+        :returns: The page label string.
+
         """
         return f"Page Number: {self.current_page + 1} of {self.page_count}"
 
     @property
     def filename_label(self):
-        """
-        Returns the current PDF filename.
-        :return: The filename label string.
+        """Returns the current PDF filename.
+
+        :returns: The filename label string.
+
         """
         return f"{self.current_pdf_filename}.pdf"
 
     @property
     def pdf_index_label(self):
-        """
-        Returns the current PDF index and total number of PDF files.
-        :return: The PDF index label string.
+        """Returns the current PDF index and total number of PDF files.
+
+        :returns: The PDF index label string.
+
         """
         return f"{self.current_pdf_index+1} of {len(self.pdf_files)}"
 
     def load_annotations(self):
-        """
-        Loads annotations from a JSON file.
-        """
+        """Loads annotations from a JSON file."""
         self.annotations = {}
         if file_exists(self.annotation_file):
             with open(self.annotation_file) as file:
@@ -187,9 +188,7 @@ class AnnotationJob:
                     self.svg_strings[pdf_filename][page_number] = box.make_svg_string()
 
     def save_annotations(self):
-        """
-        Saves annotations to a JSON file.
-        """
+        """Saves annotations to a JSON file."""
         ui.notify("Saving Annotations")
         self.dump_svg()
         for pdf_filename, page_dict in self.svg_strings.items():
@@ -201,24 +200,18 @@ class AnnotationJob:
             file.write(json.dumps(self.annotations, indent=2))
 
     def load_pdf(self):
-        """
-        Loads the current PDF file.
-        """
+        """Loads the current PDF file."""
         self.current_pdf_filename = get_filename(self.pdf_files[self.current_pdf_index])
         self.page_count = get_number_of_pages(self.pdf_files[self.current_pdf_index])
 
     def load_page(self):
-        """
-        Loads the current page of the PDF file.
-        """
+        """Loads the current page of the PDF file."""
         self.load_page_image()
         self.current_svg_string = self.load_svg()
         self.current_image_boxes = self.load_image_boxes()
 
     def load_page_image(self):
-        """
-        Loads the current page image from the PDF file.
-        """
+        """Loads the current page image from the PDF file."""
         pdf_path = self.pdf_files[self.current_pdf_index]
 
         with tempfile.TemporaryDirectory() as path:
@@ -232,9 +225,7 @@ class AnnotationJob:
 
     # Buttons
     def next_pdf(self):
-        """
-        Moves to the next PDF file.
-        """
+        """Moves to the next PDF file."""
         if self.current_pdf_index + 1 < len(self.pdf_files):
             self.save_annotations()
             self.current_pdf_index = self.current_pdf_index + 1
@@ -243,9 +234,7 @@ class AnnotationJob:
             self.load_page()
 
     def previous_pdf(self):
-        """
-        Moves to the previous PDF file.
-        """
+        """Moves to the previous PDF file."""
         if self.current_pdf_index > 0:
             self.save_annotations()
             self.current_pdf_index = self.current_pdf_index - 1
@@ -254,34 +243,29 @@ class AnnotationJob:
             self.load_page()
 
     def next(self):
-        """
-        Moves to the next page of the current PDF file.
-        """
+        """Moves to the next page of the current PDF file."""
         if self.current_page + 1 < self.page_count:
             self.dump_svg()
             self.current_page = self.current_page + 1
             self.load_page()
 
     def previous(self):
-        """
-        Moves to the previous page of the current PDF file.
-        """
+        """Moves to the previous page of the current PDF file."""
         if self.current_page > 0:
             self.dump_svg()
             self.current_page = self.current_page - 1
             self.load_page()
 
     def done(self):
-        """
-        Saves the annotations and shuts down the application.
-        """
+        """Saves the annotations and shuts down the application."""
         self.save_annotations()
         app.shutdown()
 
     def mouse_handler(self, e: events.MouseEventArguments):
-        """
-        Handles mouse events on the image.
+        """Handles mouse events on the image.
+
         :param e: The mouse event arguments.
+
         """
         x = e.image_x
         y = e.image_y
@@ -300,16 +284,15 @@ class AnnotationJob:
                 self.rebuild_current_svg_string()
 
     def add_active_box(self):
-        """
-        Adds the active box to the current image boxes.
-        """
+        """Adds the active box to the current image boxes."""
         self.current_image_boxes.append(self.active_box.make_svg_string())
         self.active_box = None
 
     def remove_box_by_id(self, id):
-        """
-        Removes a box by its ID.
+        """Removes a box by its ID.
+
         :param id: The ID of the box to remove.
+
         """
         self.current_image_boxes = [
             box for box in self.current_image_boxes if f'id="{id}"' not in box
@@ -317,24 +300,21 @@ class AnnotationJob:
         self.rebuild_current_svg_string()
 
     def rebuild_current_svg_string(self):
-        """
-        Rebuilds the current SVG string from the current image boxes.
-        """
+        """Rebuilds the current SVG string from the current image boxes."""
         self.current_svg_string = "".join(self.current_image_boxes)
 
     def load_svg(self):
-        """
-        Loads the SVG string for the current page.
-        :return: The SVG string.
+        """Loads the SVG string for the current page.
+
+        :returns: The SVG string.
+
         """
         if self.current_pdf_filename not in self.svg_strings:
             return ""
         return self.svg_strings[self.current_pdf_filename].get(str(self.current_page), "")
 
     def dump_svg(self):
-        """
-        Dumps the current SVG string for the current page.
-        """
+        """Dumps the current SVG string for the current page."""
         if self.current_pdf_filename not in self.svg_strings:
             self.svg_strings[self.current_pdf_filename] = {}
         self.svg_strings[self.current_pdf_filename][str(self.current_page)] = (
@@ -342,9 +322,10 @@ class AnnotationJob:
         )
 
     def load_image_boxes(self):
-        """
-        Loads the image boxes from the current SVG string.
-        :return: A list of SVG strings for each image box.
+        """Loads the image boxes from the current SVG string.
+
+        :returns: A list of SVG strings for each image box.
+
         """
         # we only stored the svg string, so need to convert them back to individual box svg strings
         return [f"<{element}/>" for element in re.split("[</>]+", self.current_svg_string)]

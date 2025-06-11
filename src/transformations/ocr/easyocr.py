@@ -8,17 +8,26 @@ from transformations.pdf.utils import convert_pdf_to_images
 
 
 def format_ocr_results(results, page_number):
-    # Example results:
-    # (
-    #     [
-    #         [np.int32(1052), np.int32(285)],
-    #         [np.int32(1661), np.int32(285)],
-    #         [np.int32(1661), np.int32(386)],
-    #         [np.int32(1052), np.int32(386)]
-    #     ],
-    #     'LAZARUS',
-    #     np.float64(0.9106397069581507)
-    # ),
+    """Formats the OCR results for each page.
+
+    :param results: (list) A list of tuples containing OCR results for a single page.
+    :param page_number: (int) The page number.
+
+    :returns: (list) A list of dictionaries containing the OCR data, confidence, and
+        bounding box.
+
+    """
+    # Example of incoming results:
+    #     (
+    #         [
+    #             [np.int32(1052), np.int32(285)],
+    #             [np.int32(1661), np.int32(285)],
+    #             [np.int32(1661), np.int32(386)],
+    #             [np.int32(1052), np.int32(386)]
+    #         ],
+    #         'LAZARUS',
+    #         np.float64(0.9106397069581507)
+    #     ),
     output = []
     for result in results:
         coordinates = result[0]
@@ -36,9 +45,19 @@ def format_ocr_results(results, page_number):
 
 
 def read_pdf(file_path, start_page=None, end_page=None):
+    """Reads a PDF file and extracts OCR results for each page.
+
+    :param file_path: (str) The path to the PDF file.
+    :param start_page: (int) The starting page number to read. If None, reads from the
+        first page.
+    :param end_page: (int) The ending page number to read. If None, reads to the last
+        page.
+
+    :returns: (dict) A dictionary containing the OCR results for each page.
+
+    """
     image_folder = convert_pdf_to_images(file_path, start_page=start_page, end_page=end_page)
     image_paths = get_all_files_with_ext(image_folder, "jpg")
-
     reader = easyocr.Reader(["en"])  # this needs to run only once to load the model into memory
     results = {}
     page_number = start_page

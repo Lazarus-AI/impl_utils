@@ -14,17 +14,31 @@ logger = logging.getLogger(__name__)
 
 
 class Batcher:
+    """A class for batching files and processing them using a specified model API."""
+
     def __init__(
         self,
         model_api: ModelAPI,
         file_path: Union[list, str],
         prompt: Optional[str] = None,
     ):
+        """Initializes the Batcher with a model API and one or more file paths.
+
+        :param model_api: The model API to use for processing.
+        :param file_path: The path to a single file or a list of file paths.
+        :param prompt: An optional prompt to pass to the model API.
+
+        """
         self.model_api = model_api
         self.file_path = file_path
         self.prompt = prompt
 
     def get_files(self):
+        """Retrieves the list of files to process.
+
+        :returns: A list of file paths.
+
+        """
         if isinstance(self.file_path, list):
             files = self.file_path
         elif is_dir(self.file_path):
@@ -34,6 +48,7 @@ class Batcher:
         return files
 
     def run(self):
+        """Runs the batching process by processing each file in a separate thread."""
         files = self.get_files()
         threads = []
         for file in files:
@@ -50,17 +65,34 @@ class Batcher:
 
 
 class RunAndWait:
+    """A class for running a model API request and waiting for the response.
+
+    This is currently highly opinionated towards firebase storage. TODO: Extend this
+    object to use other storage systems.
+
+    """
+
     def __init__(self, model_api: ModelAPI):
+        """Initializes the RunAndWait with a model API.
+
+        :param model_api: The model API to use for the request.
+
+        """
         self.model_api = model_api
         self.data_path = f"{FIREBASE_WEBHOOK_OUTPUT_FOLDER}{self.model_api.return_file_name}.json"
 
     def send(self):
+        """Sends the model API request."""
         logging.info(f"Processing: {self.model_api.file}")
         self.model_api.run()
 
     @log_timing
     def wait(self) -> bool:
-        # Wait until the file shows up in firebase
+        """Waits for the response file to appear in Firebase.
+
+        :returns: True if the file was successfully downloaded, False otherwise.
+
+        """
         check_period = 5
         iterations = floor(BATCH_TIMEOUT / check_period)
         is_successful = False
@@ -73,6 +105,7 @@ class RunAndWait:
         return is_successful
 
     def save_file(self):
+        """Saves the downloaded response file to the local filesystem."""
         download_folder = get_folder(self.model_api.file)
         download(download_folder, self.data_path)
         delete(self.data_path)
@@ -81,6 +114,7 @@ class RunAndWait:
         logging.info(f"Saved response to: {file_name}")
 
     def run(self):
+        """Runs the send, wait, and save_file methods in sequence."""
         self.send()
         self.wait()
         self.save_file()
