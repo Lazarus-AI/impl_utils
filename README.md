@@ -70,6 +70,40 @@ To power PDF conversions locally, we need LibreOffice installed. You can do that
 brew install libreoffice
 ```
 
+### One Drive Capabilities
+
+One drive is a proper file system. To enable integrating with one drive with our package, the following steps must be completed:
+
+1. Go to Azure Portal (https://portal.azure.com/)
+2. Sign in with your Microsoft account
+3. In the Azure Portal, search for "App registrations" in the top search bar
+4. Click on "App registrations" from the results
+5. Click "+ New registration" button
+6. Select Accounts in any organizational directory and personal Microsoft accounts
+7. For Redirect URI:
+    1. select "Web" from the dropdown.
+    2. Enter http://localhost:3000/auth/callback (this is your ONE_DRIVE_REDIRECT_URI)
+    3. Click Register.
+8. Copy the "Application (client) ID" - this is your ONE_DRIVE_CLIENT_ID
+9. Copy the "Directory (tenant) ID" - this is your ONE_DRIVE_TENANT_ID
+10. For client secret:
+    1. In the left sidebar, click "Certificates & secrets"
+    2. Click "+ New client secret"
+    3. Add a description
+    4. Choose an expiry period
+    5. Click "Add"
+    6. IMMEDIATELY COPY THE SECRET VALUE - this is your ONE_DRIVE_CLIENT_SECRET (you will not see this value again)
+11. Set API Permissions
+    1. In the left sidebar, click "API permissions"
+    2. Click "+ Add a permission"
+    3. Select "Microsoft Graph"
+    4. Choose "Delegated permissions"
+    5. Search for and add these permissions:
+        1. Files.ReadWrite (Read and write user files)
+        2. Files.ReadWrite.All (Read and write all files user can access)
+        3. User.Read (Sign in and read user profile)
+    6. Click "Add permissions"
+12. You can see the onedrive operations here: https://onedrive.live.com
 
 ### Common Recipes
 
