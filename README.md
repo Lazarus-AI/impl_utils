@@ -105,6 +105,31 @@ One drive is a proper file system. To enable integrating with one drive with our
     6. Click "Add permissions"
 12. You can see the onedrive operations here: https://onedrive.live.com
 
+### Google Drive Capabilities
+
+Google Drive is an incomplete file system, but useful nevertheless. To enable integrating with one drive with our package, the following steps must be completed:
+
+1. Go to [google cloud console](https://console.cloud.google.com/) and select the project associated with the account you wish to do your google drive operations in
+2. In the Google Cloud Console, go to "APIs & Services" → "Library"
+3. Search for "Google Drive API"
+4. Click on "Google Drive API" and click "Enable"
+5. Go to "APIs & Services" → "Credentials"
+6. Click "Create Credentials" → "OAuth client ID"
+7. Choose "Desktop application" as the application type
+8. Enter a name (e.g., "GDrive Python Client")
+9. Click "Create"
+10. Download the JSON file containing your credentials
+11. Rename the downloaded file to credentials.json
+12. Put the credentials.json file in the same directory as your Python scripts (or somewhere else and update the env file accordingly)
+    src/sync/gdrive/
+    ├── client.py
+    ├── utils.py
+    ├── credentials.json  ← Place here
+    - For the above file setting, use these env variable settings:
+        - GOOGLE_DRIVE_CREDENTIALS_PATH = "sync/gdrive/credentials.json"
+        - GOOGLE_DRIVE_TOKEN_PATH = "sync/gdrive/token.json"
+13. For first time authentication, it will ask to open your default web browser. Sign into your google account associated with the google cloud project linked to your credentials.json file. Then accept when it requests permission to access your google drive. Future authentications do not require this process since a token.json is generated and stored automatically in the file path you specified in GOOGLE_DRIVE_TOKEN_PATH.
+
 ### Common Recipes
 
 Upload a document to firebase and get a signed url:
