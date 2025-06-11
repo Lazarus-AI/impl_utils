@@ -7,8 +7,8 @@ dir_path = os.path.join(os.path.dirname(here), "src")
 os.chdir(dir_path)
 sys.path.append(dir_path)
 
-from file_system.utils import in_working
-from grading.utils import run_annotate_ui
+from lazarus_implementation_tools.file_system.utils import in_working
+from lazarus_implementation_tools.grading.utils import run_annotate_ui
 
 if __name__ in {"__main__", "__mp_main__"}:
     folder = sys.argv[1]
