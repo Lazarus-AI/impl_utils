@@ -105,7 +105,7 @@ class GoogleDriveClient:
                 raise GoogleDriveAuthenticationError(f"Error building service: {e}")
             return True
         except Exception as e:
-            print(f"Authentication exception: {e}")
+            logger.error(f"Authentication exception: {e}")
             return False
 
     def _ensure_valid_authentication(self) -> Any:
