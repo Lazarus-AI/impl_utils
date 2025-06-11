@@ -153,6 +153,8 @@ sphinx = "*"
 sphinx-rtd-theme = "*"
 extract-msg = "*"
 xhtml2pdf = "*"
+pytest = "*"
+google-auth-oauthlib = "*"
 
 [dev-packages]
 

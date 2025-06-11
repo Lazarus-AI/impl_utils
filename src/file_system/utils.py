@@ -83,6 +83,17 @@ def get_filename(file_path):
     return os.path.splitext(os.path.basename(file_path))[0]
 
 
+def get_filename_with_ext(file_path: str) -> str:
+    """Returns the filename with the extension from the given file path.
+
+    :param file_path: The file path.
+
+    :returns: The filename with the extension.
+
+    """
+    return os.path.basename(file_path)
+
+
 def get_extension(file_path):
     """Returns the extension of the given file path.
 

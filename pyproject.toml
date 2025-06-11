@@ -1,7 +1,7 @@
 [tool.pytest.ini_options]
-pythonpath = "./src"
+pythonpath = [".", "src"]
 filterwarnings = "ignore:.*:DeprecationWarning"
-addopts = "--cov --cov-report=lcov:lcov.info --cov-report=term"
+# addopts = "--cov --cov-report=lcov:lcov.info --cov-report=term"
 markers = []
 
 [tool.coverage.run]
