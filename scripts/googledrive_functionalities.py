@@ -3,12 +3,13 @@ import sys
 import tempfile
 import time
 
+from lazarus_implementation_tools.sync.gdrive.utils import GoogleDriveUtils
+
 here = os.path.dirname(__file__)
 dir_path = os.path.join(os.path.dirname(here), "src")
 os.chdir(dir_path)
 sys.path.append(dir_path)
 
-from sync.gdrive.utils import GoogleDriveUtils
 
 CREDENTIALS_PATH = os.environ.get("GOOGLE_DRIVE_CREDENTIALS_PATH", "credentials.json")
 TOKEN_PATH = os.environ.get("GOOGLE_DRIVE_TOKEN_PATH", "token.json")

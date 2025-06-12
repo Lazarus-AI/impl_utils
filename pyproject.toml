@@ -1,3 +1,53 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lazarus_implementation_toolkit"
+dynamic = ["version"]
+description = "Lazarus AI Implementation Tools Library"
+authors = [
+    { name = "Cris Bettis", email = "cristopher.bettis@lazarus.enterprises" },
+    { name = "Srinivasan Sathiamurthy", email = "srinivasan@lazarus.enterprises" },
+]
+license = { text = "Proprietary" }
+readme = "README.md"
+classifiers = [
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.11,<4.0"
+dependencies = [
+    "cloudconvert>=2.1.0",
+    "deskew>=1.5.1",
+    "dotenv>=0.9.9",
+    "easyocr>=1.7.2",
+    "extract-msg>=0.54.1",
+    "firebase-admin>=6.9.0",
+    "fpdf2>=2.8.3",
+    "google-api-core>=2.25.0",
+    "google-auth-oauthlib>=1.2.2",
+    "googlemaps>=4.10.0",
+    "msal>=1.32.3",
+    "nicegui>=2.19.0",
+    "numpy>=2.3.0",
+    "opencv-python>=4.11.0.86",
+    "pandas>=2.3.0",
+    "pdf2image>=1.17.0",
+    "pillow>=11.2.1",
+    "pydantic>=2.11.5",
+    "PyPDF2>=3.0.1",
+    "requests>=2.32.4",
+    "xhtml2pdf>=0.2.17",
+]
+
+
+
+[tool.setuptools-git-versioning]
+enabled = true
+
+
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]
 filterwarnings = "ignore:.*:DeprecationWarning"
@@ -13,9 +63,9 @@ lint.select = ["F401"]  # Rule for unused imports
 
 
 [tool.mypy]
-# mypy_path = 'src'
+# mypy_path = "src"
 exclude = ["config"]
-files  = '*.py'
+files  = "*.py"
 warn_return_any = true
 warn_unused_configs = true
 

@@ -8,7 +8,7 @@ dir_path = os.path.join(os.path.dirname(here), "src")
 os.chdir(dir_path)
 sys.path.append(dir_path)
 
-from sync.microsoft.utils import OneDriveUtils
+from lazarus_implementation_tools.sync.microsoft.utils import OneDriveUtils
 
 CLIENT_ID = os.environ.get("ONE_DRIVE_CLIENT_ID")
 CLIENT_SECRET = os.environ.get("ONE_DRIVE_CLIENT_SECRET")
@@ -27,10 +27,7 @@ class OneDriveTestSuite:
         print("=" * 50)
 
     def normalize_path(self, path):
-        """
-        Normalize OneDrive paths to the expected format. (makes life easier)
-        Converts '/drive/root:/filename.txt' to '/filename.txt'
-        """
+        """Normalize OneDrive paths to the expected format. (makes life easier) Converts '/drive/root:/filename.txt' to '/filename.txt'"""
         if not path:
             return path
 
