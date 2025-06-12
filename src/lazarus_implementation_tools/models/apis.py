@@ -2,6 +2,7 @@ import base64
 import json
 import logging
 from http import HTTPStatus
+from typing import Optional
 
 import requests
 
@@ -129,12 +130,18 @@ class ModelAPI:
 class Rikai2(ModelAPI):
     """Class for interacting with the Rikai2 API."""
 
-    def __init__(self):
+    def __init__(
+        self,
+        url: Optional[str] = None,
+        org_id: Optional[str] = None,
+        auth_key: Optional[str] = None,
+        webhook: Optional[str] = None,
+    ):
         super().__init__()
-        self.url = RIKAI2_URL
-        self.org_id = RIKAI2_ORG_ID
-        self.auth_key = RIKAI2_AUTH_KEY
-        self.webhook = WEBHOOK_URL
+        self.url = url or RIKAI2_URL
+        self.org_id = org_id or RIKAI2_ORG_ID
+        self.auth_key = auth_key or RIKAI2_AUTH_KEY
+        self.webhook = webhook or WEBHOOK_URL
 
         # Settings
         self.advanced_explainability = False
@@ -189,12 +196,18 @@ class Rikai2(ModelAPI):
 class Riky2(ModelAPI):
     """Class for interacting with the Riky2 API."""
 
-    def __init__(self):
+    def __init__(
+        self,
+        url: Optional[str] = None,
+        org_id: Optional[str] = None,
+        auth_key: Optional[str] = None,
+        webhook: Optional[str] = None,
+    ):
         super().__init__()
-        self.url = RIKY2_URL
-        self.org_id = RIKY2_ORG_ID
-        self.auth_key = RIKY2_AUTH_KEY
-        self.webhook = WEBHOOK_URL
+        self.url = url or RIKY2_URL
+        self.org_id = org_id or RIKY2_ORG_ID
+        self.auth_key = auth_key or RIKY2_AUTH_KEY
+        self.webhook = webhook or WEBHOOK_URL
 
     def add_file_to_payload(self, payload):
         """Adds the file to the payload for Riky2.
@@ -236,12 +249,18 @@ class Riky2(ModelAPI):
 
 
 class RikaiExtract(ModelAPI):
-    def __init__(self):
+    def __init__(
+        self,
+        url: Optional[str] = None,
+        org_id: Optional[str] = None,
+        auth_key: Optional[str] = None,
+        webhook: Optional[str] = None,
+    ):
         super().__init__()
-        self.url = RIKY_EXTRACT_URL
-        self.org_id = RIKY_EXTRACT_ORG_ID
-        self.auth_key = RIKY_EXTRACT_AUTH_KEY
-        self.webhook = WEBHOOK_URL
+        self.url = url or RIKY_EXTRACT_URL
+        self.org_id = org_id or RIKY_EXTRACT_ORG_ID
+        self.auth_key = auth_key or RIKY_EXTRACT_AUTH_KEY
+        self.webhook = webhook or WEBHOOK_URL
 
         # Settings
         self.return_confidence = True
