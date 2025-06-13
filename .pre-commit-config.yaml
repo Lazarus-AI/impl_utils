@@ -43,7 +43,7 @@ repos:
         args:
           - --autofix
           - --no-sort-keys
-        exclude: ^tests/mocks|Pipfile*
+        exclude: ^tests/mocks|Pipfile*|.*\.ipynb
   - repo: https://github.com/PyCQA/isort
     rev: 5.13.2
     hooks:

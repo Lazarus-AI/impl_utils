@@ -36,7 +36,9 @@ class ModelAPI:
 
         self.file = None
         self.return_file_name = None
+        self.return_file_path = None
         self.prompt = ""
+        self.response = None
 
     @property
     def name(self):
@@ -118,13 +120,13 @@ class ModelAPI:
             self.prompt = prompt
 
         payload = self.build_payload()
-        response = requests.request(
+        self.response = requests.request(
             self.method, self.url, headers=self.get_headers(), data=json.dumps(payload)
         )
-        if response.status_code != HTTPStatus.OK:
-            logging.info(f"{response.status_code}: {response.json()}")
+        if self.response.status_code != HTTPStatus.OK:
+            logging.info(f"{self.response.status_code}: {self.response.json()}")
 
-        return response.json()
+        return self.response.json()
 
 
 class Rikai2(ModelAPI):

@@ -2,7 +2,7 @@ import logging
 import threading
 import time
 from math import floor
-from typing import Optional, Union
+from typing import List, Optional, Union
 
 from lazarus_implementation_tools.config import (
     BATCH_TIMEOUT,
@@ -44,6 +44,7 @@ class Batcher:
         self.model_api = model_api
         self.file_path = file_path
         self.prompt = prompt
+        self.responses = []  # type: ignore
 
     def get_files(self):
         """Retrieves the list of files to process.
@@ -59,21 +60,28 @@ class Batcher:
             files = [self.file_path]
         return files
 
-    def run(self):
+    def run(self) -> List[ModelAPI]:
         """Runs the batching process by processing each file in a separate thread."""
         files = self.get_files()
         threads = []
+        clients = []
         for file in files:
             client = self.model_api
             client.set_file(file)
             client.prompt = self.prompt
             runner = RunAndWait(client)
+            clients.append(client)
             thread = threading.Thread(target=runner.run)
             thread.start()
             threads.append(thread)
 
         for thread in threads:
             thread.join()
+
+        for client in clients:
+            self.responses.append(client.response)
+
+        return clients
 
 
 class RunAndWait:
@@ -121,9 +129,11 @@ class RunAndWait:
         download_folder = get_folder(self.model_api.file)
         download(download_folder, self.data_path)
         delete(self.data_path)
-        file_name = f"{download_folder}/{self.model_api.return_file_name}.json"
-        tidy_json_file(file_name)
-        logging.info(f"Saved response to: {file_name}")
+        self.model_api.return_file_path = (
+            f"{download_folder}/{self.model_api.return_file_name}.json"
+        )
+        tidy_json_file(self.model_api.return_file_path)
+        logging.info(f"Saved response to: {self.model_api.return_file_path}")
 
     def run(self):
         """Runs the send, wait, and save_file methods in sequence."""
