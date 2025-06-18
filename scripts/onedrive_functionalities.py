@@ -423,7 +423,7 @@ class OneDriveTestSuite:
                 )
                 return True
             else:
-                print(f"renamed_test_file.txt failed to move, error: {result["error"]}")
+                print(f'renamed_test_file.txt failed to move, error: {result["error"]}')
                 return False
         except Exception as e:
             print(f"Delete test failed: {e}")
