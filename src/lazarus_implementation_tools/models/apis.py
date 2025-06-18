@@ -1,6 +1,7 @@
 import base64
 import json
 import logging
+import uuid
 from http import HTTPStatus
 from typing import Optional
 
@@ -95,14 +96,17 @@ class ModelAPI:
         """
         self.file = file
         self.return_file_name = f"{get_filename(file)}_{self.name}"
+        self.set_firebase_file_name()
 
-    def set_return_file_name(self, file_name):
+    def set_firebase_file_name(self, file_name: Optional[str] = None):
         """Sets the return file name.
 
         :param file_name: The name of the return file.
 
         """
-        self.return_file_name = file_name
+        if not file_name:
+            file_name = str(uuid.uuid4())
+        self.firebase_file_name = file_name
 
     def run(self, file=None, prompt=None):
         """Runs the API request.
@@ -126,7 +130,7 @@ class ModelAPI:
         if self.response.status_code != HTTPStatus.OK:
             logging.info(f"{self.response.status_code}: {self.response.json()}")
 
-        return self.response.json()
+        return self.response
 
 
 class Rikai2(ModelAPI):
@@ -178,7 +182,7 @@ class Rikai2(ModelAPI):
         """
         webhook = self.webhook
         if self.return_file_name:
-            webhook = f"{webhook}?filename={self.return_file_name}"
+            webhook = f"{webhook}?filename={self.firebase_file_name}"
 
         payload = {
             "forceOCR": self.force_ocr,
@@ -238,7 +242,7 @@ class Riky2(ModelAPI):
         """
         webhook = self.webhook
         if self.return_file_name:
-            webhook = f"{webhook}?filename={self.return_file_name}"
+            webhook = f"{webhook}?filename={self.firebase_file_name}"
 
         payload = {
             "outputUrl": webhook,
@@ -282,7 +286,7 @@ class RikaiExtract(ModelAPI):
     def build_payload(self):
         webhook = self.webhook
         if self.return_file_name:
-            webhook = f"{webhook}?filename={self.return_file_name}"
+            webhook = f"{webhook}?filename={self.firebase_file_name}"
 
         payload = {
             "outputUrl": webhook,

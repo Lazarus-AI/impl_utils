@@ -1,6 +1,7 @@
 import logging
 import threading
 import time
+from http import HTTPStatus
 from math import floor
 from typing import List, Optional, Union
 
@@ -16,11 +17,7 @@ from lazarus_implementation_tools.file_system.utils import (
 )
 from lazarus_implementation_tools.general.core import log_timing
 from lazarus_implementation_tools.models.apis import ModelAPI
-from lazarus_implementation_tools.sync.firebase.utils import (
-    delete,
-    download,
-    file_exists,
-)
+from lazarus_implementation_tools.sync.firebase.utils import download, file_exists
 
 logger = logging.getLogger(__name__)
 
@@ -99,12 +96,12 @@ class RunAndWait:
 
         """
         self.model_api = model_api
-        self.data_path = f"{FIREBASE_WEBHOOK_OUTPUT_FOLDER}{self.model_api.return_file_name}.json"
+        self.data_path = f"{FIREBASE_WEBHOOK_OUTPUT_FOLDER}{self.model_api.firebase_file_name}.json"
 
     def send(self):
         """Sends the model API request."""
         logging.info(f"Processing: {self.model_api.file}")
-        self.model_api.run()
+        return self.model_api.run()
 
     @log_timing
     def wait(self) -> bool:
@@ -128,7 +125,7 @@ class RunAndWait:
         """Saves the downloaded response file to the local filesystem."""
         download_folder = get_folder(self.model_api.file)
         download(download_folder, self.data_path)
-        delete(self.data_path)
+        # delete(self.data_path)
         self.model_api.return_file_path = (
             f"{download_folder}/{self.model_api.return_file_name}.json"
         )
@@ -137,6 +134,9 @@ class RunAndWait:
 
     def run(self):
         """Runs the send, wait, and save_file methods in sequence."""
-        self.send()
+        response = self.send()
+        if response.status_code != HTTPStatus.OK:
+            # Don't wait for the file if the API call failed.
+            return
         self.wait()
         self.save_file()
