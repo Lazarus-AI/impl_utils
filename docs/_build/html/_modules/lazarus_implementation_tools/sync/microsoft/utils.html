@@ -1,0 +1,342 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.sync.microsoft.utils &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="../../../../index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.sync.microsoft.utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for lazarus_implementation_tools.sync.microsoft.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lazarus_implementation_tools.sync.microsoft.onedrive</span><span class="w"> </span><span class="kn">import</span> <span class="n">OneDriveClient</span>
+
+
+<div class="viewcode-block" id="OneDriveUtils">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OneDriveUtils</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">client_secret</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;common&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the OneDriveUtils class.</span>
+
+<span class="sd">        :param client_id: Client ID for OneDrive authentication</span>
+<span class="sd">        :param client_secret: Client secret for OneDrive authentication</span>
+<span class="sd">        :param tenant_id: Tenant ID for OneDrive authentication (default: common)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">OneDriveClient</span><span class="p">(</span><span class="n">client_id</span><span class="p">,</span> <span class="n">client_secret</span><span class="p">,</span> <span class="n">tenant_id</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OneDriveUtils.authenticate">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.authenticate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">authenticate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">auth_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">redirect_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">scopes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Authenticate with OneDrive using authorization code.</span>
+
+<span class="sd">        :param auth_code: Authorization code from OAuth flow</span>
+<span class="sd">        :param redirect_uri: Redirect URI used in OAuth flow</span>
+<span class="sd">        :param scopes: List of scopes to request (defaults to Files.ReadWrite)</span>
+
+<span class="sd">        :returns: True if authentication successful</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">authenticate_with_code</span><span class="p">(</span><span class="n">auth_code</span><span class="p">,</span> <span class="n">redirect_uri</span><span class="p">,</span> <span class="n">scopes</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.upload_file">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.upload_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">upload_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">local_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">remote_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Upload a file to OneDrive.</span>
+
+<span class="sd">        :param local_path: Local file path</span>
+<span class="sd">        :param remote_path: Remote path in OneDrive (e.g., &quot;/Documents/myfile.txt&quot;)</span>
+
+<span class="sd">        :returns: File metadata dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">remote_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.download_file">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.download_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">download_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">remote_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">local_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Download a file from OneDrive.</span>
+
+<span class="sd">        :param remote_path: Remote file path or file ID</span>
+<span class="sd">        :param local_path: Local path to save file (optional)</span>
+
+<span class="sd">        :returns: Result dict with success status and file content</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">download_file_wrapper</span><span class="p">(</span><span class="n">remote_path</span><span class="p">,</span> <span class="n">local_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.move_file">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.move_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">move_file</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">source_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Move a file to a new location.</span>
+
+<span class="sd">        :param source_path: Source file path or ID</span>
+<span class="sd">        :param destination_path: Destination folder path or ID</span>
+<span class="sd">        :param new_name: New file name (optional)</span>
+
+<span class="sd">        :returns: Result dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">move_item_wrapper</span><span class="p">(</span><span class="n">source_path</span><span class="p">,</span> <span class="n">destination_path</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.delete_file">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.delete_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a file from OneDrive.</span>
+
+<span class="sd">        :param file_path: File path or ID to delete</span>
+
+<span class="sd">        :returns: Result dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">delete_item_wrapper</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.delete_folder">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.delete_folder">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">force</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a folder from OneDrive.</span>
+
+<span class="sd">        :param folder_path: Folder path or ID to delete</span>
+<span class="sd">        :param force: If True, delete even if folder is not empty</span>
+
+<span class="sd">        :returns: Result dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">delete_folder</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">force</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.rename_file">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.rename_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rename_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rename a file.</span>
+
+<span class="sd">        :param file_path: Current file path or ID</span>
+<span class="sd">        :param new_name: New name for the file</span>
+
+<span class="sd">        :returns: Result dict with new file info</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">rename_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.rename_folder">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.rename_folder">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rename_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rename a folder.</span>
+
+<span class="sd">        :param folder_path: Current folder path or ID</span>
+<span class="sd">        :param new_name: New name for the folder</span>
+
+<span class="sd">        :returns: Result dict with new folder info</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">rename_folder</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.update_file_metadata">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.update_file_metadata">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_file_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update file metadata (description and custom properties).</span>
+
+<span class="sd">        :param file_path: File path or ID</span>
+<span class="sd">        :param description: New description for the file</span>
+
+<span class="sd">        :returns: Result dict with updated metadata</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">update_file_metadata</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.update_folder_metadata">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.update_folder_metadata">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_folder_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update folder metadata (description).</span>
+
+<span class="sd">        :param folder_path: Folder path or ID</span>
+<span class="sd">        :param description: New description for the folder</span>
+
+<span class="sd">        :returns: Result dict with updated metadata</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">update_folder_metadata</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.create_folder">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.create_folder">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a new folder.</span>
+
+<span class="sd">        :param folder_path: Name of the folder to create</span>
+<span class="sd">        :param parent_path: Parent folder path (default: root)</span>
+
+<span class="sd">        :returns: Folder metadata dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">create_folder_wrapper</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">parent_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.list_files">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.list_files">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">list_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List files and folders in a directory.</span>
+
+<span class="sd">        :param folder_path: Folder path to list (default: root)</span>
+
+<span class="sd">        :returns: List of files and folders</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">list_files</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.search_files">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.search_files">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search for files and folders.</span>
+
+<span class="sd">        :param query: Search query</span>
+<span class="sd">        :param folder_path: Folder to search in (optional, searches all if None)</span>
+
+<span class="sd">        :returns: Search results</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">search_files</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.get_file_info">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.get_file_info">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_file_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get detailed information about a file or folder.</span>
+
+<span class="sd">        :param file_path: File path or ID</span>
+
+<span class="sd">        :returns: File information dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_file_info</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OneDriveUtils.create_sharing_link">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.create_sharing_link">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_sharing_link</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">link_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;view&quot;</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;anonymous&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a sharing link for a file.</span>
+
+<span class="sd">        :param file_path: File path or ID</span>
+<span class="sd">        :param link_type: Type of link (&#39;view&#39; or &#39;edit&#39;)</span>
+<span class="sd">        :param scope: Scope of link (&#39;anonymous&#39; or &#39;organization&#39;)</span>
+
+<span class="sd">        :returns: Sharing link information</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">create_sharing_link</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">link_type</span><span class="p">,</span> <span class="n">scope</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

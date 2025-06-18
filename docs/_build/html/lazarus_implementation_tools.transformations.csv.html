@@ -1,0 +1,256 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.transformations.csv package &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.transformations.csv package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/lazarus_implementation_tools.transformations.csv.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="lazarus-implementation-tools-transformations-csv-package">
+<h1>lazarus_implementation_tools.transformations.csv package<a class="headerlink" href="#lazarus-implementation-tools-transformations-csv-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-lazarus_implementation_tools.transformations.csv.builder">
+<span id="lazarus-implementation-tools-transformations-csv-builder-module"></span><h2>lazarus_implementation_tools.transformations.csv.builder module<a class="headerlink" href="#module-lazarus_implementation_tools.transformations.csv.builder" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.csv.builder.CSVBuilder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.csv.builder.</span></span><span class="sig-name descname"><span class="pre">CSVBuilder</span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/csv/builder.html#CSVBuilder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.csv.builder.CSVBuilder" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for building a CSV file from JSON data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.csv.builder.CSVBuilder.add_column">
+<span class="sig-name descname"><span class="pre">add_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_data_map</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/csv/builder.html#CSVBuilder.add_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.csv.builder.CSVBuilder.add_column" title="Link to this definition"></a></dt>
+<dd><p>Adds a column to the CSV file with the specified name and JSON data map.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – (str) The name of the column.</p></li>
+<li><p><strong>json_data_map</strong> – (str) The JSON data map to use for extracting data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.csv.builder.CSVBuilder.add_file">
+<span class="sig-name descname"><span class="pre">add_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/csv/builder.html#CSVBuilder.add_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.csv.builder.CSVBuilder.add_file" title="Link to this definition"></a></dt>
+<dd><p>Adds a file or directory of files to the list of files to process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – (str) The file or directory path to add.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.csv.builder.CSVBuilder.build_data">
+<span class="sig-name descname"><span class="pre">build_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/csv/builder.html#CSVBuilder.build_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.csv.builder.CSVBuilder.build_data" title="Link to this definition"></a></dt>
+<dd><p>Builds the data for the CSV file by extracting data from the specified files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(list) A list of dictionaries representing the rows of the CSV file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.csv.builder.CSVBuilder.export">
+<span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/csv/builder.html#CSVBuilder.export"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.csv.builder.CSVBuilder.export" title="Link to this definition"></a></dt>
+<dd><p>Exports the CSV file to the specified file path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – (str) The path to save the CSV file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.csv.builder.CSVBuilder.save_to_csv">
+<span class="sig-name descname"><span class="pre">save_to_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/csv/builder.html#CSVBuilder.save_to_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.csv.builder.CSVBuilder.save_to_csv" title="Link to this definition"></a></dt>
+<dd><p>Saves the built data to a CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – (str) The path to save the CSV file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.csv.builder.xls_to_csvs_and_concat">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.csv.builder.</span></span><span class="sig-name descname"><span class="pre">xls_to_csvs_and_concat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_as_one_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/csv/builder.html#xls_to_csvs_and_concat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.csv.builder.xls_to_csvs_and_concat" title="Link to this definition"></a></dt>
+<dd><p>Convert an Excel file to CSV files and optionally concatenate them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_path</strong> – Path to the xls file to convert.</p></li>
+<li><p><strong>output_dir</strong> – Path to the directory to drop the pdf</p></li>
+<li><p><strong>output_as_one_file</strong> – (bool) If true, combine all sheets into one document.</p></li>
+<li><p><strong>input_path</strong> – (str) The path to the input Excel file.</p></li>
+<li><p><strong>output_dir</strong> – (str, optional) The directory to save the CSV files. If not
+provided, the directory of the input file will be used.</p></li>
+<li><p><strong>output_as_one_file</strong> – (bool, optional) If True, all CSVs will be concatenated
+into a single CSV file. Default is False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns list[str]<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of paths to the saved CSV files.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If output_as_one_file = True and there are no common columns
+across the sheets</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.transformations.csv.utils">
+<span id="lazarus-implementation-tools-transformations-csv-utils-module"></span><h2>lazarus_implementation_tools.transformations.csv.utils module<a class="headerlink" href="#module-lazarus_implementation_tools.transformations.csv.utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.csv.utils.build_csv_from_json_files">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.csv.utils.</span></span><span class="sig-name descname"><span class="pre">build_csv_from_json_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/csv/utils.html#build_csv_from_json_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.csv.utils.build_csv_from_json_files" title="Link to this definition"></a></dt>
+<dd><p>Builds a CSV file from JSON files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – (str) The path to the JSON file.</p></li>
+<li><p><strong>columns</strong> – (list) A list of tuples containing column names and JSON data maps.</p></li>
+<li><p><strong>destination_path</strong> – (str) The path to save the CSV file. If None, the CSV file
+will be saved with the same name as the JSON file but with a .csv extension.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(str) The path to the saved CSV file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.csv.utils.excel_to_csv">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.csv.utils.</span></span><span class="sig-name descname"><span class="pre">excel_to_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_as_one_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/csv/utils.html#excel_to_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.csv.utils.excel_to_csv" title="Link to this definition"></a></dt>
+<dd><p>Convert an Excel file to CSV files and optionally concatenate them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_path</strong> – Path to excel file</p></li>
+<li><p><strong>output_dir</strong> – path to the folder we want to put the results</p></li>
+<li><p><strong>output_as_one_file</strong> – (bool) If true concatenate all the sheets into one file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns list[str]<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of paths to the saved CSV files.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If output_as_one_file = True and there are no common columns
+across the sheets</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.transformations.csv">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lazarus_implementation_tools.transformations.csv" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

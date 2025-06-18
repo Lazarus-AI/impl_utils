@@ -1,0 +1,508 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.sync.microsoft package &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.sync.microsoft package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/lazarus_implementation_tools.sync.microsoft.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="lazarus-implementation-tools-sync-microsoft-package">
+<h1>lazarus_implementation_tools.sync.microsoft package<a class="headerlink" href="#lazarus-implementation-tools-sync-microsoft-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-lazarus_implementation_tools.sync.microsoft.onedrive">
+<span id="lazarus-implementation-tools-sync-microsoft-onedrive-module"></span><h2>lazarus_implementation_tools.sync.microsoft.onedrive module<a class="headerlink" href="#module-lazarus_implementation_tools.sync.microsoft.onedrive" title="Link to this heading"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveAPIError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.microsoft.onedrive.</span></span><span class="sig-name descname"><span class="pre">OneDriveAPIError</span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveAPIError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveAPIError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when API requests fail</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveAuthenticationError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.microsoft.onedrive.</span></span><span class="sig-name descname"><span class="pre">OneDriveAuthenticationError</span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveAuthenticationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveAuthenticationError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when authentication fails</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.microsoft.onedrive.</span></span><span class="sig-name descname"><span class="pre">OneDriveClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tenant_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'common'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.authenticate_with_code">
+<span class="sig-name descname"><span class="pre">authenticate_with_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">authorization_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redirect_uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scopes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.authenticate_with_code"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.authenticate_with_code" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.create_folder_wrapper">
+<span class="sig-name descname"><span class="pre">create_folder_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.create_folder_wrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.create_folder_wrapper" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.create_sharing_link">
+<span class="sig-name descname"><span class="pre">create_sharing_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'view'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'anonymous'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.create_sharing_link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.create_sharing_link" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.delete_folder">
+<span class="sig-name descname"><span class="pre">delete_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.delete_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.delete_folder" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.delete_item_wrapper">
+<span class="sig-name descname"><span class="pre">delete_item_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.delete_item_wrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.delete_item_wrapper" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.download_file_wrapper">
+<span class="sig-name descname"><span class="pre">download_file_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.download_file_wrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.download_file_wrapper" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.get_file_info">
+<span class="sig-name descname"><span class="pre">get_file_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.get_file_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.get_file_info" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.get_item_by_id">
+<span class="sig-name descname"><span class="pre">get_item_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.get_item_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.get_item_by_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.get_item_by_path">
+<span class="sig-name descname"><span class="pre">get_item_by_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.get_item_by_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.get_item_by_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.list_children">
+<span class="sig-name descname"><span class="pre">list_children</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.list_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.list_children" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.list_files">
+<span class="sig-name descname"><span class="pre">list_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.list_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.list_files" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.move_item_wrapper">
+<span class="sig-name descname"><span class="pre">move_item_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.move_item_wrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.move_item_wrapper" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.refresh_access_token">
+<span class="sig-name descname"><span class="pre">refresh_access_token</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.refresh_access_token"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.refresh_access_token" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.rename_file">
+<span class="sig-name descname"><span class="pre">rename_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.rename_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.rename_file" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.rename_folder">
+<span class="sig-name descname"><span class="pre">rename_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.rename_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.rename_folder" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.search_files">
+<span class="sig-name descname"><span class="pre">search_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.search_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.search_files" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.update_file_metadata">
+<span class="sig-name descname"><span class="pre">update_file_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.update_file_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.update_file_metadata" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.update_folder_metadata">
+<span class="sig-name descname"><span class="pre">update_folder_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.update_folder_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.update_folder_metadata" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.upload_file">
+<span class="sig-name descname"><span class="pre">upload_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveClient.upload_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.upload_file" title="Link to this definition"></a></dt>
+<dd><p>Upload a file to OneDrive (automatically handles small and large files)</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>local_path: Path to the local file destination_path: Destination path in
+OneDrive (e.g., /Documents/file.pdf)</p>
+</dd>
+<dt>Returns:</dt><dd><p>Dict containing file metadata including id, name, size, etc.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveRateLimitError">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.microsoft.onedrive.</span></span><span class="sig-name descname"><span class="pre">OneDriveRateLimitError</span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/onedrive.html#OneDriveRateLimitError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveRateLimitError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Raised when rate limit is hit</p>
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.sync.microsoft.utils">
+<span id="lazarus-implementation-tools-sync-microsoft-utils-module"></span><h2>lazarus_implementation_tools.sync.microsoft.utils module<a class="headerlink" href="#module-lazarus_implementation_tools.sync.microsoft.utils" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.microsoft.utils.</span></span><span class="sig-name descname"><span class="pre">OneDriveUtils</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_secret</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tenant_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'common'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.authenticate">
+<span class="sig-name descname"><span class="pre">authenticate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auth_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redirect_uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scopes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.authenticate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.authenticate" title="Link to this definition"></a></dt>
+<dd><p>Authenticate with OneDrive using authorization code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>auth_code</strong> – Authorization code from OAuth flow</p></li>
+<li><p><strong>redirect_uri</strong> – Redirect URI used in OAuth flow</p></li>
+<li><p><strong>scopes</strong> – List of scopes to request (defaults to Files.ReadWrite)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if authentication successful</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.create_folder">
+<span class="sig-name descname"><span class="pre">create_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.create_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.create_folder" title="Link to this definition"></a></dt>
+<dd><p>Create a new folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_path</strong> – Name of the folder to create</p></li>
+<li><p><strong>parent_path</strong> – Parent folder path (default: root)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Folder metadata dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.create_sharing_link">
+<span class="sig-name descname"><span class="pre">create_sharing_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">link_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'view'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'anonymous'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.create_sharing_link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.create_sharing_link" title="Link to this definition"></a></dt>
+<dd><p>Create a sharing link for a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – File path or ID</p></li>
+<li><p><strong>link_type</strong> – Type of link (‘view’ or ‘edit’)</p></li>
+<li><p><strong>scope</strong> – Scope of link (‘anonymous’ or ‘organization’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sharing link information</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.delete_file">
+<span class="sig-name descname"><span class="pre">delete_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.delete_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.delete_file" title="Link to this definition"></a></dt>
+<dd><p>Delete a file from OneDrive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – File path or ID to delete</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.delete_folder">
+<span class="sig-name descname"><span class="pre">delete_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.delete_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.delete_folder" title="Link to this definition"></a></dt>
+<dd><p>Delete a folder from OneDrive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_path</strong> – Folder path or ID to delete</p></li>
+<li><p><strong>force</strong> – If True, delete even if folder is not empty</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.download_file">
+<span class="sig-name descname"><span class="pre">download_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.download_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.download_file" title="Link to this definition"></a></dt>
+<dd><p>Download a file from OneDrive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>remote_path</strong> – Remote file path or file ID</p></li>
+<li><p><strong>local_path</strong> – Local path to save file (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result dict with success status and file content</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.get_file_info">
+<span class="sig-name descname"><span class="pre">get_file_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.get_file_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.get_file_info" title="Link to this definition"></a></dt>
+<dd><p>Get detailed information about a file or folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> – File path or ID</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>File information dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.list_files">
+<span class="sig-name descname"><span class="pre">list_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.list_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.list_files" title="Link to this definition"></a></dt>
+<dd><p>List files and folders in a directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>folder_path</strong> – Folder path to list (default: root)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of files and folders</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.move_file">
+<span class="sig-name descname"><span class="pre">move_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.move_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.move_file" title="Link to this definition"></a></dt>
+<dd><p>Move a file to a new location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_path</strong> – Source file path or ID</p></li>
+<li><p><strong>destination_path</strong> – Destination folder path or ID</p></li>
+<li><p><strong>new_name</strong> – New file name (optional)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.rename_file">
+<span class="sig-name descname"><span class="pre">rename_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.rename_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.rename_file" title="Link to this definition"></a></dt>
+<dd><p>Rename a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – Current file path or ID</p></li>
+<li><p><strong>new_name</strong> – New name for the file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result dict with new file info</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.rename_folder">
+<span class="sig-name descname"><span class="pre">rename_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.rename_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.rename_folder" title="Link to this definition"></a></dt>
+<dd><p>Rename a folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_path</strong> – Current folder path or ID</p></li>
+<li><p><strong>new_name</strong> – New name for the folder</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result dict with new folder info</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.search_files">
+<span class="sig-name descname"><span class="pre">search_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.search_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.search_files" title="Link to this definition"></a></dt>
+<dd><p>Search for files and folders.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> – Search query</p></li>
+<li><p><strong>folder_path</strong> – Folder to search in (optional, searches all if None)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Search results</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.update_file_metadata">
+<span class="sig-name descname"><span class="pre">update_file_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.update_file_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.update_file_metadata" title="Link to this definition"></a></dt>
+<dd><p>Update file metadata (description and custom properties).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – File path or ID</p></li>
+<li><p><strong>description</strong> – New description for the file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result dict with updated metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.update_folder_metadata">
+<span class="sig-name descname"><span class="pre">update_folder_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.update_folder_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.update_folder_metadata" title="Link to this definition"></a></dt>
+<dd><p>Update folder metadata (description).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_path</strong> – Folder path or ID</p></li>
+<li><p><strong>description</strong> – New description for the folder</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Result dict with updated metadata</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.upload_file">
+<span class="sig-name descname"><span class="pre">upload_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/microsoft/utils.html#OneDriveUtils.upload_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.upload_file" title="Link to this definition"></a></dt>
+<dd><p>Upload a file to OneDrive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_path</strong> – Local file path</p></li>
+<li><p><strong>remote_path</strong> – Remote path in OneDrive (e.g., “/Documents/myfile.txt”)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>File metadata dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.sync.microsoft">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lazarus_implementation_tools.sync.microsoft" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

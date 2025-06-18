@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.sync package &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.sync package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/lazarus_implementation_tools.sync.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="lazarus-implementation-tools-sync-package">
+<h1>lazarus_implementation_tools.sync package<a class="headerlink" href="#lazarus-implementation-tools-sync-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html">lazarus_implementation_tools.sync.firebase package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#module-lazarus_implementation_tools.sync.firebase.client">lazarus_implementation_tools.sync.firebase.client module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager"><code class="docutils literal notranslate"><span class="pre">FirebaseStorageManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.close_connection"><code class="docutils literal notranslate"><span class="pre">FirebaseStorageManager.close_connection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.copy_files"><code class="docutils literal notranslate"><span class="pre">FirebaseStorageManager.copy_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.delete_files_in_path"><code class="docutils literal notranslate"><span class="pre">FirebaseStorageManager.delete_files_in_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.download_all_files_from_path"><code class="docutils literal notranslate"><span class="pre">FirebaseStorageManager.download_all_files_from_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.exists"><code class="docutils literal notranslate"><span class="pre">FirebaseStorageManager.exists()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.get_presigned_url"><code class="docutils literal notranslate"><span class="pre">FirebaseStorageManager.get_presigned_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.is_folder"><code class="docutils literal notranslate"><span class="pre">FirebaseStorageManager.is_folder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.list_all_files_in_path"><code class="docutils literal notranslate"><span class="pre">FirebaseStorageManager.list_all_files_in_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.read_file_from_presigned_url"><code class="docutils literal notranslate"><span class="pre">FirebaseStorageManager.read_file_from_presigned_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.upload_file_to_path"><code class="docutils literal notranslate"><span class="pre">FirebaseStorageManager.upload_file_to_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.upload_folder_to_path"><code class="docutils literal notranslate"><span class="pre">FirebaseStorageManager.upload_folder_to_path()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#module-lazarus_implementation_tools.sync.firebase.utils">lazarus_implementation_tools.sync.firebase.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.copy"><code class="docutils literal notranslate"><span class="pre">copy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.delete"><code class="docutils literal notranslate"><span class="pre">delete()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.download"><code class="docutils literal notranslate"><span class="pre">download()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.file_exists"><code class="docutils literal notranslate"><span class="pre">file_exists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.get_url"><code class="docutils literal notranslate"><span class="pre">get_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.list_files"><code class="docutils literal notranslate"><span class="pre">list_files()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.upload"><code class="docutils literal notranslate"><span class="pre">upload()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lazarus_implementation_tools.sync.firebase.html#module-lazarus_implementation_tools.sync.firebase">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html">lazarus_implementation_tools.sync.gdrive package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#module-lazarus_implementation_tools.sync.gdrive.client">lazarus_implementation_tools.sync.gdrive.client module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveAPIError"><code class="docutils literal notranslate"><span class="pre">GoogleDriveAPIError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveAuthenticationError"><code class="docutils literal notranslate"><span class="pre">GoogleDriveAuthenticationError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient"><code class="docutils literal notranslate"><span class="pre">GoogleDriveClient</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.authenticate"><code class="docutils literal notranslate"><span class="pre">GoogleDriveClient.authenticate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.create_folder_wrapper"><code class="docutils literal notranslate"><span class="pre">GoogleDriveClient.create_folder_wrapper()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.create_sharing_link"><code class="docutils literal notranslate"><span class="pre">GoogleDriveClient.create_sharing_link()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.delete_item_wrapper"><code class="docutils literal notranslate"><span class="pre">GoogleDriveClient.delete_item_wrapper()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.download_file_wrapper"><code class="docutils literal notranslate"><span class="pre">GoogleDriveClient.download_file_wrapper()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.get_file_info"><code class="docutils literal notranslate"><span class="pre">GoogleDriveClient.get_file_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.get_info_from_google_url"><code class="docutils literal notranslate"><span class="pre">GoogleDriveClient.get_info_from_google_url()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.list_files"><code class="docutils literal notranslate"><span class="pre">GoogleDriveClient.list_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.search_files"><code class="docutils literal notranslate"><span class="pre">GoogleDriveClient.search_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.upload_file"><code class="docutils literal notranslate"><span class="pre">GoogleDriveClient.upload_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveRateLimitError"><code class="docutils literal notranslate"><span class="pre">GoogleDriveRateLimitError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#module-lazarus_implementation_tools.sync.gdrive.utils">lazarus_implementation_tools.sync.gdrive.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.utils.GoogleDriveUtils"><code class="docutils literal notranslate"><span class="pre">GoogleDriveUtils</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.utils.GoogleDriveUtils.authenticate"><code class="docutils literal notranslate"><span class="pre">GoogleDriveUtils.authenticate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.utils.GoogleDriveUtils.create_folder"><code class="docutils literal notranslate"><span class="pre">GoogleDriveUtils.create_folder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.utils.GoogleDriveUtils.create_sharing_link"><code class="docutils literal notranslate"><span class="pre">GoogleDriveUtils.create_sharing_link()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.utils.GoogleDriveUtils.delete_file"><code class="docutils literal notranslate"><span class="pre">GoogleDriveUtils.delete_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.utils.GoogleDriveUtils.delete_folder"><code class="docutils literal notranslate"><span class="pre">GoogleDriveUtils.delete_folder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.utils.GoogleDriveUtils.download_file"><code class="docutils literal notranslate"><span class="pre">GoogleDriveUtils.download_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.utils.GoogleDriveUtils.get_file_info"><code class="docutils literal notranslate"><span class="pre">GoogleDriveUtils.get_file_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.utils.GoogleDriveUtils.list_files"><code class="docutils literal notranslate"><span class="pre">GoogleDriveUtils.list_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.utils.GoogleDriveUtils.search_files"><code class="docutils literal notranslate"><span class="pre">GoogleDriveUtils.search_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.utils.GoogleDriveUtils.upload_file"><code class="docutils literal notranslate"><span class="pre">GoogleDriveUtils.upload_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lazarus_implementation_tools.sync.gdrive.html#module-lazarus_implementation_tools.sync.gdrive">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html">lazarus_implementation_tools.sync.microsoft package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#module-lazarus_implementation_tools.sync.microsoft.onedrive">lazarus_implementation_tools.sync.microsoft.onedrive module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveAPIError"><code class="docutils literal notranslate"><span class="pre">OneDriveAPIError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveAuthenticationError"><code class="docutils literal notranslate"><span class="pre">OneDriveAuthenticationError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient"><code class="docutils literal notranslate"><span class="pre">OneDriveClient</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.authenticate_with_code"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.authenticate_with_code()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.create_folder_wrapper"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.create_folder_wrapper()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.create_sharing_link"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.create_sharing_link()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.delete_folder"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.delete_folder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.delete_item_wrapper"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.delete_item_wrapper()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.download_file_wrapper"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.download_file_wrapper()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.get_file_info"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.get_file_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.get_item_by_id"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.get_item_by_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.get_item_by_path"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.get_item_by_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.list_children"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.list_children()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.list_files"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.list_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.move_item_wrapper"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.move_item_wrapper()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.refresh_access_token"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.refresh_access_token()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.rename_file"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.rename_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.rename_folder"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.rename_folder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.search_files"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.search_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.update_file_metadata"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.update_file_metadata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.update_folder_metadata"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.update_folder_metadata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveClient.upload_file"><code class="docutils literal notranslate"><span class="pre">OneDriveClient.upload_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.onedrive.OneDriveRateLimitError"><code class="docutils literal notranslate"><span class="pre">OneDriveRateLimitError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#module-lazarus_implementation_tools.sync.microsoft.utils">lazarus_implementation_tools.sync.microsoft.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.authenticate"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.authenticate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.create_folder"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.create_folder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.create_sharing_link"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.create_sharing_link()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.delete_file"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.delete_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.delete_folder"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.delete_folder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.download_file"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.download_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.get_file_info"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.get_file_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.list_files"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.list_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.move_file"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.move_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.rename_file"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.rename_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.rename_folder"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.rename_folder()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.search_files"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.search_files()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.update_file_metadata"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.update_file_metadata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.update_folder_metadata"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.update_folder_metadata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#lazarus_implementation_tools.sync.microsoft.utils.OneDriveUtils.upload_file"><code class="docutils literal notranslate"><span class="pre">OneDriveUtils.upload_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lazarus_implementation_tools.sync.microsoft.html#module-lazarus_implementation_tools.sync.microsoft">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-lazarus_implementation_tools.sync">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lazarus_implementation_tools.sync" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

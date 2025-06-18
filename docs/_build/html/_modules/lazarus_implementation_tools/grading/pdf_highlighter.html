@@ -1,0 +1,512 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.grading.pdf_highlighter &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="../../../index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.grading.pdf_highlighter</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for lazarus_implementation_tools.grading.pdf_highlighter</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">uuid</span><span class="w"> </span><span class="kn">import</span> <span class="n">uuid4</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">nicegui</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">ui</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pdf2image</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_from_path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lazarus_implementation_tools.file_system.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">file_exists</span><span class="p">,</span>
+    <span class="n">get_all_files_with_ext</span><span class="p">,</span>
+    <span class="n">get_filename</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lazarus_implementation_tools.transformations.pdf.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_number_of_pages</span>
+
+
+<div class="viewcode-block" id="Box">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.Box">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Box</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a rectangular box with coordinates and color.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the Box with left, top, bottom, right, and color.</span>
+
+<span class="sd">        :param left: The left coordinate of the box.</span>
+<span class="sd">        :param top: The top coordinate of the box.</span>
+<span class="sd">        :param bottom: The bottom coordinate of the box.</span>
+<span class="sd">        :param right: The right coordinate of the box.</span>
+<span class="sd">        :param color: The color of the box.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">left</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">top</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="n">bottom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">right</span>
+
+<div class="viewcode-block" id="Box.add_lower_right_corner">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.Box.add_lower_right_corner">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_lower_right_corner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds the lower right corner to the box.</span>
+
+<span class="sd">        :param x: The x-coordinate of the lower right corner.</span>
+<span class="sd">        :param y: The y-coordinate of the lower right corner.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">x</span></div>
+
+
+<div class="viewcode-block" id="Box.make_svg_string">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.Box.make_svg_string">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">make_svg_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates an SVG string representation of the box.</span>
+
+<span class="sd">        :returns: The SVG string.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># randomly assigning id with uuid</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;&lt;rect id=&quot;</span><span class="si">{</span><span class="n">uuid4</span><span class="p">()</span><span class="si">}</span><span class="s1">&quot; x=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="si">}</span><span class="s1">&quot; y=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="si">}</span><span class="s1">&quot; &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;width=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="si">}</span><span class="s1">&quot; height=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bottom</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">top</span><span class="si">}</span><span class="s1">&quot; &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;fill=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="si">}</span><span class="s1">&quot; opacity=&quot;0.5&quot; stroke=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="si">}</span><span class="s1">&quot; stroke-width=&quot;4&quot; &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;pointer-events=&quot;all&quot; cursor=&quot;pointer&quot; /&gt;&#39;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Box.get_coords_from_svg">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.Box.get_coords_from_svg">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_coords_from_svg</span><span class="p">(</span><span class="n">svg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extracts coordinates from an SVG string and returns them as a list of dictionaries.</span>
+
+<span class="sd">        :param svg: The SVG string.</span>
+
+<span class="sd">        :returns: A list of dictionaries with box coordinates.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># first break into boxes, then convert each box into a dict for saving</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[&lt;/&gt;]+&quot;</span><span class="p">,</span> <span class="n">svg</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># box svg strings</span>
+        <span class="n">boxes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+            <span class="n">chunks</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&quot;|&quot; &#39;</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="n">chunks</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">2</span><span class="p">][:</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">vals</span> <span class="o">=</span> <span class="n">chunks</span><span class="p">[</span><span class="mi">3</span><span class="p">::</span><span class="mi">2</span><span class="p">][:</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">unpacked</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]))</span>
+            <span class="n">bbox</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">unpacked</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]),</span> <span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">unpacked</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">])}</span>
+            <span class="n">bbox</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">unpacked</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">])</span>
+            <span class="n">bbox</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bbox</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">unpacked</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">])</span>
+            <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">boxes</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="AnnotationJob">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AnnotationJob</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handles the annotation of PDF files.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pdf_folder</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes the AnnotationJob with a folder containing PDF files.</span>
+
+<span class="sd">        :param pdf_folder: The path to the folder containing PDF files.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pdf_folder</span> <span class="o">=</span> <span class="n">pdf_folder</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pdf_files</span> <span class="o">=</span> <span class="n">get_all_files_with_ext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdf_folder</span><span class="p">,</span> <span class="s2">&quot;pdf&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotation_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdf_folder</span><span class="p">,</span> <span class="s2">&quot;annotations.json&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">box_color</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pdf_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdf_files</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># 0 Index paging</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_image_boxes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># list of box svg strings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_box</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Box instance</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">svg_strings</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_annotations</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_pdf</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_page</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">build_ui</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AnnotationJob.build_ui">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.build_ui">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the user interface using NiceGUI components.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">ui</span><span class="o">.</span><span class="n">row</span><span class="p">()</span><span class="o">.</span><span class="n">classes</span><span class="p">(</span><span class="s2">&quot;w-full&quot;</span><span class="p">):</span>
+            <span class="n">ui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">previous_pdf</span><span class="p">)</span>
+            <span class="n">ui</span><span class="o">.</span><span class="n">label</span><span class="p">()</span><span class="o">.</span><span class="n">classes</span><span class="p">(</span><span class="s2">&quot;text-4xl font-extrabold&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">bind_text_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;pdf_index_label&quot;</span><span class="p">)</span>
+            <span class="n">ui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_pdf</span><span class="p">)</span>
+            <span class="n">ui</span><span class="o">.</span><span class="n">label</span><span class="p">()</span><span class="o">.</span><span class="n">classes</span><span class="p">(</span><span class="s2">&quot;text-4xl font-extrabold&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">bind_text_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;filename_label&quot;</span><span class="p">)</span>
+            <span class="n">ui</span><span class="o">.</span><span class="n">space</span><span class="p">()</span>
+            <span class="n">ui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="s2">&quot;Done&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">ui</span><span class="o">.</span><span class="n">row</span><span class="p">()</span><span class="o">.</span><span class="n">classes</span><span class="p">(</span><span class="s2">&quot;w-full border&quot;</span><span class="p">):</span>
+            <span class="n">ui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">previous</span><span class="p">)</span>
+            <span class="n">ui</span><span class="o">.</span><span class="n">label</span><span class="p">()</span><span class="o">.</span><span class="n">classes</span><span class="p">(</span>
+                <span class="s2">&quot;inline-flex items-center items-middle text-2xl font-bold&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">bind_text_from</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;page_label&quot;</span><span class="p">)</span>
+            <span class="n">ui</span><span class="o">.</span><span class="n">button</span><span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next</span><span class="p">)</span>
+            <span class="n">ui</span><span class="o">.</span><span class="n">space</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_image</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">interactive_image</span><span class="p">(</span>
+            <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image</span><span class="p">,</span>
+            <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_svg_string</span><span class="p">,</span>
+            <span class="n">events</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mousedown&quot;</span><span class="p">,</span> <span class="s2">&quot;mouseup&quot;</span><span class="p">],</span>
+            <span class="n">on_mouse</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mouse_handler</span><span class="p">,</span>
+            <span class="n">cross</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_image</span><span class="o">.</span><span class="n">bind_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;current_image&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_image</span><span class="o">.</span><span class="n">bind_content</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;current_svg_string&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display_image</span><span class="o">.</span><span class="n">on</span><span class="p">(</span>
+            <span class="s2">&quot;svg:pointerdown&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_box_by_id</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;element_id&quot;</span><span class="p">])</span>
+        <span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">page_label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the current page number and total number of pages.</span>
+
+<span class="sd">        :returns: The page label string.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Page Number: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">page_count</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">filename_label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the current PDF filename.</span>
+
+<span class="sd">        :returns: The filename label string.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_filename</span><span class="si">}</span><span class="s2">.pdf&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pdf_index_label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the current PDF index and total number of PDF files.</span>
+
+<span class="sd">        :returns: The PDF index label string.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_index</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdf_files</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="AnnotationJob.load_annotations">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_annotations">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads annotations from a JSON file.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">file_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotation_file</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotation_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotation_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({}))</span>
+
+        <span class="c1"># Build svg_strings from annotations</span>
+        <span class="k">for</span> <span class="n">pdf_filename</span><span class="p">,</span> <span class="n">page_dict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">svg_strings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pdf_filename</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">svg_strings</span><span class="p">[</span><span class="n">pdf_filename</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">page_number</span><span class="p">,</span> <span class="n">coordinates</span> <span class="ow">in</span> <span class="n">page_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">coordinate_set</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">:</span>
+                    <span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span>
+                        <span class="n">left</span><span class="o">=</span><span class="n">coordinate_set</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">],</span>
+                        <span class="n">top</span><span class="o">=</span><span class="n">coordinate_set</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">],</span>
+                        <span class="n">right</span><span class="o">=</span><span class="n">coordinate_set</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">],</span>
+                        <span class="n">bottom</span><span class="o">=</span><span class="n">coordinate_set</span><span class="p">[</span><span class="s2">&quot;bottom&quot;</span><span class="p">],</span>
+                    <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">svg_strings</span><span class="p">[</span><span class="n">pdf_filename</span><span class="p">][</span><span class="n">page_number</span><span class="p">]</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">make_svg_string</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.save_annotations">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.save_annotations">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_annotations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Saves annotations to a JSON file.&quot;&quot;&quot;</span>
+        <span class="n">ui</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="s2">&quot;Saving Annotations&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dump_svg</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">pdf_filename</span><span class="p">,</span> <span class="n">page_dict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">svg_strings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pdf_filename</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="n">pdf_filename</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">page_number</span><span class="p">,</span> <span class="n">svg_string</span> <span class="ow">in</span> <span class="n">page_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="n">pdf_filename</span><span class="p">][</span><span class="n">page_number</span><span class="p">]</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="n">get_coords_from_svg</span><span class="p">(</span><span class="n">svg_string</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotation_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">annotations</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.load_pdf">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_pdf">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads the current PDF file.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_filename</span> <span class="o">=</span> <span class="n">get_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdf_files</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_index</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">page_count</span> <span class="o">=</span> <span class="n">get_number_of_pages</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdf_files</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_index</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.load_page">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_page">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_page</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads the current page of the PDF file.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_page_image</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_svg_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_svg</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_image_boxes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_image_boxes</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.load_page_image">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_page_image">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_page_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads the current page image from the PDF file.&quot;&quot;&quot;</span>
+        <span class="n">pdf_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pdf_files</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_index</span><span class="p">]</span>
+
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">path</span><span class="p">:</span>
+            <span class="n">images</span> <span class="o">=</span> <span class="n">convert_from_path</span><span class="p">(</span>
+                <span class="n">pdf_path</span><span class="p">,</span>
+                <span class="n">first_page</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># Convert 0 index to 1 index</span>
+                <span class="n">last_page</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># Convert 0 index to 1 index</span>
+                <span class="n">output_folder</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_image</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span></div>
+
+
+    <span class="c1"># Buttons</span>
+<div class="viewcode-block" id="AnnotationJob.next_pdf">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.next_pdf">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">next_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Moves to the next PDF file.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_index</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdf_files</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_annotations</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_index</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_pdf</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_page</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.previous_pdf">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.previous_pdf">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">previous_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Moves to the previous PDF file.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_annotations</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_index</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_pdf</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_page</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.next">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.next">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Moves to the next page of the current PDF file.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">page_count</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dump_svg</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_page</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.previous">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.previous">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">previous</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Moves to the previous page of the current PDF file.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dump_svg</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_page</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_page</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.done">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.done">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Saves the annotations and shuts down the application.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_annotations</span><span class="p">()</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.mouse_handler">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.mouse_handler">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mouse_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">MouseEventArguments</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handles mouse events on the image.</span>
+
+<span class="sd">        :param e: The mouse event arguments.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">image_x</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">image_y</span>
+        <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;mousedown&quot;</span><span class="p">:</span>
+            <span class="c1"># mark the spot! this will get cleaned out once &#39;content&#39; is rebuilt</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_svg_string</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;&lt;circle cx=&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1">&quot; cy=&quot;</span><span class="si">{</span><span class="n">y</span><span class="si">}</span><span class="s1">&quot; r=&quot;15&quot; fill=&quot;none&quot; stroke=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">box_color</span><span class="si">}</span><span class="s1">&quot; stroke-width=&quot;4&quot;/&gt;&#39;</span>
+            <span class="c1"># initialize a box</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">active_box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">box_color</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">e</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;mouseup&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">active_box</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">active_box</span><span class="o">.</span><span class="n">add_lower_right_corner</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_active_box</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">active_box</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_current_svg_string</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_current_svg_string</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.add_active_box">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.add_active_box">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_active_box</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds the active box to the current image boxes.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_image_boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">active_box</span><span class="o">.</span><span class="n">make_svg_string</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">active_box</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.remove_box_by_id">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.remove_box_by_id">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove_box_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Removes a box by its ID.</span>
+
+<span class="sd">        :param id: The ID of the box to remove.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_image_boxes</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">box</span> <span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_image_boxes</span> <span class="k">if</span> <span class="sa">f</span><span class="s1">&#39;id=&quot;</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">box</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rebuild_current_svg_string</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.rebuild_current_svg_string">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.rebuild_current_svg_string">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rebuild_current_svg_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Rebuilds the current SVG string from the current image boxes.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_svg_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_image_boxes</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.load_svg">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_svg">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_svg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads the SVG string for the current page.</span>
+
+<span class="sd">        :returns: The SVG string.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_filename</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">svg_strings</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">svg_strings</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_filename</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.dump_svg">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.dump_svg">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dump_svg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dumps the current SVG string for the current page.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_filename</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">svg_strings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">svg_strings</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_filename</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">svg_strings</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_pdf_filename</span><span class="p">][</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_page</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_svg_string</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AnnotationJob.load_image_boxes">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.grading.html#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_image_boxes">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_image_boxes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads the image boxes from the current SVG string.</span>
+
+<span class="sd">        :returns: A list of SVG strings for each image box.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># we only stored the svg string, so need to convert them back to individual box svg strings</span>
+        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="n">element</span><span class="si">}</span><span class="s2">/&gt;&quot;</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[&lt;/&gt;]+&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_svg_string</span><span class="p">)]</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

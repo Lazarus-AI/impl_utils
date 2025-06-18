@@ -1,0 +1,29 @@
+lazarus\_implementation\_tools.transformations.ocr package
+==========================================================
+
+Submodules
+----------
+
+lazarus\_implementation\_tools.transformations.ocr.easyocr module
+-----------------------------------------------------------------
+
+.. automodule:: lazarus_implementation_tools.transformations.ocr.easyocr
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+lazarus\_implementation\_tools.transformations.ocr.utils module
+---------------------------------------------------------------
+
+.. automodule:: lazarus_implementation_tools.transformations.ocr.utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: lazarus_implementation_tools.transformations.ocr
+   :members:
+   :show-inheritance:
+   :undoc-members:

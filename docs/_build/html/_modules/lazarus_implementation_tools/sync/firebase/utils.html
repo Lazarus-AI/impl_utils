@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.sync.firebase.utils &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="../../../../index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.sync.firebase.utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for lazarus_implementation_tools.sync.firebase.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os.path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lazarus_implementation_tools.config</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DOWNLOAD_FOLDER</span><span class="p">,</span>
+    <span class="n">FIREBASE_PERSONAL_ROOT_FOLDER</span><span class="p">,</span>
+    <span class="n">FIREBASE_STORAGE_URL</span><span class="p">,</span>
+    <span class="n">WORKING_FOLDER</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lazarus_implementation_tools.sync.firebase.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">FirebaseStorageManager</span>
+
+
+<div class="viewcode-block" id="list_files">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.list_files">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_files</span><span class="p">(</span><span class="n">firebase_path</span><span class="o">=</span><span class="n">FIREBASE_PERSONAL_ROOT_FOLDER</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lists all files in the specified Firebase path.</span>
+
+<span class="sd">    :param firebase_path: (str) The Firebase path to list files from.</span>
+<span class="sd">    :param recursive: (bool) If True, include subdirectories; otherwise, only list files</span>
+<span class="sd">        in the specified directory.</span>
+
+<span class="sd">    :returns: (list) A list of file paths.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">firebase_manager</span> <span class="o">=</span> <span class="n">FirebaseStorageManager</span><span class="p">(</span><span class="n">FIREBASE_STORAGE_URL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">firebase_manager</span><span class="o">.</span><span class="n">list_all_files_in_path</span><span class="p">(</span><span class="n">firebase_path</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="file_exists">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.file_exists">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">file_exists</span><span class="p">(</span><span class="n">firebase_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checks if a file or folder exists in the specified Firebase path.</span>
+
+<span class="sd">    :param firebase_path: (str) The Firebase path to check.</span>
+
+<span class="sd">    :returns: (bool) True if the file or folder exists, False otherwise.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">firebase_manager</span> <span class="o">=</span> <span class="n">FirebaseStorageManager</span><span class="p">(</span><span class="n">FIREBASE_STORAGE_URL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">firebase_manager</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">firebase_path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="upload">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.upload">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">upload</span><span class="p">(</span><span class="n">local_path</span><span class="o">=</span><span class="n">WORKING_FOLDER</span><span class="p">,</span> <span class="n">firebase_path</span><span class="o">=</span><span class="n">FIREBASE_PERSONAL_ROOT_FOLDER</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Uploads a local file or folder to the specified Firebase path.</span>
+
+<span class="sd">    :param local_path: (str) The local file or folder path to upload.</span>
+<span class="sd">    :param firebase_path: (str) The Firebase path to upload the file or folder to.</span>
+<span class="sd">    :param recursive: (bool) If True, upload subdirectories; otherwise, only upload</span>
+<span class="sd">        files in the specified directory.</span>
+
+<span class="sd">    :returns: (list) A list of tuples containing the input file path and the destination</span>
+<span class="sd">        blob name.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">firebase_manager</span> <span class="o">=</span> <span class="n">FirebaseStorageManager</span><span class="p">(</span><span class="n">FIREBASE_STORAGE_URL</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">local_path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">firebase_manager</span><span class="o">.</span><span class="n">upload_folder_to_path</span><span class="p">(</span>
+            <span class="n">firebase_path</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">firebase_manager</span><span class="o">.</span><span class="n">upload_file_to_path</span><span class="p">(</span><span class="n">firebase_path</span><span class="p">,</span> <span class="n">local_path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="download">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.download">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">download</span><span class="p">(</span><span class="n">local_path</span><span class="o">=</span><span class="n">DOWNLOAD_FOLDER</span><span class="p">,</span> <span class="n">firebase_path</span><span class="o">=</span><span class="n">FIREBASE_PERSONAL_ROOT_FOLDER</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Downloads files from the specified Firebase path to the local folder.</span>
+
+<span class="sd">    :param local_path: (str) The local folder to download files to.</span>
+<span class="sd">    :param firebase_path: (str) The Firebase path to download files from.</span>
+
+<span class="sd">    :returns: (list) A list of tuples containing the original file path and the local</span>
+<span class="sd">        file path.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">firebase_manager</span> <span class="o">=</span> <span class="n">FirebaseStorageManager</span><span class="p">(</span><span class="n">FIREBASE_STORAGE_URL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">firebase_manager</span><span class="o">.</span><span class="n">download_all_files_from_path</span><span class="p">(</span><span class="n">firebase_path</span><span class="p">,</span> <span class="n">local_path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="copy">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.copy">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="n">firebase_source_path</span><span class="p">,</span> <span class="n">firebase_destination_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Copies files from the specified Firebase source path to the specified Firebase destination path.</span>
+
+<span class="sd">    :param firebase_source_path: (str) The Firebase source path to copy files from.</span>
+<span class="sd">    :param firebase_destination_path: (str) The Firebase destination path to copy files</span>
+<span class="sd">        to.</span>
+
+<span class="sd">    :returns: (list) A list of tuples containing the source file name and the</span>
+<span class="sd">        destination file name.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">firebase_manager</span> <span class="o">=</span> <span class="n">FirebaseStorageManager</span><span class="p">(</span><span class="n">FIREBASE_STORAGE_URL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">firebase_manager</span><span class="o">.</span><span class="n">copy_files</span><span class="p">(</span><span class="n">firebase_source_path</span><span class="p">,</span> <span class="n">firebase_destination_path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="delete">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.delete">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="n">firebase_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deletes all files in the specified Firebase path.</span>
+
+<span class="sd">    :param firebase_path: (str) The Firebase path to delete files from.</span>
+
+<span class="sd">    :returns: (list) A list of deleted file names.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">firebase_manager</span> <span class="o">=</span> <span class="n">FirebaseStorageManager</span><span class="p">(</span><span class="n">FIREBASE_STORAGE_URL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">firebase_manager</span><span class="o">.</span><span class="n">delete_files_in_path</span><span class="p">(</span><span class="n">firebase_path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_url">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.utils.get_url">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_url</span><span class="p">(</span><span class="n">firebase_path</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generates a presigned URL for accessing a file in the specified Firebase path.</span>
+
+<span class="sd">    :param firebase_path: (str) The Firebase path to the file.</span>
+
+<span class="sd">    :returns: (str) The presigned URL, or None if the file does not exist.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">firebase_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">FIREBASE_PERSONAL_ROOT_FOLDER</span><span class="p">,</span> <span class="n">firebase_path</span><span class="p">)</span>
+    <span class="n">firebase_manager</span> <span class="o">=</span> <span class="n">FirebaseStorageManager</span><span class="p">(</span><span class="n">FIREBASE_STORAGE_URL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">firebase_manager</span><span class="o">.</span><span class="n">get_presigned_url</span><span class="p">(</span><span class="n">firebase_path</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,227 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.models.utils &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="../../../index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.models.utils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for lazarus_implementation_tools.models.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lazarus_implementation_tools.models.apis</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ModelAPI</span><span class="p">,</span>
+    <span class="n">Rikai2</span><span class="p">,</span>
+    <span class="n">RikaiExtract</span><span class="p">,</span>
+    <span class="n">Riky2</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lazarus_implementation_tools.models.batching</span><span class="w"> </span><span class="kn">import</span> <span class="n">Batcher</span>
+
+
+<div class="viewcode-block" id="query_rikai2">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.utils.query_rikai2">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">query_rikai2</span><span class="p">(</span>
+    <span class="n">file_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+    <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">org_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">webhook</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_file_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">advanced_explainability</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">advanced_vision</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">force_ocr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ModelAPI</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Queries the Rikai2 model API for the given file path(s) and prompt.</span>
+
+<span class="sd">    :param file_path: The path to a single file or a list of file paths.</span>
+<span class="sd">    :param prompt: The prompt to pass to the Rikai2 model API.</span>
+<span class="sd">    :param url: Model url, Optional defaults to environment file.</span>
+<span class="sd">    :param org_id: Org ID for request, Optional defaults to environment file.</span>
+<span class="sd">    :param auth_key: Auth Key for request, Optional defaults to environment file.</span>
+<span class="sd">    :param webhook: Webhook url for request, Optional defaults to environment file.</span>
+<span class="sd">    :param return_file_name: The name you want to give the return file (No Extension),</span>
+<span class="sd">        Optional defaults to FILENAME_MODEL</span>
+<span class="sd">    :param advanced_explainability: Whether to user advanced_explainability, Optional</span>
+<span class="sd">        defaults to False</span>
+<span class="sd">    :param advanced_vision: Whether to user advanced_vision, Optional defaults to False</span>
+<span class="sd">    :param force_ocr: Whether to force ocr, Optional defaults to False</span>
+<span class="sd">    :param verbose: Whether to return verbose output, Optional defaults to True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_api</span> <span class="o">=</span> <span class="n">Rikai2</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">org_id</span><span class="o">=</span><span class="n">org_id</span><span class="p">,</span> <span class="n">auth_key</span><span class="o">=</span><span class="n">auth_key</span><span class="p">,</span> <span class="n">webhook</span><span class="o">=</span><span class="n">webhook</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_file_name</span><span class="p">:</span>
+        <span class="n">model_api</span><span class="o">.</span><span class="n">return_file_name</span> <span class="o">=</span> <span class="n">return_file_name</span>
+    <span class="n">model_api</span><span class="o">.</span><span class="n">advanced_explainability</span> <span class="o">=</span> <span class="n">advanced_explainability</span>
+    <span class="n">model_api</span><span class="o">.</span><span class="n">advanced_vision</span> <span class="o">=</span> <span class="n">advanced_vision</span>
+    <span class="n">model_api</span><span class="o">.</span><span class="n">force_ocr</span> <span class="o">=</span> <span class="n">force_ocr</span>
+    <span class="n">model_api</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+    <span class="n">batch</span> <span class="o">=</span> <span class="n">Batcher</span><span class="p">(</span><span class="n">model_api</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">prompt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">batch</span><span class="o">.</span><span class="n">run</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="query_riky2">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.utils.query_riky2">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">query_riky2</span><span class="p">(</span>
+    <span class="n">file_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+    <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">org_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">webhook</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_file_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ModelAPI</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Queries the Riky2 model API for the given file path(s) and prompt.</span>
+
+<span class="sd">    :param file_path: The path to a single file or a list of file paths.</span>
+<span class="sd">    :param prompt: The prompt to pass to the Riky2 model API.</span>
+<span class="sd">    :param url: Model url, Optional defaults to environment file.</span>
+<span class="sd">    :param org_id: Org ID for request, Optional defaults to environment file.</span>
+<span class="sd">    :param auth_key: Auth Key for request, Optional defaults to environment file.</span>
+<span class="sd">    :param webhook: Webhook url for request, Optional defaults to environment file.</span>
+<span class="sd">    :param return_file_name: The name you want to give the return file (No Extension),</span>
+<span class="sd">        Optional defaults to FILENAME_MODEL</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_api</span> <span class="o">=</span> <span class="n">Riky2</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">org_id</span><span class="o">=</span><span class="n">org_id</span><span class="p">,</span> <span class="n">auth_key</span><span class="o">=</span><span class="n">auth_key</span><span class="p">,</span> <span class="n">webhook</span><span class="o">=</span><span class="n">webhook</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_file_name</span><span class="p">:</span>
+        <span class="n">model_api</span><span class="o">.</span><span class="n">return_file_name</span> <span class="o">=</span> <span class="n">return_file_name</span>
+    <span class="n">batch</span> <span class="o">=</span> <span class="n">Batcher</span><span class="p">(</span><span class="n">model_api</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">prompt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">batch</span><span class="o">.</span><span class="n">run</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="query_rikai_extract">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.utils.query_rikai_extract">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">query_rikai_extract</span><span class="p">(</span>
+    <span class="n">file_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+    <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">org_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">webhook</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_file_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ModelAPI</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Queries the RikaiExtract model API for the given file path(s) and prompt.</span>
+
+<span class="sd">    :param file_path: The path to a single file or a list of file paths.</span>
+<span class="sd">    :param prompt: The prompt to pass to the RikaiExtract model API.</span>
+<span class="sd">    :param url: Model url, Optional defaults to environment file.</span>
+<span class="sd">    :param org_id: Org ID for request, Optional defaults to environment file.</span>
+<span class="sd">    :param auth_key: Auth Key for request, Optional defaults to environment file.</span>
+<span class="sd">    :param webhook: Webhook url for request, Optional defaults to environment file.</span>
+<span class="sd">    :param return_file_name: The name you want to give the return file (No Extension),</span>
+<span class="sd">        Optional defaults to FILENAME_MODEL</span>
+<span class="sd">    :param return_confidence: Whether to return confidence scores, Optional defaults to</span>
+<span class="sd">        True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_api</span> <span class="o">=</span> <span class="n">RikaiExtract</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">org_id</span><span class="o">=</span><span class="n">org_id</span><span class="p">,</span> <span class="n">auth_key</span><span class="o">=</span><span class="n">auth_key</span><span class="p">,</span> <span class="n">webhook</span><span class="o">=</span><span class="n">webhook</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_file_name</span><span class="p">:</span>
+        <span class="n">model_api</span><span class="o">.</span><span class="n">return_file_name</span> <span class="o">=</span> <span class="n">return_file_name</span>
+    <span class="n">model_api</span><span class="o">.</span><span class="n">return_confidence</span> <span class="o">=</span> <span class="n">return_confidence</span>
+    <span class="n">batch</span> <span class="o">=</span> <span class="n">Batcher</span><span class="p">(</span><span class="n">model_api</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">prompt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">batch</span><span class="o">.</span><span class="n">run</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>
