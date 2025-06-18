@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.sync.firebase.client &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="../../../../index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.sync.firebase.client</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for lazarus_implementation_tools.sync.firebase.client</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">firebase_admin</span><span class="w"> </span><span class="kn">import</span> <span class="n">credentials</span><span class="p">,</span> <span class="n">delete_app</span><span class="p">,</span> <span class="n">get_app</span><span class="p">,</span> <span class="n">initialize_app</span><span class="p">,</span> <span class="n">storage</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lazarus_implementation_tools.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">FIREBASE_KEY</span><span class="p">,</span> <span class="n">WORKING_FOLDER</span>
+
+<span class="n">cred</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">Certificate</span><span class="p">(</span><span class="n">FIREBASE_KEY</span><span class="p">)</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="FirebaseStorageManager">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FirebaseStorageManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for managing Firebase storage operations.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storage_url</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes a new instance of the FirebaseStorageManager class.</span>
+
+<span class="sd">        :param storage_url: (str) The URL of the Firebase storage bucket.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">initialize_app</span><span class="p">(</span><span class="n">cred</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage_url</span> <span class="o">=</span> <span class="n">storage_url</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">bucket</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">storage_url</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FirebaseStorageManager.is_folder">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.is_folder">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if the blob is a folder.</span>
+
+<span class="sd">        :param blob: (google.cloud.storage.blob.Blob) The blob to check.</span>
+
+<span class="sd">        :returns: (bool) True if the blob is a folder, False otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FirebaseStorageManager.exists">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.exists">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if a file or folder exists in the specified path.</span>
+
+<span class="sd">        :param data_path: (str) The path to check.</span>
+
+<span class="sd">        :returns: (bool) True if the file or folder exists, False otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">blob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">blob</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">blob</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="FirebaseStorageManager.list_all_files_in_path">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.list_all_files_in_path">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">list_all_files_in_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Lists all files in the specified path.</span>
+
+<span class="sd">        :param data_path: (str) The path to list files from.</span>
+<span class="sd">        :param recursive: (bool) If True, include subdirectories; otherwise, only list</span>
+<span class="sd">            files in the specified directory.</span>
+
+<span class="sd">        :returns: (list) A list of file paths.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">blobs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
+        <span class="n">file_paths</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">blobs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
+                <span class="n">file_path</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">recursive</span> <span class="ow">and</span> <span class="s2">&quot;/&quot;</span> <span class="ow">in</span> <span class="n">file_path</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">file_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">file_paths</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="FirebaseStorageManager.download_all_files_from_path">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.download_all_files_from_path">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">download_all_files_from_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">local_folder</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Downloads all files from the specified path to the local folder.</span>
+
+<span class="sd">        :param data_path: (str) The path to download files from.</span>
+<span class="sd">        :param local_folder: (str) The local folder to download files to.</span>
+
+<span class="sd">        :returns: (list) A list of tuples containing the original file path and the</span>
+<span class="sd">            local file path.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">local_folder</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">local_folder</span><span class="p">)</span>
+
+        <span class="n">blobs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">blobs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_folder</span><span class="p">(</span><span class="n">blob</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">local_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">local_folder</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">local_file_path</span><span class="p">))</span>
+            <span class="n">blob</span><span class="o">.</span><span class="n">download_to_filename</span><span class="p">(</span><span class="n">local_file_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="FirebaseStorageManager.upload_file_to_path">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.upload_file_to_path">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">upload_file_to_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">local_file_path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Uploads a file to the specified path.</span>
+
+<span class="sd">        :param data_path: (str) The path to upload the file to.</span>
+<span class="sd">        :param local_file_path: (str) The local file path to upload.</span>
+
+<span class="sd">        :returns: (tuple) A tuple containing the input file path and the destination</span>
+<span class="sd">            blob name.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">relative_dir_path</span> <span class="o">=</span> <span class="n">local_file_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">WORKING_FOLDER</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">upload_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">relative_dir_path</span><span class="p">))</span>
+        <span class="n">blob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">blob</span><span class="p">(</span><span class="n">upload_path</span><span class="p">)</span>
+        <span class="n">blob</span><span class="o">.</span><span class="n">upload_from_filename</span><span class="p">(</span><span class="n">local_file_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">local_file_path</span><span class="p">,</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span></div>
+
+
+<div class="viewcode-block" id="FirebaseStorageManager.upload_folder_to_path">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.upload_folder_to_path">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">upload_folder_to_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">local_folder</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Uploads a folder to the specified path.</span>
+
+<span class="sd">        :param data_path: (str) The path to upload the folder to.</span>
+<span class="sd">        :param local_folder: (str) The local folder to upload.</span>
+<span class="sd">        :param recursive: (bool) If True, upload subdirectories; otherwise, only upload</span>
+<span class="sd">            files in the specified directory.</span>
+
+<span class="sd">        :returns: (list) A list of tuples containing the input file path and the</span>
+<span class="sd">            destination blob name.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">local_folder</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">results</span>
+
+        <span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">local_folder</span><span class="si">}</span><span class="s2">/**&quot;</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="n">recursive</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">input_file</span><span class="p">,</span> <span class="n">destination</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upload_file_to_path</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">input_file</span><span class="p">,</span> <span class="n">destination</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="FirebaseStorageManager.delete_files_in_path">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.delete_files_in_path">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_files_in_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Deletes all files in the specified path.</span>
+
+<span class="sd">        :param data_path: (str) The path to delete files from.</span>
+
+<span class="sd">        :returns: (list) A list of deleted file names.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">blobs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">blobs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">blob</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="FirebaseStorageManager.get_presigned_url">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.get_presigned_url">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_presigned_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">expiration</span><span class="o">=</span><span class="mi">3600</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generates a presigned URL for accessing a file.</span>
+
+<span class="sd">        :param data_path: (str) The path to the file.</span>
+<span class="sd">        :param expiration: (int) The expiration time in seconds for the presigned URL.</span>
+
+<span class="sd">        :returns: (str) The presigned URL, or None if the file does not exist.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data_path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">presigned_url</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">bucket</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">storage_url</span><span class="p">)</span>
+        <span class="n">blobs</span> <span class="o">=</span> <span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">blobs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">data_path</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">presigned_url</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">generate_signed_url</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;v4&quot;</span><span class="p">,</span> <span class="n">expiration</span><span class="o">=</span><span class="n">expiration</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">presigned_url</span></div>
+
+
+    <span class="c1"># Read content of a file from a presigned URL</span>
+<div class="viewcode-block" id="FirebaseStorageManager.read_file_from_presigned_url">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.read_file_from_presigned_url">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">read_file_from_presigned_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">presigned_url</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads content of a file from a presigned URL.</span>
+
+<span class="sd">        :param presigned_url: (str) The presigned URL of the file to be read.</span>
+
+<span class="sd">        :returns: str: The content of the file, or an error message.</span>
+
+<span class="sd">        :raises requests.exceptions.RequestException: If an error occurs during the HTTP</span>
+<span class="sd">            request.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">presigned_url</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Raise an exception for HTTP errors</span>
+            <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)},</span> <span class="mi">500</span></div>
+
+
+<div class="viewcode-block" id="FirebaseStorageManager.copy_files">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.copy_files">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">destination_folder</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Copies files from the specified path to a destination folder.</span>
+
+<span class="sd">        :param data_path: (str) The path to copy files from.</span>
+<span class="sd">        :param destination_folder: (str) The destination folder to copy files to.</span>
+
+<span class="sd">        :returns: (list) A list of tuples containing the source file name and the</span>
+<span class="sd">            destination file name.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">destination_bucket</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">bucket</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">storage_url</span><span class="p">)</span>
+
+        <span class="n">blobs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">data_path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">blobs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">data_path</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="n">source_blob_name</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span> <span class="p">:]</span>
+            <span class="n">source_blob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bucket</span><span class="o">.</span><span class="n">blob</span><span class="p">(</span><span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">destination_blob_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">destination_folder</span><span class="si">}{</span><span class="n">source_blob_name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">destination_blob</span> <span class="o">=</span> <span class="n">destination_bucket</span><span class="o">.</span><span class="n">blob</span><span class="p">(</span><span class="n">destination_blob_name</span><span class="p">)</span>
+            <span class="n">destination_blob</span><span class="o">.</span><span class="n">upload_from_string</span><span class="p">(</span><span class="n">source_blob</span><span class="o">.</span><span class="n">download_as_bytes</span><span class="p">())</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">source_blob_name</span><span class="p">,</span> <span class="n">destination_blob_name</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+
+
+    <span class="c1"># Close the Firebase connection</span>
+<div class="viewcode-block" id="FirebaseStorageManager.close_connection">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.firebase.html#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.close_connection">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes the Firebase connection.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">app</span> <span class="o">=</span> <span class="n">get_app</span><span class="p">()</span>
+            <span class="n">delete_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Firebase connection closed.&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No active Firebase app to close.&quot;</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

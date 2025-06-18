@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.grading package &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.grading package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/lazarus_implementation_tools.grading.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="lazarus-implementation-tools-grading-package">
+<h1>lazarus_implementation_tools.grading package<a class="headerlink" href="#lazarus-implementation-tools-grading-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-lazarus_implementation_tools.grading.pdf_highlighter">
+<span id="lazarus-implementation-tools-grading-pdf-highlighter-module"></span><h2>lazarus_implementation_tools.grading.pdf_highlighter module<a class="headerlink" href="#module-lazarus_implementation_tools.grading.pdf_highlighter" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.grading.pdf_highlighter.</span></span><span class="sig-name descname"><span class="pre">AnnotationJob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handles the annotation of PDF files.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.add_active_box">
+<span class="sig-name descname"><span class="pre">add_active_box</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.add_active_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.add_active_box" title="Link to this definition"></a></dt>
+<dd><p>Adds the active box to the current image boxes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.build_ui">
+<span class="sig-name descname"><span class="pre">build_ui</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.build_ui"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.build_ui" title="Link to this definition"></a></dt>
+<dd><p>Builds the user interface using NiceGUI components.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.done">
+<span class="sig-name descname"><span class="pre">done</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.done"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.done" title="Link to this definition"></a></dt>
+<dd><p>Saves the annotations and shuts down the application.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.dump_svg">
+<span class="sig-name descname"><span class="pre">dump_svg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.dump_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.dump_svg" title="Link to this definition"></a></dt>
+<dd><p>Dumps the current SVG string for the current page.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.filename_label">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filename_label</span></span><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.filename_label" title="Link to this definition"></a></dt>
+<dd><p>Returns the current PDF filename.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The filename label string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_annotations">
+<span class="sig-name descname"><span class="pre">load_annotations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.load_annotations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_annotations" title="Link to this definition"></a></dt>
+<dd><p>Loads annotations from a JSON file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_image_boxes">
+<span class="sig-name descname"><span class="pre">load_image_boxes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.load_image_boxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_image_boxes" title="Link to this definition"></a></dt>
+<dd><p>Loads the image boxes from the current SVG string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A list of SVG strings for each image box.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_page">
+<span class="sig-name descname"><span class="pre">load_page</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.load_page"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_page" title="Link to this definition"></a></dt>
+<dd><p>Loads the current page of the PDF file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_page_image">
+<span class="sig-name descname"><span class="pre">load_page_image</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.load_page_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_page_image" title="Link to this definition"></a></dt>
+<dd><p>Loads the current page image from the PDF file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_pdf">
+<span class="sig-name descname"><span class="pre">load_pdf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.load_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_pdf" title="Link to this definition"></a></dt>
+<dd><p>Loads the current PDF file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_svg">
+<span class="sig-name descname"><span class="pre">load_svg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.load_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.load_svg" title="Link to this definition"></a></dt>
+<dd><p>Loads the SVG string for the current page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The SVG string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.mouse_handler">
+<span class="sig-name descname"><span class="pre">mouse_handler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MouseEventArguments</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.mouse_handler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.mouse_handler" title="Link to this definition"></a></dt>
+<dd><p>Handles mouse events on the image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>e</strong> – The mouse event arguments.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.next">
+<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.next" title="Link to this definition"></a></dt>
+<dd><p>Moves to the next page of the current PDF file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.next_pdf">
+<span class="sig-name descname"><span class="pre">next_pdf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.next_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.next_pdf" title="Link to this definition"></a></dt>
+<dd><p>Moves to the next PDF file.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.page_label">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">page_label</span></span><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.page_label" title="Link to this definition"></a></dt>
+<dd><p>Returns the current page number and total number of pages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The page label string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.pdf_index_label">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pdf_index_label</span></span><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.pdf_index_label" title="Link to this definition"></a></dt>
+<dd><p>Returns the current PDF index and total number of PDF files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The PDF index label string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.previous">
+<span class="sig-name descname"><span class="pre">previous</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.previous"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.previous" title="Link to this definition"></a></dt>
+<dd><p>Moves to the previous page of the current PDF file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.previous_pdf">
+<span class="sig-name descname"><span class="pre">previous_pdf</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.previous_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.previous_pdf" title="Link to this definition"></a></dt>
+<dd><p>Moves to the previous PDF file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.rebuild_current_svg_string">
+<span class="sig-name descname"><span class="pre">rebuild_current_svg_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.rebuild_current_svg_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.rebuild_current_svg_string" title="Link to this definition"></a></dt>
+<dd><p>Rebuilds the current SVG string from the current image boxes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.remove_box_by_id">
+<span class="sig-name descname"><span class="pre">remove_box_by_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.remove_box_by_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.remove_box_by_id" title="Link to this definition"></a></dt>
+<dd><p>Removes a box by its ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> – The ID of the box to remove.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.save_annotations">
+<span class="sig-name descname"><span class="pre">save_annotations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#AnnotationJob.save_annotations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.AnnotationJob.save_annotations" title="Link to this definition"></a></dt>
+<dd><p>Saves annotations to a JSON file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.Box">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.grading.pdf_highlighter.</span></span><span class="sig-name descname"><span class="pre">Box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#Box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.Box" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a rectangular box with coordinates and color.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.Box.add_lower_right_corner">
+<span class="sig-name descname"><span class="pre">add_lower_right_corner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#Box.add_lower_right_corner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.Box.add_lower_right_corner" title="Link to this definition"></a></dt>
+<dd><p>Adds the lower right corner to the box.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – The x-coordinate of the lower right corner.</p></li>
+<li><p><strong>y</strong> – The y-coordinate of the lower right corner.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.Box.get_coords_from_svg">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_coords_from_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">svg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#Box.get_coords_from_svg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.Box.get_coords_from_svg" title="Link to this definition"></a></dt>
+<dd><p>Extracts coordinates from an SVG string and returns them as a list of dictionaries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>svg</strong> – The SVG string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of dictionaries with box coordinates.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.pdf_highlighter.Box.make_svg_string">
+<span class="sig-name descname"><span class="pre">make_svg_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/pdf_highlighter.html#Box.make_svg_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.pdf_highlighter.Box.make_svg_string" title="Link to this definition"></a></dt>
+<dd><p>Generates an SVG string representation of the box.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The SVG string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.grading.utils">
+<span id="lazarus-implementation-tools-grading-utils-module"></span><h2>lazarus_implementation_tools.grading.utils module<a class="headerlink" href="#module-lazarus_implementation_tools.grading.utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.utils.apply_annotations_to_pdf">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.grading.utils.</span></span><span class="sig-name descname"><span class="pre">apply_annotations_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/utils.html#apply_annotations_to_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.utils.apply_annotations_to_pdf" title="Link to this definition"></a></dt>
+<dd><p>Applies annotations to PDF files in the specified folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>folder_path</strong> – The path to the folder containing PDF files and an
+“annotations.json” file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.grading.utils.run_annotate_ui">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.grading.utils.</span></span><span class="sig-name descname"><span class="pre">run_annotate_ui</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/grading/utils.html#run_annotate_ui"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.grading.utils.run_annotate_ui" title="Link to this definition"></a></dt>
+<dd><p>Runs the annotation UI for the specified folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>folder_path</strong> – The path to the folder containing PDF files to be annotated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.grading">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lazarus_implementation_tools.grading" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

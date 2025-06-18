@@ -1,0 +1,454 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.models.apis &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="../../../index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.models.apis</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for lazarus_implementation_tools.models.apis</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">http</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTTPStatus</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lazarus_implementation_tools.config</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">RIKAI2_AUTH_KEY</span><span class="p">,</span>
+    <span class="n">RIKAI2_ORG_ID</span><span class="p">,</span>
+    <span class="n">RIKAI2_URL</span><span class="p">,</span>
+    <span class="n">RIKY2_AUTH_KEY</span><span class="p">,</span>
+    <span class="n">RIKY2_ORG_ID</span><span class="p">,</span>
+    <span class="n">RIKY2_URL</span><span class="p">,</span>
+    <span class="n">RIKY_EXTRACT_AUTH_KEY</span><span class="p">,</span>
+    <span class="n">RIKY_EXTRACT_ORG_ID</span><span class="p">,</span>
+    <span class="n">RIKY_EXTRACT_URL</span><span class="p">,</span>
+    <span class="n">WEBHOOK_URL</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lazarus_implementation_tools.file_system.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_filename</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lazarus_implementation_tools.models.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">POST</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ModelAPI">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.ModelAPI">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelAPI</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for interacting with various APIs.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">POST</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">org_id</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">webhook</span> <span class="o">=</span> <span class="n">WEBHOOK_URL</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_file_name</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_file_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the name of the class.</span>
+
+<span class="sd">        :returns: The name of the class.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+
+<div class="viewcode-block" id="ModelAPI.get_headers">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.ModelAPI.get_headers">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the headers for the request.</span>
+
+<span class="sd">        :returns: A dictionary of headers.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;orgId&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">org_id</span><span class="p">,</span> <span class="s2">&quot;authKey&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span><span class="p">,</span> <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">}</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_file_base64</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Encodes a file as base64.</span>
+
+<span class="sd">        :param path: The path to the file.</span>
+
+<span class="sd">        :returns: The base64 encoded string.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">encoded_string</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">encoded_string</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ModelAPI.add_file_to_payload">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.ModelAPI.add_file_to_payload">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_file_to_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds the file to the payload.</span>
+
+<span class="sd">        :param payload: The payload dictionary.</span>
+
+<span class="sd">        :returns: The modified payload dictionary.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="ModelAPI.build_payload">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.ModelAPI.build_payload">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the payload for the request.</span>
+
+<span class="sd">        :returns: The payload dictionary.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+
+<div class="viewcode-block" id="ModelAPI.set_file">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.ModelAPI.set_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the file for the API request.</span>
+
+<span class="sd">        :param file: The path to the file.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_file_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">get_filename</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_firebase_file_name</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ModelAPI.set_firebase_file_name">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.ModelAPI.set_firebase_file_name">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_firebase_file_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the return file name.</span>
+
+<span class="sd">        :param file_name: The name of the return file.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">file_name</span><span class="p">:</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">firebase_file_name</span> <span class="o">=</span> <span class="n">file_name</span></div>
+
+
+<div class="viewcode-block" id="ModelAPI.run">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.ModelAPI.run">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Runs the API request.</span>
+
+<span class="sd">        :param file: The path to the file.</span>
+<span class="sd">        :param prompt: The prompt for the API.</span>
+
+<span class="sd">        :returns: The response from the API.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">file</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">prompt</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt</span>
+
+        <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_payload</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_headers</span><span class="p">(),</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="n">HTTPStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Rikai2">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.Rikai2">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Rikai2</span><span class="p">(</span><span class="n">ModelAPI</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for interacting with the Rikai2 API.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">org_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">webhook</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span> <span class="ow">or</span> <span class="n">RIKAI2_URL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">org_id</span> <span class="o">=</span> <span class="n">org_id</span> <span class="ow">or</span> <span class="n">RIKAI2_ORG_ID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span> <span class="o">=</span> <span class="n">auth_key</span> <span class="ow">or</span> <span class="n">RIKAI2_AUTH_KEY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">webhook</span> <span class="o">=</span> <span class="n">webhook</span> <span class="ow">or</span> <span class="n">WEBHOOK_URL</span>
+
+        <span class="c1"># Settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">advanced_explainability</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">advanced_vision</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">force_ocr</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Rikai2.add_file_to_payload">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.Rikai2.add_file_to_payload">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_file_to_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds the file to the payload for Rikai2.</span>
+
+<span class="sd">        :param payload: The payload dictionary.</span>
+
+<span class="sd">        :returns: The modified payload dictionary.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No file set&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;inputURL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span>
+            <span class="k">return</span> <span class="n">payload</span>
+
+        <span class="c1"># Assume local file</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;base64&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_file_base64</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">payload</span></div>
+
+
+<div class="viewcode-block" id="Rikai2.build_payload">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.Rikai2.build_payload">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the payload for the Rikai2 API request.</span>
+
+<span class="sd">        :returns: The payload dictionary.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">webhook</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">webhook</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_file_name</span><span class="p">:</span>
+            <span class="n">webhook</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">webhook</span><span class="si">}</span><span class="s2">?filename=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">firebase_file_name</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;forceOCR&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">force_ocr</span><span class="p">,</span>
+            <span class="s2">&quot;outputUrl&quot;</span><span class="p">:</span> <span class="n">webhook</span><span class="p">,</span>
+            <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="p">,</span>
+            <span class="s2">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;advanced_explainability&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">advanced_explainability</span><span class="p">,</span>
+                <span class="s2">&quot;advanced_vision&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">advanced_vision</span><span class="p">,</span>
+                <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;webhook&quot;</span><span class="p">:</span> <span class="n">webhook</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_file_to_payload</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">payload</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Riky2">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.Riky2">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Riky2</span><span class="p">(</span><span class="n">ModelAPI</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for interacting with the Riky2 API.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">org_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">webhook</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span> <span class="ow">or</span> <span class="n">RIKY2_URL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">org_id</span> <span class="o">=</span> <span class="n">org_id</span> <span class="ow">or</span> <span class="n">RIKY2_ORG_ID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span> <span class="o">=</span> <span class="n">auth_key</span> <span class="ow">or</span> <span class="n">RIKY2_AUTH_KEY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">webhook</span> <span class="o">=</span> <span class="n">webhook</span> <span class="ow">or</span> <span class="n">WEBHOOK_URL</span>
+
+<div class="viewcode-block" id="Riky2.add_file_to_payload">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.Riky2.add_file_to_payload">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_file_to_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds the file to the payload for Riky2.</span>
+
+<span class="sd">        :param payload: The payload dictionary.</span>
+
+<span class="sd">        :returns: The modified payload dictionary.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No file set&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;inputURL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span>
+            <span class="k">return</span> <span class="n">payload</span>
+
+        <span class="c1"># Assume local file</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;base64&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_file_base64</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">payload</span></div>
+
+
+<div class="viewcode-block" id="Riky2.build_payload">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.Riky2.build_payload">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Builds the payload for the Riky2 API request.</span>
+
+<span class="sd">        :returns: The payload dictionary.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">webhook</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">webhook</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_file_name</span><span class="p">:</span>
+            <span class="n">webhook</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">webhook</span><span class="si">}</span><span class="s2">?filename=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">firebase_file_name</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;outputUrl&quot;</span><span class="p">:</span> <span class="n">webhook</span><span class="p">,</span>
+            <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="p">,</span>
+            <span class="s2">&quot;webhook&quot;</span><span class="p">:</span> <span class="n">webhook</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_file_to_payload</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">payload</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="RikaiExtract">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.RikaiExtract">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RikaiExtract</span><span class="p">(</span><span class="n">ModelAPI</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">org_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">auth_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">webhook</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span> <span class="ow">or</span> <span class="n">RIKY_EXTRACT_URL</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">org_id</span> <span class="o">=</span> <span class="n">org_id</span> <span class="ow">or</span> <span class="n">RIKY_EXTRACT_ORG_ID</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth_key</span> <span class="o">=</span> <span class="n">auth_key</span> <span class="ow">or</span> <span class="n">RIKY_EXTRACT_AUTH_KEY</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">webhook</span> <span class="o">=</span> <span class="n">webhook</span> <span class="ow">or</span> <span class="n">WEBHOOK_URL</span>
+
+        <span class="c1"># Settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">return_confidence</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="RikaiExtract.add_file_to_payload">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.RikaiExtract.add_file_to_payload">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_file_to_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;No file set&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;inputURL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span>
+            <span class="k">return</span> <span class="n">payload</span>
+
+        <span class="c1"># Assume local file</span>
+        <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;base64&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_file_base64</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">payload</span></div>
+
+
+<div class="viewcode-block" id="RikaiExtract.build_payload">
+<a class="viewcode-back" href="../../../lazarus_implementation_tools.models.html#lazarus_implementation_tools.models.apis.RikaiExtract.build_payload">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">webhook</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">webhook</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_file_name</span><span class="p">:</span>
+            <span class="n">webhook</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">webhook</span><span class="si">}</span><span class="s2">?filename=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">firebase_file_name</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;outputUrl&quot;</span><span class="p">:</span> <span class="n">webhook</span><span class="p">,</span>
+            <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="p">,</span>
+            <span class="s2">&quot;settings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;returnConfidence&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_confidence</span><span class="p">},</span>
+            <span class="s2">&quot;webhook&quot;</span><span class="p">:</span> <span class="n">webhook</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_file_to_payload</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">payload</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+lazarus\_implementation\_tools.grading package
+==============================================
+
+Submodules
+----------
+
+lazarus\_implementation\_tools.grading.pdf\_highlighter module
+--------------------------------------------------------------
+
+.. automodule:: lazarus_implementation_tools.grading.pdf_highlighter
+    :members:
+    :show-inheritance:
+    :undoc-members:
+
+lazarus\_implementation\_tools.grading.utils module
+---------------------------------------------------
+
+.. automodule:: lazarus_implementation_tools.grading.utils
+    :members:
+    :show-inheritance:
+    :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: lazarus_implementation_tools.grading
+    :members:
+    :show-inheritance:
+    :undoc-members:

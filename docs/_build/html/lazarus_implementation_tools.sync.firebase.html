@@ -1,0 +1,422 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.sync.firebase package &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.sync.firebase package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/lazarus_implementation_tools.sync.firebase.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="lazarus-implementation-tools-sync-firebase-package">
+<h1>lazarus_implementation_tools.sync.firebase package<a class="headerlink" href="#lazarus-implementation-tools-sync-firebase-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-lazarus_implementation_tools.sync.firebase.client">
+<span id="lazarus-implementation-tools-sync-firebase-client-module"></span><h2>lazarus_implementation_tools.sync.firebase.client module<a class="headerlink" href="#module-lazarus_implementation_tools.sync.firebase.client" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.firebase.client.</span></span><span class="sig-name descname"><span class="pre">FirebaseStorageManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage_url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/client.html#FirebaseStorageManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class for managing Firebase storage operations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.close_connection">
+<span class="sig-name descname"><span class="pre">close_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/client.html#FirebaseStorageManager.close_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.close_connection" title="Link to this definition"></a></dt>
+<dd><p>Closes the Firebase connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.copy_files">
+<span class="sig-name descname"><span class="pre">copy_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/client.html#FirebaseStorageManager.copy_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.copy_files" title="Link to this definition"></a></dt>
+<dd><p>Copies files from the specified path to a destination folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> – (str) The path to copy files from.</p></li>
+<li><p><strong>destination_folder</strong> – (str) The destination folder to copy files to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list) A list of tuples containing the source file name and the
+destination file name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.delete_files_in_path">
+<span class="sig-name descname"><span class="pre">delete_files_in_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/client.html#FirebaseStorageManager.delete_files_in_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.delete_files_in_path" title="Link to this definition"></a></dt>
+<dd><p>Deletes all files in the specified path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data_path</strong> – (str) The path to delete files from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list) A list of deleted file names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.download_all_files_from_path">
+<span class="sig-name descname"><span class="pre">download_all_files_from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/client.html#FirebaseStorageManager.download_all_files_from_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.download_all_files_from_path" title="Link to this definition"></a></dt>
+<dd><p>Downloads all files from the specified path to the local folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> – (str) The path to download files from.</p></li>
+<li><p><strong>local_folder</strong> – (str) The local folder to download files to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list) A list of tuples containing the original file path and the
+local file path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.exists">
+<span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/client.html#FirebaseStorageManager.exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.exists" title="Link to this definition"></a></dt>
+<dd><p>Checks if a file or folder exists in the specified path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data_path</strong> – (str) The path to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool) True if the file or folder exists, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.get_presigned_url">
+<span class="sig-name descname"><span class="pre">get_presigned_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expiration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3600</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/client.html#FirebaseStorageManager.get_presigned_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.get_presigned_url" title="Link to this definition"></a></dt>
+<dd><p>Generates a presigned URL for accessing a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> – (str) The path to the file.</p></li>
+<li><p><strong>expiration</strong> – (int) The expiration time in seconds for the presigned URL.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(str) The presigned URL, or None if the file does not exist.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.is_folder">
+<span class="sig-name descname"><span class="pre">is_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blob</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/client.html#FirebaseStorageManager.is_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.is_folder" title="Link to this definition"></a></dt>
+<dd><p>Checks if the blob is a folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>blob</strong> – (google.cloud.storage.blob.Blob) The blob to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool) True if the blob is a folder, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.list_all_files_in_path">
+<span class="sig-name descname"><span class="pre">list_all_files_in_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/client.html#FirebaseStorageManager.list_all_files_in_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.list_all_files_in_path" title="Link to this definition"></a></dt>
+<dd><p>Lists all files in the specified path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> – (str) The path to list files from.</p></li>
+<li><p><strong>recursive</strong> – (bool) If True, include subdirectories; otherwise, only list
+files in the specified directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list) A list of file paths.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.read_file_from_presigned_url">
+<span class="sig-name descname"><span class="pre">read_file_from_presigned_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">presigned_url</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/client.html#FirebaseStorageManager.read_file_from_presigned_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.read_file_from_presigned_url" title="Link to this definition"></a></dt>
+<dd><p>Reads content of a file from a presigned URL.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>presigned_url</strong> – (str) The presigned URL of the file to be read.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>str: The content of the file, or an error message.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>requests.exceptions.RequestException</strong> – If an error occurs during the HTTP
+request.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.upload_file_to_path">
+<span class="sig-name descname"><span class="pre">upload_file_to_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_file_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/client.html#FirebaseStorageManager.upload_file_to_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.upload_file_to_path" title="Link to this definition"></a></dt>
+<dd><p>Uploads a file to the specified path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> – (str) The path to upload the file to.</p></li>
+<li><p><strong>local_file_path</strong> – (str) The local file path to upload.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(tuple) A tuple containing the input file path and the destination
+blob name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.upload_folder_to_path">
+<span class="sig-name descname"><span class="pre">upload_folder_to_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/client.html#FirebaseStorageManager.upload_folder_to_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.client.FirebaseStorageManager.upload_folder_to_path" title="Link to this definition"></a></dt>
+<dd><p>Uploads a folder to the specified path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> – (str) The path to upload the folder to.</p></li>
+<li><p><strong>local_folder</strong> – (str) The local folder to upload.</p></li>
+<li><p><strong>recursive</strong> – (bool) If True, upload subdirectories; otherwise, only upload
+files in the specified directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list) A list of tuples containing the input file path and the
+destination blob name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.sync.firebase.utils">
+<span id="lazarus-implementation-tools-sync-firebase-utils-module"></span><h2>lazarus_implementation_tools.sync.firebase.utils module<a class="headerlink" href="#module-lazarus_implementation_tools.sync.firebase.utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.utils.copy">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.firebase.utils.</span></span><span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">firebase_source_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">firebase_destination_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/utils.html#copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.utils.copy" title="Link to this definition"></a></dt>
+<dd><p>Copies files from the specified Firebase source path to the specified Firebase destination path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>firebase_source_path</strong> – (str) The Firebase source path to copy files from.</p></li>
+<li><p><strong>firebase_destination_path</strong> – (str) The Firebase destination path to copy files
+to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list) A list of tuples containing the source file name and the
+destination file name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.utils.delete">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.firebase.utils.</span></span><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">firebase_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/utils.html#delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.utils.delete" title="Link to this definition"></a></dt>
+<dd><p>Deletes all files in the specified Firebase path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>firebase_path</strong> – (str) The Firebase path to delete files from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list) A list of deleted file names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.utils.download">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.firebase.utils.</span></span><span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/Users/cbettis/git/lazarus/impl_utils/downloads'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">firebase_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'imp-dev/cris/'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/utils.html#download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.utils.download" title="Link to this definition"></a></dt>
+<dd><p>Downloads files from the specified Firebase path to the local folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_path</strong> – (str) The local folder to download files to.</p></li>
+<li><p><strong>firebase_path</strong> – (str) The Firebase path to download files from.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list) A list of tuples containing the original file path and the local
+file path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.utils.file_exists">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.firebase.utils.</span></span><span class="sig-name descname"><span class="pre">file_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">firebase_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/utils.html#file_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.utils.file_exists" title="Link to this definition"></a></dt>
+<dd><p>Checks if a file or folder exists in the specified Firebase path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>firebase_path</strong> – (str) The Firebase path to check.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(bool) True if the file or folder exists, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.utils.get_url">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.firebase.utils.</span></span><span class="sig-name descname"><span class="pre">get_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">firebase_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/utils.html#get_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.utils.get_url" title="Link to this definition"></a></dt>
+<dd><p>Generates a presigned URL for accessing a file in the specified Firebase path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>firebase_path</strong> – (str) The Firebase path to the file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(str) The presigned URL, or None if the file does not exist.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.utils.list_files">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.firebase.utils.</span></span><span class="sig-name descname"><span class="pre">list_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">firebase_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'imp-dev/cris/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/utils.html#list_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.utils.list_files" title="Link to this definition"></a></dt>
+<dd><p>Lists all files in the specified Firebase path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>firebase_path</strong> – (str) The Firebase path to list files from.</p></li>
+<li><p><strong>recursive</strong> – (bool) If True, include subdirectories; otherwise, only list files
+in the specified directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list) A list of file paths.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.sync.firebase.utils.upload">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.sync.firebase.utils.</span></span><span class="sig-name descname"><span class="pre">upload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/Users/cbettis/git/lazarus/impl_utils/working'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">firebase_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'imp-dev/cris/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/sync/firebase/utils.html#upload"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.sync.firebase.utils.upload" title="Link to this definition"></a></dt>
+<dd><p>Uploads a local file or folder to the specified Firebase path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_path</strong> – (str) The local file or folder path to upload.</p></li>
+<li><p><strong>firebase_path</strong> – (str) The Firebase path to upload the file or folder to.</p></li>
+<li><p><strong>recursive</strong> – (bool) If True, upload subdirectories; otherwise, only upload
+files in the specified directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(list) A list of tuples containing the input file path and the destination
+blob name.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.sync.firebase">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lazarus_implementation_tools.sync.firebase" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

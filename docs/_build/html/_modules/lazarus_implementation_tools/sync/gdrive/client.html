@@ -1,0 +1,760 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.sync.gdrive.client &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="../../../../index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.sync.gdrive.client</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for lazarus_implementation_tools.sync.gdrive.client</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">google.auth.transport.requests</span><span class="w"> </span><span class="kn">import</span> <span class="n">Request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">google.oauth2.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">Credentials</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">google_auth_oauthlib.flow</span><span class="w"> </span><span class="kn">import</span> <span class="n">InstalledAppFlow</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">googleapiclient.discovery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">googleapiclient.http</span><span class="w"> </span><span class="kn">import</span> <span class="n">MediaFileUpload</span><span class="p">,</span> <span class="n">MediaIoBaseDownload</span>
+
+<span class="n">FILE</span> <span class="o">=</span> <span class="s2">&quot;file&quot;</span>
+<span class="n">FOLDER</span> <span class="o">=</span> <span class="s2">&quot;folder&quot;</span>
+<span class="n">UNKNOWN</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+
+<span class="c1"># Scopes required for Google Drive API</span>
+<span class="n">SCOPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;https://www.googleapis.com/auth/drive&quot;</span><span class="p">]</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="GoogleDriveAuthenticationError">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveAuthenticationError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GoogleDriveAuthenticationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when authentication fails&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="GoogleDriveAPIError">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveAPIError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GoogleDriveAPIError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when API requests fail&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="GoogleDriveRateLimitError">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveRateLimitError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GoogleDriveRateLimitError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when rate limit is hit&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="GoogleDriveClient">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GoogleDriveClient</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Google Drive API client for CRUD operations.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;credentials.json&quot;</span><span class="p">,</span> <span class="n">token_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;token.json&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Google Drive client.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            credentials_path: Path to the OAuth2 credentials JSON file token_path: Path</span>
+<span class="sd">            to store the access token</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">credentials_path</span> <span class="o">=</span> <span class="n">credentials_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token_path</span> <span class="o">=</span> <span class="n">token_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">service</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">authenticated</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_is_authenticated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if client is authenticated&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">authenticated</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">service</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="GoogleDriveClient.authenticate">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.authenticate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Authenticate with Google Drive API.&quot;&quot;&quot;</span>
+        <span class="n">creds</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Load existing token</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">creds</span> <span class="o">=</span> <span class="n">Credentials</span><span class="o">.</span><span class="n">from_authorized_user_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">token_path</span><span class="p">,</span> <span class="n">SCOPES</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Token file not found&quot;</span><span class="p">)</span>
+
+            <span class="c1"># If there are no (valid) credentials available, let the user log in</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">creds</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">creds</span><span class="o">.</span><span class="n">valid</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">creds</span> <span class="ow">and</span> <span class="n">creds</span><span class="o">.</span><span class="n">expired</span> <span class="ow">and</span> <span class="n">creds</span><span class="o">.</span><span class="n">refresh_token</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">creds</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">Request</span><span class="p">())</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error refreshing credentials: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">creds</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">creds</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">flow</span> <span class="o">=</span> <span class="n">InstalledAppFlow</span><span class="o">.</span><span class="n">from_client_secrets_file</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">credentials_path</span><span class="p">,</span> <span class="n">SCOPES</span>
+                        <span class="p">)</span>
+                        <span class="n">creds</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">run_local_server</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Credentials file not found: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">GoogleDriveAuthenticationError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Credentials file not found: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">credentials_path</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+
+                <span class="c1"># Save the credentials for the next run</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">token_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">token</span><span class="p">:</span>
+                        <span class="n">token</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">creds</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error saving token: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">service</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s2">&quot;drive&quot;</span><span class="p">,</span> <span class="s2">&quot;v3&quot;</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">creds</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">authenticated</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Successfully authenticated with Google Drive API&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error building service: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">GoogleDriveAuthenticationError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error building service: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Authentication exception: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ensure_valid_authentication</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Ensure we have valid authentication&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_authenticated</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">GoogleDriveAuthenticationError</span><span class="p">(</span><span class="s2">&quot;Not authenticated&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GoogleDriveClient.get_info_from_google_url">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.get_info_from_google_url">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_info_from_google_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a Google Drive URL and return information about the resource.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url: The URL of the Google Drive resource</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary containing type, sub_type, and file_id</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_indicators</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;presentation&quot;</span><span class="p">,</span> <span class="s2">&quot;document&quot;</span><span class="p">,</span> <span class="s2">&quot;spreadsheets&quot;</span><span class="p">]</span>
+        <span class="n">folder_indicators</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;folders&quot;</span><span class="p">]</span>
+
+        <span class="n">fluff</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;http:&quot;</span><span class="p">,</span> <span class="s2">&quot;https:&quot;</span><span class="p">,</span> <span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="s2">&quot;drive&quot;</span><span class="p">,</span> <span class="s2">&quot;docs.google.com&quot;</span><span class="p">,</span> <span class="s2">&quot;drive.google.com&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+        <span class="n">url_parts</span> <span class="o">=</span> <span class="n">url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="p">[</span><span class="n">part</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">url_parts</span> <span class="k">if</span> <span class="n">part</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fluff</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">details</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid Google Drive URL format&quot;</span><span class="p">)</span>
+
+        <span class="n">type_indicator</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">file_id</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">resource_type</span> <span class="o">=</span> <span class="n">FILE</span>
+        <span class="n">sub_type</span> <span class="o">=</span> <span class="n">UNKNOWN</span>
+
+        <span class="k">if</span> <span class="n">type_indicator</span> <span class="ow">in</span> <span class="n">folder_indicators</span><span class="p">:</span>
+            <span class="n">resource_type</span> <span class="o">=</span> <span class="n">FOLDER</span>
+            <span class="n">sub_type</span> <span class="o">=</span> <span class="n">FOLDER</span>
+        <span class="k">elif</span> <span class="n">type_indicator</span> <span class="ow">in</span> <span class="n">file_indicators</span><span class="p">:</span>
+            <span class="n">resource_type</span> <span class="o">=</span> <span class="n">FILE</span>
+            <span class="n">sub_type</span> <span class="o">=</span> <span class="n">type_indicator</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">resource_type</span><span class="p">,</span>
+            <span class="s2">&quot;sub_type&quot;</span><span class="p">:</span> <span class="n">sub_type</span><span class="p">,</span>
+            <span class="s2">&quot;file_id&quot;</span><span class="p">:</span> <span class="n">file_id</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="GoogleDriveClient.download_file_wrapper">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.download_file_wrapper">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">download_file_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">remote_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">local_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Download a file from Google Drive.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            remote_path: File ID or URL local_path: Local path to save file (optional)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Result dict with success status and content :param local_path:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_authenticated</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">GoogleDriveAuthenticationError</span><span class="p">(</span><span class="s2">&quot;Not authenticated&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Extract file ID if URL provided</span>
+            <span class="n">file_id</span> <span class="o">=</span> <span class="n">remote_path</span>
+            <span class="k">if</span> <span class="n">remote_path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_info_from_google_url</span><span class="p">(</span><span class="n">remote_path</span><span class="p">)</span>
+                <span class="n">file_id</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file_id&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Download file</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">files</span><span class="p">()</span><span class="o">.</span><span class="n">get_media</span><span class="p">(</span><span class="n">fileId</span><span class="o">=</span><span class="n">file_id</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="n">file_buffer</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+            <span class="n">downloader</span> <span class="o">=</span> <span class="n">MediaIoBaseDownload</span><span class="p">(</span><span class="n">file_buffer</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+            <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+                <span class="n">status</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="n">downloader</span><span class="o">.</span><span class="n">next_chunk</span><span class="p">()</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Download </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">status</span><span class="o">.</span><span class="n">progress</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="si">}</span><span class="s2">% of </span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">content</span> <span class="o">=</span> <span class="n">file_buffer</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span> <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)}</span>
+
+            <span class="c1"># Save to local file if path provided</span>
+            <span class="k">if</span> <span class="n">local_path</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">local_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;local_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">local_path</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully downloaded file </span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span></div>
+
+
+<div class="viewcode-block" id="GoogleDriveClient.upload_file">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.upload_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">upload_file</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">local_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Upload a file to Google Drive.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            local_path: Path to the local file destination_path: Destination folder ID,</span>
+<span class="sd">            folder name, or Google Drive URL (optional - uploads to root if None)</span>
+<span class="sd">            new_name: Custom name for the uploaded file (optional - uses original</span>
+<span class="sd">            filename if None)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict containing file metadata including id, name, size, etc. :param</span>
+<span class="sd">            destination_path:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_authenticated</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">GoogleDriveAuthenticationError</span><span class="p">(</span><span class="s2">&quot;Not authenticated&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">local_path</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Local file not found: </span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">file_name</span> <span class="o">=</span> <span class="n">new_name</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">local_path</span><span class="p">)</span>
+            <span class="n">mimetype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_mimetype_by_extension</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+
+            <span class="n">file_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">file_name</span><span class="p">}</span>
+
+            <span class="c1"># Handle destination folder</span>
+            <span class="k">if</span> <span class="n">destination_path</span><span class="p">:</span>
+                <span class="n">folder_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_folder_id</span><span class="p">(</span><span class="n">destination_path</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">folder_id</span><span class="p">:</span>
+                    <span class="n">file_metadata</span><span class="p">[</span><span class="s2">&quot;parents&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">folder_id</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Could not resolve folder: </span><span class="si">{</span><span class="n">destination_path</span><span class="si">}</span><span class="s2">. Uploading to root.&quot;</span>
+                    <span class="p">)</span>
+
+            <span class="n">media</span> <span class="o">=</span> <span class="n">MediaFileUpload</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="n">mimetype</span><span class="p">)</span>
+
+            <span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">files</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+                <span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                    <span class="n">body</span><span class="o">=</span><span class="n">file_metadata</span><span class="p">,</span>
+                    <span class="n">media_body</span><span class="o">=</span><span class="n">media</span><span class="p">,</span>
+                    <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;id, name, size, createdTime, modifiedTime, webViewLink, parents&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+            <span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;file_id&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;createdTime&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;modified&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;modifiedTime&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;web_url&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;webViewLink&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;parents&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parents&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+            <span class="p">}</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error uploading file </span><span class="si">{</span><span class="n">local_path</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_folder_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_identifier</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve a folder identifier (ID, name, or URL) to a folder ID.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder_identifier: Folder ID, folder name, or Google Drive URL</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Folder ID if found, None otherwise</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">folder_identifier</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="c1"># If it&#39;s already a folder ID (looks like a Google Drive ID)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">folder_identifier</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">folder_identifier</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+            <span class="c1"># Verify it&#39;s actually a folder</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">file_info</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">files</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+                    <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fileId</span><span class="o">=</span><span class="n">folder_identifier</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;id, name, mimeType&quot;</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">file_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mimeType&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;application/vnd.google-apps.folder&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">folder_identifier</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="c1"># If it&#39;s a Google Drive URL</span>
+        <span class="k">if</span> <span class="n">folder_identifier</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;/folders/&quot;</span> <span class="ow">in</span> <span class="n">folder_identifier</span><span class="p">:</span>
+                    <span class="n">folder_id</span> <span class="o">=</span> <span class="n">folder_identifier</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/folders/&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="c1"># Verify it exists</span>
+                    <span class="n">file_info</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">files</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+                        <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fileId</span><span class="o">=</span><span class="n">folder_id</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;id, name, mimeType&quot;</span><span class="p">)</span>
+                        <span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+                    <span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">file_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mimeType&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;application/vnd.google-apps.folder&quot;</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">folder_id</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="c1"># If it&#39;s a folder name, search for it</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;name=&#39;</span><span class="si">{</span><span class="n">folder_identifier</span><span class="si">}</span><span class="s2">&#39; and mimeType=&#39;application/vnd.google-apps.folder&#39; and trashed=false&quot;</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">files</span><span class="p">()</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;files(id, name)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+
+            <span class="n">files</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;files&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">if</span> <span class="n">files</span><span class="p">:</span>
+                <span class="c1"># Return the first match</span>
+                <span class="k">return</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error searching for folder </span><span class="si">{</span><span class="n">folder_identifier</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="GoogleDriveClient.delete_item_wrapper">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.delete_item_wrapper">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete_item_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a file from Google Drive.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_path: File ID or URL to delete</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Result dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_authenticated</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">GoogleDriveAuthenticationError</span><span class="p">(</span><span class="s2">&quot;Not authenticated&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Extract file ID if URL provided</span>
+            <span class="n">file_id</span> <span class="o">=</span> <span class="n">file_path</span>
+            <span class="k">if</span> <span class="n">file_path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_info_from_google_url</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                <span class="n">file_id</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file_id&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">files</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">fileId</span><span class="o">=</span><span class="n">file_id</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully deleted file </span><span class="si">{</span><span class="n">file_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span></div>
+
+
+<div class="viewcode-block" id="GoogleDriveClient.list_files">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.list_files">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">list_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List files in Google Drive.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder_path: Folder ID to list (default: root)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List of files and folders</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_authenticated</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">GoogleDriveAuthenticationError</span><span class="p">(</span><span class="s2">&quot;Not authenticated&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Build query</span>
+            <span class="n">search_query</span> <span class="o">=</span> <span class="s2">&quot;trashed=false&quot;</span>
+            <span class="k">if</span> <span class="n">folder_path</span> <span class="o">!=</span> <span class="s2">&quot;/&quot;</span> <span class="ow">and</span> <span class="n">folder_path</span><span class="p">:</span>
+                <span class="n">search_query</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and &#39;</span><span class="si">{</span><span class="n">folder_path</span><span class="si">}</span><span class="s2">&#39; in parents&quot;</span>
+
+            <span class="n">results</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">files</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+                <span class="o">.</span><span class="n">list</span><span class="p">(</span>
+                    <span class="n">q</span><span class="o">=</span><span class="n">search_query</span><span class="p">,</span>
+                    <span class="n">pageSize</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                    <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;nextPageToken, files(id, name, mimeType, size, modifiedTime, parents)&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+            <span class="p">)</span>
+
+            <span class="n">items</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;files&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">folders</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="n">item_info</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                    <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;createdTime&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                    <span class="s2">&quot;modified&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;modifiedTime&quot;</span><span class="p">],</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;mimeType&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;application/vnd.google-apps.folder&quot;</span><span class="p">:</span>
+                    <span class="n">folders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_info</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_info</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;files&quot;</span><span class="p">:</span> <span class="n">files</span><span class="p">,</span> <span class="s2">&quot;folders&quot;</span><span class="p">:</span> <span class="n">folders</span><span class="p">,</span> <span class="s2">&quot;total_items&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)}</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span></div>
+
+
+<div class="viewcode-block" id="GoogleDriveClient.create_folder_wrapper">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.create_folder_wrapper">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_folder_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">parent_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a folder in Google Drive.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            folder_path: Name of the folder to create parent_path: Parent folder ID</span>
+<span class="sd">            (default: root)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Folder metadata dict :param parent_path:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_authenticated</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">GoogleDriveAuthenticationError</span><span class="p">(</span><span class="s2">&quot;Not authenticated&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">file_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">folder_path</span><span class="p">,</span> <span class="s2">&quot;mimeType&quot;</span><span class="p">:</span> <span class="s2">&quot;application/vnd.google-apps.folder&quot;</span><span class="p">}</span>
+
+            <span class="k">if</span> <span class="n">parent_path</span> <span class="o">!=</span> <span class="s2">&quot;/&quot;</span><span class="p">:</span>
+                <span class="n">file_metadata</span><span class="p">[</span><span class="s2">&quot;parents&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">parent_path</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+
+            <span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">files</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+                <span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="n">file_metadata</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;id, name, createdTime&quot;</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+            <span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;folder_id&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;createdTime&quot;</span><span class="p">),</span>
+            <span class="p">}</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span></div>
+
+
+<div class="viewcode-block" id="GoogleDriveClient.search_files">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.search_files">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">search_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search for files and folders.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query: Search query folder_path: Folder ID to search in (optional)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Search results :param folder_path:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_authenticated</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">GoogleDriveAuthenticationError</span><span class="p">(</span><span class="s2">&quot;Not authenticated&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">search_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;name contains &#39;</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="s2">&#39; and trashed=false&quot;</span>
+            <span class="k">if</span> <span class="n">folder_path</span><span class="p">:</span>
+                <span class="n">search_query</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; and &#39;</span><span class="si">{</span><span class="n">folder_path</span><span class="si">}</span><span class="s2">&#39; in parents&quot;</span>
+
+            <span class="n">results</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">files</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+                <span class="o">.</span><span class="n">list</span><span class="p">(</span>
+                    <span class="n">q</span><span class="o">=</span><span class="n">search_query</span><span class="p">,</span>
+                    <span class="n">pageSize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                    <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;files(id, name, mimeType, size, modifiedTime, parents, webViewLink)&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+            <span class="p">)</span>
+
+            <span class="n">items</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;files&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">search_results</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="n">search_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># Simplified path</span>
+                        <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;folder&quot;</span>
+                        <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;mimeType&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;application/vnd.google-apps.folder&quot;</span>
+                        <span class="k">else</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;modified&quot;</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;modifiedTime&quot;</span><span class="p">],</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="n">search_results</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">search_results</span><span class="p">)}</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span></div>
+
+
+<div class="viewcode-block" id="GoogleDriveClient.get_file_info">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.get_file_info">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_file_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get detailed information about a file or folder.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_path: File ID or URL</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            File information dict</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_authenticated</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">GoogleDriveAuthenticationError</span><span class="p">(</span><span class="s2">&quot;Not authenticated&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Extract file ID if URL provided</span>
+            <span class="n">file_id</span> <span class="o">=</span> <span class="n">file_path</span>
+            <span class="k">if</span> <span class="n">file_path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_info_from_google_url</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                <span class="n">file_id</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file_id&quot;</span><span class="p">)</span>
+
+            <span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">files</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+                <span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                    <span class="n">fileId</span><span class="o">=</span><span class="n">file_id</span><span class="p">,</span>
+                    <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;id, name, mimeType, size, createdTime, modifiedTime, parents, webViewLink&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+            <span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;folder&quot;</span>
+                <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;mimeType&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;application/vnd.google-apps.folder&quot;</span>
+                <span class="k">else</span> <span class="s2">&quot;file&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;created&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;createdTime&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;modified&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;modifiedTime&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;path&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>  <span class="c1"># Simplified path</span>
+                <span class="s2">&quot;web_url&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;webViewLink&quot;</span><span class="p">),</span>
+            <span class="p">}</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span></div>
+
+
+<div class="viewcode-block" id="GoogleDriveClient.create_sharing_link">
+<a class="viewcode-back" href="../../../../lazarus_implementation_tools.sync.gdrive.html#lazarus_implementation_tools.sync.gdrive.client.GoogleDriveClient.create_sharing_link">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_sharing_link</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">link_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;view&quot;</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;anonymous&quot;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a sharing link for a file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_path: File ID or URL link_type: Type of link (&#39;view&#39; or &#39;edit&#39;) - not</span>
+<span class="sd">            directly applicable to Google Drive scope: Scope of link (&#39;anonymous&#39; or</span>
+<span class="sd">            &#39;organization&#39;)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Sharing link information :param link_type: :param scope:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_authenticated</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">GoogleDriveAuthenticationError</span><span class="p">(</span><span class="s2">&quot;Not authenticated&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Extract file ID if URL provided</span>
+            <span class="n">file_id</span> <span class="o">=</span> <span class="n">file_path</span>
+            <span class="k">if</span> <span class="n">file_path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_info_from_google_url</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                <span class="n">file_id</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;file_id&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Create permission for sharing</span>
+            <span class="n">permission</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;anyone&quot;</span> <span class="k">if</span> <span class="n">scope</span> <span class="o">==</span> <span class="s2">&quot;anonymous&quot;</span> <span class="k">else</span> <span class="s2">&quot;domain&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;reader&quot;</span> <span class="k">if</span> <span class="n">link_type</span> <span class="o">==</span> <span class="s2">&quot;view&quot;</span> <span class="k">else</span> <span class="s2">&quot;writer&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">permissions</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">fileId</span><span class="o">=</span><span class="n">file_id</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">permission</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+
+            <span class="c1"># Get the web view link</span>
+            <span class="n">file_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">files</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fileId</span><span class="o">=</span><span class="n">file_id</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="s2">&quot;webViewLink&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;link&quot;</span><span class="p">:</span> <span class="n">file_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;webViewLink&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">link_type</span><span class="p">,</span>
+                <span class="s2">&quot;scope&quot;</span><span class="p">:</span> <span class="n">scope</span><span class="p">,</span>
+            <span class="p">}</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_mimetype_by_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get MIME type based on file extension.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filename: Name of the file</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            MIME type string</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_extension_mimetypes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;.xlsx&quot;</span><span class="p">:</span> <span class="s2">&quot;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.xls&quot;</span><span class="p">:</span> <span class="s2">&quot;application/vnd.ms-excel&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.docx&quot;</span><span class="p">:</span> <span class="s2">&quot;application/vnd.openxmlformats-officedocument.wordprocessingml.document&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.doc&quot;</span><span class="p">:</span> <span class="s2">&quot;application/msword&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.pptx&quot;</span><span class="p">:</span> <span class="s2">&quot;application/vnd.openxmlformats-officedocument.presentationml.presentation&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.ppt&quot;</span><span class="p">:</span> <span class="s2">&quot;application/vnd.ms-powerpoint&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.pdf&quot;</span><span class="p">:</span> <span class="s2">&quot;application/pdf&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.csv&quot;</span><span class="p">:</span> <span class="s2">&quot;text/csv&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.json&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.txt&quot;</span><span class="p">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.png&quot;</span><span class="p">:</span> <span class="s2">&quot;image/png&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.jpg&quot;</span><span class="p">:</span> <span class="s2">&quot;image/jpeg&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.jpeg&quot;</span><span class="p">:</span> <span class="s2">&quot;image/jpeg&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.gif&quot;</span><span class="p">:</span> <span class="s2">&quot;image/gif&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;.zip&quot;</span><span class="p">:</span> <span class="s2">&quot;application/zip&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">file_extension_mimetypes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">extension</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="s2">&quot;application/octet-stream&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lazarus_implementation_tools.transformations.pdf package &mdash; Lazarus Implementation Toolkit  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+
+
+          <a href="index.html" class="icon icon-home">
+            Lazarus Implementation Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_system.html">file_system package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="general.html">general package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.pdf.html">transformations.pdf package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.csv.html">transformations.csv package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transformations.ocr.html">transformations.ocr package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sync.firebase.html">sync.firebase package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">models package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grading.html">grading package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Lazarus Implementation Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">lazarus_implementation_tools.transformations.pdf package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/lazarus_implementation_tools.transformations.pdf.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="lazarus-implementation-tools-transformations-pdf-package">
+<h1>lazarus_implementation_tools.transformations.pdf package<a class="headerlink" href="#lazarus-implementation-tools-transformations-pdf-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-lazarus_implementation_tools.transformations.pdf.bounding_boxes">
+<span id="lazarus-implementation-tools-transformations-pdf-bounding-boxes-module"></span><h2>lazarus_implementation_tools.transformations.pdf.bounding_boxes module<a class="headerlink" href="#module-lazarus_implementation_tools.transformations.pdf.bounding_boxes" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.bounding_boxes.draw_box_on_pdf">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.bounding_boxes.</span></span><span class="sig-name descname"><span class="pre">draw_box_on_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_pdf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_pdf_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounding_boxes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="lazarus_implementation_tools.general.html#lazarus_implementation_tools.general.pydantic_models.BoundingBox" title="lazarus_implementation_tools.general.pydantic_models.BoundingBox"><span class="pre">BoundingBox</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/bounding_boxes.html#draw_box_on_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.bounding_boxes.draw_box_on_pdf" title="Link to this definition"></a></dt>
+<dd><p>Draws a rectangle on a specified PDF page and saves it as a new PDF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bounding_boxes</strong> – Boxes to apply to the pdf</p></li>
+<li><p><strong>input_pdf_path</strong> – (str) Path to the input PDF file.</p></li>
+<li><p><strong>output_pdf_path</strong> – (str) Path to save the modified PDF file.</p></li>
+<li><p><strong>color</strong> – (tuple, optional) RGB color of the rectangle (0-1 range). Defaults to
+red (1.0, 0, 0).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.transformations.pdf.cloud_convert">
+<span id="lazarus-implementation-tools-transformations-pdf-cloud-convert-module"></span><h2>lazarus_implementation_tools.transformations.pdf.cloud_convert module<a class="headerlink" href="#module-lazarus_implementation_tools.transformations.pdf.cloud_convert" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.cloud_convert.convert_directory_to_pdfs">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.cloud_convert.</span></span><span class="sig-name descname"><span class="pre">convert_directory_to_pdfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/cloud_convert.html#convert_directory_to_pdfs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.cloud_convert.convert_directory_to_pdfs" title="Link to this definition"></a></dt>
+<dd><p>Converts all files in the source directory to PDFs using the CloudConvert API. The resulting PDFs are saved in the destination directory, preserving the directory structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>source_dir</strong> – The path to the source directory containing the original files.</p></li>
+<li><p><strong>dest_dir</strong> – The path to the destination directory where PDFs will be saved.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.transformations.pdf.core">
+<span id="lazarus-implementation-tools-transformations-pdf-core-module"></span><h2>lazarus_implementation_tools.transformations.pdf.core module<a class="headerlink" href="#module-lazarus_implementation_tools.transformations.pdf.core" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.core.convert_file_to_pdf">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.core.</span></span><span class="sig-name descname"><span class="pre">convert_file_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/core.html#convert_file_to_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.core.convert_file_to_pdf" title="Link to this definition"></a></dt>
+<dd><p>Converts a single file to PDF using LibreOffice.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – (str) The path to the file to convert.</p></li>
+<li><p><strong>output_dir</strong> – (Optional[str]) The output directory for the converted PDF. If
+None, uses the same directory as the input file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(Optional[str]) The path to the converted PDF file, or None if the
+conversion fails.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.core.convert_folder_to_pdf">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.core.</span></span><span class="sig-name descname"><span class="pre">convert_folder_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dir_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/core.html#convert_folder_to_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.core.convert_folder_to_pdf" title="Link to this definition"></a></dt>
+<dd><p>Converts all supported files in a directory to PDF using LibreOffice.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dir_path</strong> – (str) The path to the directory containing the files to convert.</p></li>
+<li><p><strong>output_dir</strong> – (Optional[str]) The output directory for the converted PDFs. If
+None, uses the same directory as the input files.</p></li>
+<li><p><strong>recursive</strong> – (bool) If True, recursively convert files in subdirectories.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(List[str]) A list of paths to the converted PDF files.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.core.convert_msg_to_pdf">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.core.</span></span><span class="sig-name descname"><span class="pre">convert_msg_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/core.html#convert_msg_to_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.core.convert_msg_to_pdf" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.core.create_pdf_from_html">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.core.</span></span><span class="sig-name descname"><span class="pre">create_pdf_from_html</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/core.html#create_pdf_from_html"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.core.create_pdf_from_html" title="Link to this definition"></a></dt>
+<dd><p>Converts html content to a pdf</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.core.create_pdf_from_string">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.core.</span></span><span class="sig-name descname"><span class="pre">create_pdf_from_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/core.html#create_pdf_from_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.core.create_pdf_from_string" title="Link to this definition"></a></dt>
+<dd><p>Given a list of strings, creates a PDF with the text and saves it to file_name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.core.merge_pdfs">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.core.</span></span><span class="sig-name descname"><span class="pre">merge_pdfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/core.html#merge_pdfs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.core.merge_pdfs" title="Link to this definition"></a></dt>
+<dd><p>Merges multiple PDF files into a single PDF file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdf_paths</strong> – A list of paths to the PDF files to merge.</p></li>
+<li><p><strong>output_path</strong> – The output path for the merged PDF file. If None, uses a default
+name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the merged PDF file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.transformations.pdf.libre_office">
+<span id="lazarus-implementation-tools-transformations-pdf-libre-office-module"></span><h2>lazarus_implementation_tools.transformations.pdf.libre_office module<a class="headerlink" href="#module-lazarus_implementation_tools.transformations.pdf.libre_office" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.libre_office.libre_office_convert_file">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.libre_office.</span></span><span class="sig-name descname"><span class="pre">libre_office_convert_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convert_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pdf'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/libre_office.html#libre_office_convert_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.libre_office.libre_office_convert_file" title="Link to this definition"></a></dt>
+<dd><p>Converts a single file to the specified format using LibreOffice.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – (str) The path to the file to convert.</p></li>
+<li><p><strong>output_dir</strong> – (str) The output directory for the converted file.</p></li>
+<li><p><strong>convert_to</strong> – (str) The target format to convert the file to (default is
+“pdf”).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.transformations.pdf.transformations">
+<span id="lazarus-implementation-tools-transformations-pdf-transformations-module"></span><h2>lazarus_implementation_tools.transformations.pdf.transformations module<a class="headerlink" href="#module-lazarus_implementation_tools.transformations.pdf.transformations" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.transformations.PDFTidy">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.transformations.</span></span><span class="sig-name descname"><span class="pre">PDFTidy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/transformations.html#PDFTidy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.transformations.PDFTidy" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to tidy up PDF files by converting them to images, deskewing, cropping, and then recompiling them into a PDF.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.transformations.PDFTidy.auto_crop">
+<span class="sig-name descname"><span class="pre">auto_crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/Users/cbettis/git/lazarus/impl_utils/.venv/lib/python3.13/site-packages/PIL/Image.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/transformations.html#PDFTidy.auto_crop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.transformations.PDFTidy.auto_crop" title="Link to this definition"></a></dt>
+<dd><p>Automatically crops the image to remove unnecessary whitespace. :param image: The PIL Image to crop.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.transformations.PDFTidy.deskew">
+<span class="sig-name descname"><span class="pre">deskew</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image:</span> <span class="pre">&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/Users/cbettis/git/lazarus/impl_utils/.venv/lib/python3.13/site-packages/PIL/Image.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/transformations.html#PDFTidy.deskew"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.transformations.PDFTidy.deskew" title="Link to this definition"></a></dt>
+<dd><p>Deskews the image by correcting its orientation. :param image: The PIL Image to deskew.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.transformations.PDFTidy.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/transformations.html#PDFTidy.rotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.transformations.PDFTidy.rotate" title="Link to this definition"></a></dt>
+<dd><p>Rotates the image by the specified angle. :param image: The numpy array representing the image. :param angle: The angle to rotate the image by. :param background: The background color to use for the rotated image. :return: The rotated numpy array image.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.transformations.PDFTidy.tidy">
+<span class="sig-name descname"><span class="pre">tidy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deskew</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_crop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/transformations.html#PDFTidy.tidy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.transformations.PDFTidy.tidy" title="Link to this definition"></a></dt>
+<dd><p>Tidies the PDF file by converting it to images, optionally deskewing and cropping, and then recompiling them into a PDF. :param destination_path: The destination path for the tidied PDF file. If None, the original filename with “_tidied” appended is used. :param deskew: If True, the images will be deskewed. :param auto_crop: If True, the images will be automatically cropped. :return: The path to the tidied PDF file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.transformations.compile_images_to_pdf">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.transformations.</span></span><span class="sig-name descname"><span class="pre">compile_images_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">image_files:</span> <span class="pre">~typing.List[&lt;module</span> <span class="pre">'PIL.Image'</span> <span class="pre">from</span> <span class="pre">'/Users/cbettis/git/lazarus/impl_utils/.venv/lib/python3.13/site-packages/PIL/Image.py'&gt;],</span> <span class="pre">destination_path:</span> <span class="pre">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/transformations.html#compile_images_to_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.transformations.compile_images_to_pdf" title="Link to this definition"></a></dt>
+<dd><p>Compiles a list of images into a PDF file. :param image_files: The list of PIL Image objects to compile. :param destination_path: The destination path for the compiled PDF file. :return: The path to the compiled PDF file.</p>
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.transformations.pdf.utils">
+<span id="lazarus-implementation-tools-transformations-pdf-utils-module"></span><h2>lazarus_implementation_tools.transformations.pdf.utils module<a class="headerlink" href="#module-lazarus_implementation_tools.transformations.pdf.utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.utils.convert_pdf_to_images">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.utils.</span></span><span class="sig-name descname"><span class="pre">convert_pdf_to_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_folder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/utils.html#convert_pdf_to_images"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.utils.convert_pdf_to_images" title="Link to this definition"></a></dt>
+<dd><p>Converts a PDF file to images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdf_path</strong> – The path to the input PDF file.</p></li>
+<li><p><strong>start_page</strong> – The starting page number (1-based) to convert. If None, converts
+all pages.</p></li>
+<li><p><strong>end_page</strong> – The ending page number (1-based) to convert. If None, converts all
+pages.</p></li>
+<li><p><strong>output_folder</strong> – The output folder for the images. If None, uses a default
+name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the output folder containing the images.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.utils.convert_to_pdf">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.utils.</span></span><span class="sig-name descname"><span class="pre">convert_to_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/utils.html#convert_to_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.utils.convert_to_pdf" title="Link to this definition"></a></dt>
+<dd><p>Converts a file or directory of files to PDF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – The file or directory path to convert.</p></li>
+<li><p><strong>output_dir</strong> – The output directory for the converted PDF files. If None, uses
+the same directory as the input files.</p></li>
+<li><p><strong>recursive</strong> – If True, recursively convert files in subdirectories.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of paths to the converted PDF files.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.utils.draw_bounding_boxes">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.utils.</span></span><span class="sig-name descname"><span class="pre">draw_bounding_boxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounding_boxes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="lazarus_implementation_tools.general.html#lazarus_implementation_tools.general.pydantic_models.BoundingBox" title="lazarus_implementation_tools.general.pydantic_models.BoundingBox"><span class="pre">BoundingBox</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/utils.html#draw_bounding_boxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.utils.draw_bounding_boxes" title="Link to this definition"></a></dt>
+<dd><p>Draws bounding boxes on a PDF file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdf_path</strong> – The path to the input PDF file.</p></li>
+<li><p><strong>bounding_boxes</strong> – A list of bounding boxes to draw.</p></li>
+<li><p><strong>destination_path</strong> – The output path for the PDF with bounding boxes. If None,
+uses a default name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the PDF with bounding boxes, or None if no bounding boxes are
+provided.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.utils.get_number_of_pages">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.utils.</span></span><span class="sig-name descname"><span class="pre">get_number_of_pages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/utils.html#get_number_of_pages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.utils.get_number_of_pages" title="Link to this definition"></a></dt>
+<dd><p>Returns the number of pages in a PDF file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pdf_path</strong> – The file path of the PDF file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The number of pages in the PDF file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.utils.merge_pdfs">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.utils.</span></span><span class="sig-name descname"><span class="pre">merge_pdfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/utils.html#merge_pdfs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.utils.merge_pdfs" title="Link to this definition"></a></dt>
+<dd><p>Merges multiple PDF files into one</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.utils.rasterize_pdf">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.utils.</span></span><span class="sig-name descname"><span class="pre">rasterize_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/utils.html#rasterize_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.utils.rasterize_pdf" title="Link to this definition"></a></dt>
+<dd><p>Rasterizes a PDF file to images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdf_path</strong> – The path to the input PDF file.</p></li>
+<li><p><strong>destination_path</strong> – The output path for the rasterized images. If None, uses a
+default name.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.utils.tidy_pdf">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.utils.</span></span><span class="sig-name descname"><span class="pre">tidy_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deskew</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_crop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/utils.html#tidy_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.utils.tidy_pdf" title="Link to this definition"></a></dt>
+<dd><p>Tidies a PDF file by deskewing and/or auto-cropping.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdf_path</strong> – The path to the input PDF file.</p></li>
+<li><p><strong>destination_path</strong> – The output path for the tidied PDF file. If None, uses a
+default name.</p></li>
+<li><p><strong>deskew</strong> – If True, deskews the PDF.</p></li>
+<li><p><strong>auto_crop</strong> – If True, auto-crops the PDF.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the tidied PDF file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lazarus_implementation_tools.transformations.pdf.utils.trim_pdf">
+<span class="sig-prename descclassname"><span class="pre">lazarus_implementation_tools.transformations.pdf.utils.</span></span><span class="sig-name descname"><span class="pre">trim_pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lazarus_implementation_tools/transformations/pdf/utils.html#trim_pdf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lazarus_implementation_tools.transformations.pdf.utils.trim_pdf" title="Link to this definition"></a></dt>
+<dd><p>Trims a PDF file to the specified start and end pages.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_path</strong> – The path to the input PDF file.</p></li>
+<li><p><strong>start_page</strong> – The starting page number (1-based).</p></li>
+<li><p><strong>end_page</strong> – The ending page number (1-based).</p></li>
+<li><p><strong>output_path</strong> – The output path for the trimmed PDF file. If None, uses a
+default name.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the trimmed PDF file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-lazarus_implementation_tools.transformations.pdf">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lazarus_implementation_tools.transformations.pdf" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Lazarus AI.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>
