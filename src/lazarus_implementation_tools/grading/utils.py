@@ -1,14 +1,18 @@
 import json
 import os
+from typing import Optional
 
 from nicegui import ui
 
-from lazarus_implementation_tools.general.pydantic_models import BoundingBox
+from lazarus_implementation_tools.general.pydantic_models import BoundingBox, Polygon
 from lazarus_implementation_tools.grading.pdf_highlighter import AnnotationJob
-from lazarus_implementation_tools.transformations.pdf.utils import draw_bounding_boxes
+from lazarus_implementation_tools.transformations.pdf.utils import (
+    draw_bounding_boxes,
+    draw_polygons,
+)
 
 
-def run_annotate_ui(folder_path):
+def run_annotate_ui(folder_path: str):
     """Runs the annotation UI for the specified folder.
 
     :param folder_path: The path to the folder containing PDF files to be annotated.
@@ -18,7 +22,7 @@ def run_annotate_ui(folder_path):
     ui.run()
 
 
-def apply_annotations_to_pdf(folder_path):
+def apply_annotations_to_pdf(folder_path: str) -> None:
     """Applies annotations to PDF files in the specified folder.
 
     :param folder_path: The path to the folder containing PDF files and an
@@ -48,3 +52,30 @@ def apply_annotations_to_pdf(folder_path):
 
         if boxes:
             draw_bounding_boxes(file_path, bounding_boxes=boxes)
+
+
+def apply_pii_annotations_to_pdf(pdf_path, annotation_path) -> Optional[str]:
+    with open(annotation_path, "r") as file:
+        annotations = json.loads(file.read())
+
+    polygons = []
+    pages = annotations.get("items", [])
+    page_number = 1
+    for page in pages:
+        unit = ""
+        if page.get("dimension"):
+            unit = page["dimension"].get("unit", "")
+
+        regions = page.get("regions", [])
+        for region in regions:
+            polygon_values = region.get("polygon", [])
+            coordinates = []
+            while polygon_values:
+                x = polygon_values.pop(0)
+                y = polygon_values.pop(0)
+                coordinates.append((x, y))
+            polygon = Polygon(page_number=page_number, vertices=coordinates, unit=unit)
+            polygons.append(polygon)
+        page_number = page_number + 1
+
+    return draw_polygons(pdf_path, polygons)

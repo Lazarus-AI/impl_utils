@@ -16,7 +16,11 @@ class PDFTidy:
     """A class to tidy up PDF files by converting them to images, deskewing, cropping, and then recompiling them into a PDF."""
 
     def __init__(self, pdf_path):
-        """Initializes the PDFTidy object with the path to a PDF file. :param pdf_path: The path to the PDF file."""
+        """Initializes the PDFTidy object with the path to a PDF file.
+
+        :param pdf_path: The path to the PDF file.
+
+        """
         self.pdf_path = pdf_path
         self.image_files = []
 
@@ -24,44 +28,59 @@ class PDFTidy:
     def tidy(
         self, destination_path: Optional[str] = None, deskew: bool = True, auto_crop: bool = True
     ) -> str:
-        """Tidies the PDF file by converting it to images, optionally deskewing and cropping, and then recompiling them into a PDF. :param destination_path: The destination path for the tidied PDF file. If None, the original filename with "_tidied" appended is used. :param deskew: If True, the images will be deskewed. :param auto_crop: If True, the images will be automatically cropped. :return: The path to the tidied PDF file."""
+        """Tidies the PDF file by converting it to images, optionally deskewing and cropping, and then recompiling them into a PDF.
+
+        :param destination_path: The destination path for the tidied PDF file. If None,
+            the original filename with "_tidied" appended is used.
+        :param deskew: If True, the images will be deskewed. :param auto_crop: If True,
+            the images will be automatically cropped.
+
+        :returns: The path to the tidied PDF file.
+
+        """
         if destination_path is None:
             destination_path = append_to_filename(self.pdf_path, "_tidied")
 
         with tempfile.TemporaryDirectory() as path:
-            image_files = convert_from_path(self.pdf_path, output_folder=path)
-            for image_file in image_files:
+            image_objects = convert_from_path(self.pdf_path, output_folder=path)
+            completed_image_objects = []
+            for image_object in image_objects:
                 if deskew:
-                    self.deskew(image_file)
+                    image_object = self.deskew(image_object)
 
                 if auto_crop:
-                    self.auto_crop(image_file)
+                    image_object = self.auto_crop(image_object)
+                completed_image_objects.append(image_object)
 
-            compile_images_to_pdf(image_files, destination_path)
+            compile_images_to_pdf(completed_image_objects, destination_path)
 
         return destination_path
 
     def deskew(self, image: Image):
-        """Deskews the image by correcting its orientation. :param image: The PIL Image to deskew."""
-        image = cv2.imread(image)
-        if image is None:
+        """Deskews the image by correcting its orientation.
+
+        :param image: The PIL Image to deskew.
+
+        """
+        matrix = np.array(image)
+        if matrix is None:
             raise Exception("Error: Unable to read the image. Check filepath or filename")
-        grayscale = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        grayscale = cv2.cvtColor(matrix, cv2.COLOR_BGR2GRAY)
         angle = determine_skew(grayscale)
-        rotated = self.rotate(image, angle, (0, 0, 0))
-        cv2.imwrite(image, rotated)
+        rotated = self.rotate(matrix, angle, (0, 0, 0))
+        return Image.fromarray(rotated)
 
     def auto_crop(self, image: Image):
         """Automatically crops the image to remove unnecessary whitespace. :param image: The PIL Image to crop."""
-        img = cv2.imread(image)
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        matrix = np.array(image)
+        gray = cv2.cvtColor(matrix, cv2.COLOR_BGR2GRAY)
         blurred = cv2.GaussianBlur(gray, (5, 5), 0)
         _, thresh = cv2.threshold(blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         max_contour = max(contours, key=cv2.contourArea)
         x, y, w, h = cv2.boundingRect(max_contour)
-        cropped_image = img[y : y + h, x : x + w]
-        cv2.imwrite(image, cropped_image)
+        cropped_image = matrix[y : y + h, x : x + w]
+        return Image.fromarray(cropped_image)
 
     def rotate(
         self, image: np.ndarray, angle: float, background: Union[int, Tuple[int, int, int]]
@@ -83,11 +102,19 @@ class PDFTidy:
         )
 
 
-def compile_images_to_pdf(image_files: List[Image], destination_path: str):
-    """Compiles a list of images into a PDF file. :param image_files: The list of PIL Image objects to compile. :param destination_path: The destination path for the compiled PDF file. :return: The path to the compiled PDF file."""
+def compile_image_files_to_pdf(image_files: List[str], destination_path: str):
     images = []
     for image_file in image_files:
         image = Image.open(image_file)
+        images.append(image)
+
+    return compile_images_to_pdf(images, destination_path)
+
+
+def compile_images_to_pdf(image_files: List[Image], destination_path: str):
+    """Compiles a list of images into a PDF file. :param image_files: The list of PIL Image objects to compile. :param destination_path: The destination path for the compiled PDF file. :return: The path to the compiled PDF file."""
+    images = []
+    for image in image_files:
         image.convert("RGB")
         images.append(image)
 

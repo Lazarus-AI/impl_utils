@@ -44,6 +44,16 @@ RIKY_EXTRACT_AUTH_KEY = os.environ.get("RIKY_EXTRACT_AUTH_KEY", "")
 RIKY_EXTRACT_URL = os.environ.get("RIKY_EXTRACT_URL", "")
 RIKY_EXTRACT_STATUS_URL = os.environ.get("RIKY_EXTRACT_STATUS_URL", "")
 
+# PII Extractor Variables
+PII_ORG_ID = os.environ.get("PII_ORG_ID", "")
+PII_AUTH_KEY = os.environ.get("PII_AUTH_KEY", "")
+PII_URL = os.environ.get("PII_URL", "")
+
+# PII Extractor Variables
+FORMS_ORG_ID = os.environ.get("FORMS_ORG_ID", "")
+FORMS_AUTH_KEY = os.environ.get("FORMS_AUTH_KEY", "")
+FORMS_URL = os.environ.get("FORMS_URL", "")
+
 # Webhook
 WEBHOOK_URL = os.environ.get("WEBHOOK_URL", "")
 

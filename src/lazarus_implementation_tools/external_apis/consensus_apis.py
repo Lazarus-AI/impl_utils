@@ -1,9 +1,12 @@
 import json
+import logging
 import os
 from typing import Any
 
 import googlemaps
 import requests
+
+logger = logging.getLogger(__name__)
 
 
 def send_smarty_request(
@@ -33,7 +36,7 @@ def send_smarty_request(
     elif address and zip:
         params.update({"street": address, "zipcode": zip})
     else:
-        print("Not enough inputs available for google maps api")
+        logger.error("Not enough inputs available for google maps api")
         return None
     try:
         smarty_response = requests.get(

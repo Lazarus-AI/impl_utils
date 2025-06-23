@@ -8,6 +8,12 @@ from typing import Optional
 import requests
 
 from lazarus_implementation_tools.config import (
+    FORMS_AUTH_KEY,
+    FORMS_ORG_ID,
+    FORMS_URL,
+    PII_AUTH_KEY,
+    PII_ORG_ID,
+    PII_URL,
     RIKAI2_AUTH_KEY,
     RIKAI2_ORG_ID,
     RIKAI2_URL,
@@ -40,6 +46,8 @@ class ModelAPI:
         self.return_file_path = None
         self.prompt = ""
         self.response = None
+
+        self.is_async = True
 
     @property
     def name(self):
@@ -294,5 +302,73 @@ class RikaiExtract(ModelAPI):
             "settings": {"returnConfidence": self.return_confidence},
             "webhook": webhook,
         }
+        payload = self.add_file_to_payload(payload)
+        return payload
+
+
+class Pii(ModelAPI):
+    def __init__(
+        self,
+        url: Optional[str] = None,
+        org_id: Optional[str] = None,
+        auth_key: Optional[str] = None,
+        webhook: Optional[str] = None,
+    ):
+        super().__init__()
+        self.url = url or PII_URL
+        self.org_id = org_id or PII_ORG_ID
+        self.auth_key = auth_key or PII_AUTH_KEY
+        self.webhook = webhook or WEBHOOK_URL
+
+        self.is_async = False
+
+    def add_file_to_payload(self, payload):
+        if not self.file:
+            raise Exception("No file set")
+
+        if self.file.startswith("http"):
+            payload["inputURL"] = self.file
+            return payload
+
+        # Assume local file
+        payload["base64"] = self._get_file_base64(self.file)
+        return payload
+
+    def build_payload(self):
+        payload = {}
+        payload = self.add_file_to_payload(payload)
+        return payload
+
+
+class Forms(ModelAPI):
+    def __init__(
+        self,
+        url: Optional[str] = None,
+        org_id: Optional[str] = None,
+        auth_key: Optional[str] = None,
+        webhook: Optional[str] = None,
+    ):
+        super().__init__()
+        self.url = url or FORMS_URL
+        self.org_id = org_id or FORMS_ORG_ID
+        self.auth_key = auth_key or FORMS_AUTH_KEY
+        self.webhook = webhook or WEBHOOK_URL
+
+        self.is_async = False
+
+    def add_file_to_payload(self, payload):
+        if not self.file:
+            raise Exception("No file set")
+
+        if self.file.startswith("http"):
+            payload["inputURL"] = self.file
+            return payload
+
+        # Assume local file
+        payload["base64"] = self._get_file_base64(self.file)
+        return payload
+
+    def build_payload(self):
+        payload = {}
         payload = self.add_file_to_payload(payload)
         return payload

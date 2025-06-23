@@ -23,7 +23,7 @@ from lazarus_implementation_tools.transformations.pdf.libre_office import (
     logger,
 )
 from lazarus_implementation_tools.transformations.pdf.transformations import (
-    compile_images_to_pdf,
+    compile_image_files_to_pdf,
 )
 
 
@@ -78,7 +78,7 @@ def convert_file_to_pdf(file_path: str, output_dir: Optional[str]) -> Optional[s
     image_extensions = ["jpg", "jpeg", "gif", "tif", "tiff", "png"]
     if file_extension in image_extensions:
         output_file = f"{output_dir}/{get_filename(file_path)}.pdf"
-        compile_images_to_pdf([file_path], output_file)
+        compile_image_files_to_pdf([file_path], output_file)
         return output_file
 
     image_extensions = ["txt", "csv"]

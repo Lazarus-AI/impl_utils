@@ -1,3 +1,6 @@
+import re
+
+
 def get_data_from_json_map(json_data, json_map):
     """Retrieves data from a nested JSON structure using a dot-separated path.
 
@@ -17,3 +20,11 @@ def get_data_from_json_map(json_data, json_map):
         if step is None:
             break
     return step
+
+
+def normalize_text(text: str) -> str:
+    allowed_characters = [" ", "'", "-"]
+    text = re.sub(r"\s+", " ", text)
+    text = text.lower().strip()
+    text = "".join(char for char in text if char.isalnum() or char in allowed_characters)
+    return text
