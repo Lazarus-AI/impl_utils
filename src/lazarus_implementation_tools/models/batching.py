@@ -1,8 +1,10 @@
+import json
 import logging
 import threading
 import time
 from http import HTTPStatus
 from math import floor
+from shutil import move
 from typing import List, Optional, Union
 
 from lazarus_implementation_tools.config import (
@@ -17,7 +19,11 @@ from lazarus_implementation_tools.file_system.utils import (
 )
 from lazarus_implementation_tools.general.core import log_timing
 from lazarus_implementation_tools.models.apis import ModelAPI
-from lazarus_implementation_tools.sync.firebase.utils import download, file_exists
+from lazarus_implementation_tools.sync.firebase.utils import (
+    delete,
+    download,
+    file_exists,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +72,10 @@ class Batcher:
             client = self.model_api
             client.set_file(file)
             client.prompt = self.prompt
-            runner = RunAndWait(client)
+            if client.is_async:
+                runner = RunAndWait(client)  # type: Runner
+            else:
+                runner = RunSync(client)  # type: ignore[no-redef]
             clients.append(client)
             thread = threading.Thread(target=runner.run)
             thread.start()
@@ -81,8 +90,15 @@ class Batcher:
         return clients
 
 
-class RunAndWait:
-    """A class for running a model API request and waiting for the response.
+class Runner:
+    """Interface for runners"""
+
+    def run(self):
+        raise NotImplementedError
+
+
+class RunAndWait(Runner):
+    """A class for running a model API request and waiting for the async response.
 
     This is currently highly opinionated towards firebase storage. TODO: Extend this
     object to use other storage systems.
@@ -125,10 +141,12 @@ class RunAndWait:
         """Saves the downloaded response file to the local filesystem."""
         download_folder = get_folder(self.model_api.file)
         download(download_folder, self.data_path)
-        # delete(self.data_path)
+        delete(self.data_path)
+        raw_file_name = f"{download_folder}/{self.model_api.firebase_file_name}.json"
         self.model_api.return_file_path = (
             f"{download_folder}/{self.model_api.return_file_name}.json"
         )
+        move(raw_file_name, self.model_api.return_file_path)
         tidy_json_file(self.model_api.return_file_path)
         logging.info(f"Saved response to: {self.model_api.return_file_path}")
 
@@ -138,5 +156,49 @@ class RunAndWait:
         if response.status_code != HTTPStatus.OK:
             # Don't wait for the file if the API call failed.
             return
-        self.wait()
+        is_successful = self.wait()
+        if is_successful:
+            self.save_file()
+        else:
+            logger.error("Request timed out")
+
+
+class RunSync(Runner):
+    """A class for running a model API request and waiting for the response.
+
+    This is currently highly opinionated towards firebase storage. TODO: Extend this
+    object to use other storage systems.
+
+    """
+
+    def __init__(self, model_api: ModelAPI):
+        """Initializes the RunAndWait with a model API.
+
+        :param model_api: The model API to use for the request.
+
+        """
+        self.model_api = model_api
+
+    def send(self):
+        """Sends the model API request."""
+        logging.info(f"Processing: {self.model_api.file}")
+        return self.model_api.run()
+
+    def save_file(self):
+        """Saves the downloaded response file to the local filesystem."""
+        download_folder = get_folder(self.model_api.file)
+        self.model_api.return_file_path = (
+            f"{download_folder}/{self.model_api.return_file_name}.json"
+        )
+        with open(self.model_api.return_file_path, "w") as file:
+            file.write(json.dumps(self.model_api.response.json()))
+        tidy_json_file(self.model_api.return_file_path)
+        logging.info(f"Saved response to: {self.model_api.return_file_path}")
+
+    def run(self):
+        """Runs the send, wait, and save_file methods in sequence."""
+        response = self.send()
+        if response.status_code != HTTPStatus.OK:
+            # Don't wait for the file if the API call failed.
+            return
         self.save_file()

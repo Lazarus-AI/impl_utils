@@ -12,9 +12,16 @@ from lazarus_implementation_tools.file_system.utils import (
     get_folder,
     mkdir,
 )
-from lazarus_implementation_tools.general.pydantic_models import BoundingBox
+from lazarus_implementation_tools.general.core import COLOR
+from lazarus_implementation_tools.general.pydantic_models import (
+    BoundingBox,
+    Polygon,
+    TextBox,
+)
 from lazarus_implementation_tools.transformations.pdf.bounding_boxes import (
     draw_box_on_pdf,
+    draw_polygon_on_pdf,
+    draw_text_on_pdf,
 )
 from lazarus_implementation_tools.transformations.pdf.core import (
     convert_file_to_pdf,
@@ -185,6 +192,75 @@ def draw_bounding_boxes(
         input_pdf_path=pdf_path,
         output_pdf_path=destination_path,
         bounding_boxes=bounding_boxes,
+    )
+
+    return destination_path
+
+
+def draw_polygons(
+    pdf_path: str,
+    polygons: List[Polygon],
+    destination_path: Optional[str] = None,
+    border_color=COLOR["red"],
+    fill_color=COLOR["transparent"],
+) -> Optional[str]:
+    """Draws Polygons on a PDF file.
+
+    :param pdf_path: The path to the input PDF file.
+    :param polygons: A list of polygons to draw.
+    :param destination_path: The output path for the PDF with bounding boxes. If None,
+        uses a default name.
+
+    :returns: The path to the PDF with bounding boxes, or None if no bounding boxes are
+        provided.
+
+    """
+    if not polygons:
+        return None
+
+    if destination_path is None:
+        destination_path = append_to_filename(pdf_path, f"_polygons")
+
+    draw_polygon_on_pdf(
+        input_pdf_path=pdf_path,
+        output_pdf_path=destination_path,
+        polygons=polygons,
+        border_color=border_color,
+        fill_color=fill_color,
+    )
+
+    return destination_path
+
+
+def draw_text_boxes(
+    pdf_path: str,
+    text_boxes: List[TextBox],
+    destination_path: Optional[str] = None,
+    color=COLOR["black"],
+) -> Optional[str]:
+    """Draws Polygons on a PDF file.
+
+    :param pdf_path: The path to the input PDF file.
+    :param text_boxes: A list of text boxes to draw.
+    :param destination_path: The output path for the PDF with bounding boxes. If None,
+        uses a default name.
+    :param color: Text color
+
+    :returns: The path to the PDF with bounding boxes, or None if no bounding boxes are
+        provided.
+
+    """
+    if not text_boxes:
+        return None
+
+    if destination_path is None:
+        destination_path = append_to_filename(pdf_path, f"_text_boxes")
+
+    draw_text_on_pdf(
+        input_pdf_path=pdf_path,
+        output_pdf_path=destination_path,
+        text_boxes=text_boxes,
+        color=color,
     )
 
     return destination_path

@@ -44,3 +44,13 @@ def sanitize_string(input_string: str) -> str:
     except UnicodeEncodeError:
         sanitized_string = text.encode("utf-8", errors="replace").decode("utf-8")
     return sanitized_string
+
+
+COLOR = {
+    "red": (255, 0, 0),
+    "blue": (0, 0, 255),
+    "green": (0, 255, 0),
+    "white": (255, 255, 255),
+    "black": (0, 0, 0),
+    "transparent": None,
+}
