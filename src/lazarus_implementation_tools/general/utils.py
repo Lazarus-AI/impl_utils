@@ -23,6 +23,16 @@ def get_data_from_json_map(json_data, json_map):
 
 
 def normalize_text(text: str) -> str:
+    """This removes non-alphanumeric characters and lower cases the string.
+
+    Useful for comparing strings without worrying about special characters making the
+    comparison non-valid.
+
+    :param text: Text to normalize
+
+    :returns: normalized string
+
+    """
     allowed_characters = [" ", "'", "-"]
     text = re.sub(r"\s+", " ", text)
     text = text.lower().strip()
