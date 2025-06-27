@@ -1,8 +1,10 @@
 import os
 
+FIXTURE_ROOT = os.path.join(os.path.dirname(__file__), "fixtures")
+
 # Set all ENV variables with bogus defaults for testing
-os.environ["WORKING_FOLDER"] = "working"
-os.environ["DOWNLOAD_FOLDER"] = "downloads"
+os.environ["WORKING_FOLDER"] = FIXTURE_ROOT
+os.environ["DOWNLOAD_FOLDER"] = FIXTURE_ROOT
 
 # Rikai2
 os.environ["RIKAI2_ORG_ID"] = "rikai2_org_id"

@@ -14,8 +14,8 @@ from xhtml2pdf import pisa
 from lazarus_implementation_tools.file_system.utils import (
     append_to_filename,
     get_filename,
+    get_filename_with_ext,
     get_folder,
-    in_working,
 )
 from lazarus_implementation_tools.general.core import sanitize_string
 from lazarus_implementation_tools.transformations.pdf.libre_office import (
@@ -127,33 +127,37 @@ def convert_folder_to_pdf(
 
 def convert_msg_to_pdf(file_path: str, destination_path: str = None) -> Optional[str]:
     if destination_path is None:
-        destination_path = f"{get_folder(file_path)}/{get_filename(file_path)}.pdf"
+        destination_path = os.path.join(get_folder(file_path), f"{get_filename(file_path)}.pdf")
 
-    # Extract message parts
-    msg = extract_msg.Message(file_path)
-    msg_body = msg.body or ""
-    msg_html_body = msg.htmlBody or ""
-    msg_subject = msg.subject or "No Subject"
-    msg_sender = msg.sender or "Unknown Sender"
-    msg_date = msg.date or "Unknown Date"
-
-    # Clean the extracted text
-    msg_subject = sanitize_string(msg_subject)
-    msg_sender = sanitize_string(msg_sender)
-    msg_date = sanitize_string(msg_date)
-    msg_body = sanitize_string(msg_body)
-    msg_html_body = sanitize_string(msg_html_body)
-
-    # Prepare text content
-    content = [
-        f"Subject: {msg_subject}",
-        f"From: {msg_sender}",
-        f"Date: {msg_date}",
-        "",
-    ]
-
-    files = []
     with tempfile.TemporaryDirectory() as path:
+        filename = get_filename_with_ext(file_path)
+        shutil.copy(file_path, path)
+        tmp_file_path = os.path.join(path, filename)
+
+        # Extract message parts
+        msg = extract_msg.Message(tmp_file_path)
+        msg_body = msg.body or ""
+        msg_html_body = msg.htmlBody or ""
+        msg_subject = msg.subject or "No Subject"
+        msg_sender = msg.sender or "Unknown Sender"
+        msg_date = msg.date or "Unknown Date"
+
+        # Clean the extracted text
+        msg_subject = sanitize_string(msg_subject)
+        msg_sender = sanitize_string(msg_sender)
+        msg_date = sanitize_string(msg_date)
+        msg_body = sanitize_string(msg_body)
+        msg_html_body = sanitize_string(msg_html_body)
+
+        # Prepare text content
+        content = [
+            f"Subject: {msg_subject}",
+            f"From: {msg_sender}",
+            f"Date: {msg_date}",
+            "",
+        ]
+
+        files = []
         # Create the PDF using the content list
         message_path = os.path.join(path, "message.pdf")
         if msg_body:
@@ -181,7 +185,6 @@ def convert_msg_to_pdf(file_path: str, destination_path: str = None) -> Optional
                     pdf_file = convert_file_to_pdf(file, path)
                     if pdf_file:
                         pdf_files.append(pdf_file)
-                    shutil.copy(file, in_working(f"message/{os.path.basename(file)}"))
                 except FileNotFoundError:
                     pass
         merge_pdfs(pdf_files, destination_path)
