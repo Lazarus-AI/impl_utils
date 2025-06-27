@@ -7,8 +7,6 @@ from firebase_admin import credentials, delete_app, get_app, initialize_app, sto
 
 from lazarus_implementation_tools.config import FIREBASE_KEY, WORKING_FOLDER
 
-cred = credentials.Certificate(FIREBASE_KEY)
-
 logger = logging.getLogger(__name__)
 
 
@@ -21,7 +19,7 @@ class FirebaseStorageManager:
         :param storage_url: (str) The URL of the Firebase storage bucket.
 
         """
-
+        cred = credentials.Certificate(FIREBASE_KEY)
         try:
             initialize_app(cred)
         except Exception:

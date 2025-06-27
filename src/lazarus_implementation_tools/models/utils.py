@@ -1,3 +1,4 @@
+import json
 from typing import List, Optional, Union
 
 from lazarus_implementation_tools.models.apis import (
@@ -82,7 +83,7 @@ def query_riky2(
 
 def query_rikai_extract(
     file_path: Union[str, list],
-    prompt: str,
+    prompt: Union[dict, str],
     url: Optional[str] = None,
     org_id: Optional[str] = None,
     auth_key: Optional[str] = None,
@@ -107,6 +108,8 @@ def query_rikai_extract(
     model_api = RikaiExtract(url=url, org_id=org_id, auth_key=auth_key, webhook=webhook)
     if return_file_name:
         model_api.return_file_name = return_file_name
+    if isinstance(prompt, dict):
+        prompt = json.dumps(prompt)
     model_api.return_confidence = return_confidence
     batch = Batcher(model_api, file_path, prompt)
     return batch.run()

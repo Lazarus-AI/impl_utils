@@ -39,10 +39,10 @@ RIKY2_URL = os.environ.get("RIKY2_URL", "")
 RIKY2_STATUS_URL = os.environ.get("RIKY2_STATUS_URL", "")
 
 # RikyExtract Variables
-RIKY_EXTRACT_ORG_ID = os.environ.get("RIKY_EXTRACT_ORG_ID", "")
-RIKY_EXTRACT_AUTH_KEY = os.environ.get("RIKY_EXTRACT_AUTH_KEY", "")
-RIKY_EXTRACT_URL = os.environ.get("RIKY_EXTRACT_URL", "")
-RIKY_EXTRACT_STATUS_URL = os.environ.get("RIKY_EXTRACT_STATUS_URL", "")
+RIKAI2_EXTRACT_ORG_ID = os.environ.get("RIKAI2_EXTRACT_ORG_ID", "")
+RIKAI2_EXTRACT_AUTH_KEY = os.environ.get("RIKAI2_EXTRACT_AUTH_KEY", "")
+RIKAI2_EXTRACT_URL = os.environ.get("RIKAI2_EXTRACT_URL", "")
+RIKAI2_EXTRACT_STATUS_URL = os.environ.get("RIKAI2_EXTRACT_STATUS_URL", "")
 
 # PII Extractor Variables
 PII_ORG_ID = os.environ.get("PII_ORG_ID", "")
