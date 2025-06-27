@@ -1,5 +1,7 @@
 import re
 
+from lazarus_implementation_tools.general.core import sanitize_string
+
 
 def get_data_from_json_map(json_data, json_map):
     """Retrieves data from a nested JSON structure using a dot-separated path.
@@ -10,16 +12,26 @@ def get_data_from_json_map(json_data, json_map):
     :returns: The data at the specified path, or None if the path is invalid.
 
     """
-    path = json_map.split(".")
-    step = json_data
-    for stone in path:
-        if isinstance(step, list):
-            step = step[0]
+    parts = json_map.split(".")
+    current_location = json_data
+    try:
+        for part in parts:
+            if "[" in part and "]" in part:
+                try:
+                    bits = part.split("[")
+                    index = bits[1][:-1]
+                    index = int(index) if index else 0
+                    current_location = current_location.get(bits[0])[index]
+                except KeyError:
+                    current_location = {}
+                continue
 
-        step = step.get(stone)
-        if step is None:
-            break
-    return step
+            current_location = current_location.get(part)
+        value = current_location
+    except Exception:
+        value = None
+
+    return value
 
 
 def normalize_text(text: str) -> str:
@@ -35,6 +47,6 @@ def normalize_text(text: str) -> str:
     """
     allowed_characters = [" ", "'", "-"]
     text = re.sub(r"\s+", " ", text)
-    text = text.lower().strip()
+    text = text.lower()
     text = "".join(char for char in text if char.isalnum() or char in allowed_characters)
-    return text
+    return sanitize_string(text.strip())

@@ -139,13 +139,9 @@ class RunAndWait(Runner):
 
     def save_file(self):
         """Saves the downloaded response file to the local filesystem."""
-        download_folder = get_folder(self.model_api.file)
-        download(download_folder, self.data_path)
+        download(self.model_api.download_folder, self.data_path)
         delete(self.data_path)
-        raw_file_name = f"{download_folder}/{self.model_api.firebase_file_name}.json"
-        self.model_api.return_file_path = (
-            f"{download_folder}/{self.model_api.return_file_name}.json"
-        )
+        raw_file_name = f"{self.model_api.download_folder}/{self.model_api.firebase_file_name}.json"
         move(raw_file_name, self.model_api.return_file_path)
         tidy_json_file(self.model_api.return_file_path)
         logging.info(f"Saved response to: {self.model_api.return_file_path}")
