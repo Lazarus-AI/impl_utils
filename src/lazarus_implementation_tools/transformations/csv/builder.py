@@ -123,15 +123,14 @@ def xls_to_csvs_and_concat(
             final_spreadsheet_list.append(output_path)
         return final_spreadsheet_list
     else:
-        # Find shared columns across all sheets
-        common_columns_set = set.intersection(*(set(df.columns) for df in dataframes.values()))
-        if not common_columns_set:
-            raise ValueError("No common columns across sheets")
-        common_columns = list(common_columns_set)  # preserve order
-        # Subset and concatenate rows by shared columns
-        subset_dfs = [df[common_columns] for df in dataframes.values()]
-        combined_df = pd.concat(subset_dfs, ignore_index=True)
-
         mkdir(output_dir)
-        combined_df.to_csv(os.path.join(output_dir, f"{file_name}_combined.csv"), index=False)
-        return [os.path.join(output_dir, f"{file_name}_combined.csv")]
+        final_file = os.path.join(output_dir, f"{file_name}_combined.csv")
+        contents = []
+        for sheet_name, df in dataframes.items():
+            contents.append(df.to_csv(index=False))
+
+        with open(final_file, "w+") as file:
+            output = "\n\n".join(contents)
+            file.write(output)
+
+        return [final_file]
