@@ -15,17 +15,17 @@ from lazarus_implementation_tools.config import (
     PII_ORG_ID,
     PII_URL,
     RIKAI2_AUTH_KEY,
+    RIKAI2_EXTRACT_AUTH_KEY,
+    RIKAI2_EXTRACT_ORG_ID,
+    RIKAI2_EXTRACT_URL,
     RIKAI2_ORG_ID,
     RIKAI2_URL,
     RIKY2_AUTH_KEY,
     RIKY2_ORG_ID,
     RIKY2_URL,
-    RIKY_EXTRACT_AUTH_KEY,
-    RIKY_EXTRACT_ORG_ID,
-    RIKY_EXTRACT_URL,
     WEBHOOK_URL,
 )
-from lazarus_implementation_tools.file_system.utils import get_filename
+from lazarus_implementation_tools.file_system.utils import get_filename, get_folder
 from lazarus_implementation_tools.models.constants import POST
 
 logger = logging.getLogger(__name__)
@@ -105,6 +105,9 @@ class ModelAPI:
         self.file = file
         self.return_file_name = f"{get_filename(file)}_{self.name}"
         self.set_firebase_file_name()
+
+        self.download_folder = get_folder(self.file)
+        self.return_file_path = f"{self.download_folder}/{self.return_file_name}.json"
 
     def set_firebase_file_name(self, file_name: Optional[str] = None):
         """Sets the return file name.
@@ -271,9 +274,9 @@ class RikaiExtract(ModelAPI):
         webhook: Optional[str] = None,
     ):
         super().__init__()
-        self.url = url or RIKY_EXTRACT_URL
-        self.org_id = org_id or RIKY_EXTRACT_ORG_ID
-        self.auth_key = auth_key or RIKY_EXTRACT_AUTH_KEY
+        self.url = url or RIKAI2_EXTRACT_URL
+        self.org_id = org_id or RIKAI2_EXTRACT_ORG_ID
+        self.auth_key = auth_key or RIKAI2_EXTRACT_AUTH_KEY
         self.webhook = webhook or WEBHOOK_URL
 
         # Settings
