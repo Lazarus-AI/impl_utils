@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "lazarus_implementation_toolkit"
+name = "lazarus_implementation_tools"
 dynamic = ["version"]
 description = "Lazarus AI Implementation Tools Library"
 authors = [
