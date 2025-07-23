@@ -13,7 +13,7 @@ from lazarus_implementation_tools.models.batching import Batcher
 
 
 def query_rikai2(
-    file_path: Union[str, list],
+    file_path_or_url: Union[str, list],
     prompt: str,
     url: Optional[str] = None,
     org_id: Optional[str] = None,
@@ -27,7 +27,7 @@ def query_rikai2(
 ) -> List[ModelAPI]:
     """Queries the Rikai2 model API for the given file path(s) and prompt.
 
-    :param file_path: The path to a single file or a list of file paths.
+    :param file_path_or_url: The path to a single file or a list of file paths.
     :param prompt: The prompt to pass to the Rikai2 model API.
     :param url: Model url, Optional defaults to environment file.
     :param org_id: Org ID for request, Optional defaults to environment file.
@@ -49,12 +49,12 @@ def query_rikai2(
     model_api.advanced_vision = advanced_vision
     model_api.force_ocr = force_ocr
     model_api.verbose = verbose
-    batch = Batcher(model_api, file_path, prompt)
+    batch = Batcher(model_api, file_path_or_url, prompt)
     return batch.run()
 
 
 def query_riky2(
-    file_path: Union[str, list],
+    file_path_or_url: Union[str, list],
     prompt: str,
     url: Optional[str] = None,
     org_id: Optional[str] = None,
@@ -64,7 +64,7 @@ def query_riky2(
 ) -> List[ModelAPI]:
     """Queries the Riky2 model API for the given file path(s) and prompt.
 
-    :param file_path: The path to a single file or a list of file paths.
+    :param file_path_or_url: The path to a single file or a list of file paths.
     :param prompt: The prompt to pass to the Riky2 model API.
     :param url: Model url, Optional defaults to environment file.
     :param org_id: Org ID for request, Optional defaults to environment file.
@@ -77,12 +77,12 @@ def query_riky2(
     model_api = Riky2(url=url, org_id=org_id, auth_key=auth_key, webhook=webhook)
     if return_file_name:
         model_api.return_file_name = return_file_name
-    batch = Batcher(model_api, file_path, prompt)
+    batch = Batcher(model_api, file_path_or_url, prompt)
     return batch.run()
 
 
 def query_rikai_extract(
-    file_path: Union[str, list],
+    file_path_or_url: Union[str, list],
     prompt: Union[dict, str],
     url: Optional[str] = None,
     org_id: Optional[str] = None,
@@ -93,7 +93,7 @@ def query_rikai_extract(
 ) -> List[ModelAPI]:
     """Queries the RikaiExtract model API for the given file path(s) and prompt.
 
-    :param file_path: The path to a single file or a list of file paths.
+    :param file_path_or_url: The path to a single file or a list of file paths.
     :param prompt: The prompt to pass to the RikaiExtract model API.
     :param url: Model url, Optional defaults to environment file.
     :param org_id: Org ID for request, Optional defaults to environment file.
@@ -111,12 +111,12 @@ def query_rikai_extract(
     if isinstance(prompt, dict):
         prompt = json.dumps(prompt)
     model_api.return_confidence = return_confidence
-    batch = Batcher(model_api, file_path, prompt)
+    batch = Batcher(model_api, file_path_or_url, prompt)
     return batch.run()
 
 
 def query_pii(
-    file_path: Union[str, list],
+    file_path_or_url: Union[str, list],
     url: Optional[str] = None,
     org_id: Optional[str] = None,
     auth_key: Optional[str] = None,
@@ -124,7 +124,7 @@ def query_pii(
 ) -> List[ModelAPI]:
     """Queries the PII model API for the given file path(s) and prompt.
 
-    :param file_path: The path to a single file or a list of file paths.
+    :param file_path_or_url: The path to a single file or a list of file paths.
     :param prompt: The prompt to pass to the RikaiExtract model API.
     :param url: Model url, Optional defaults to environment file.
     :param org_id: Org ID for request, Optional defaults to environment file.
@@ -137,12 +137,12 @@ def query_pii(
     model_api = Pii(url=url, org_id=org_id, auth_key=auth_key)
     if return_file_name:
         model_api.return_file_name = return_file_name
-    batch = Batcher(model_api, file_path)
+    batch = Batcher(model_api, file_path_or_url)
     return batch.run()
 
 
 def query_forms(
-    file_path: Union[str, list],
+    file_path_or_url: Union[str, list],
     url: Optional[str] = None,
     org_id: Optional[str] = None,
     auth_key: Optional[str] = None,
@@ -150,7 +150,7 @@ def query_forms(
 ) -> List[ModelAPI]:
     """Queries the PII model API for the given file path(s) and prompt.
 
-    :param file_path: The path to a single file or a list of file paths.
+    :param file_path_or_url: The path to a single file or a list of file paths.
     :param prompt: The prompt to pass to the RikaiExtract model API.
     :param url: Model url, Optional defaults to environment file.
     :param org_id: Org ID for request, Optional defaults to environment file.
@@ -163,5 +163,5 @@ def query_forms(
     model_api = Forms(url=url, org_id=org_id, auth_key=auth_key)
     if return_file_name:
         model_api.return_file_name = return_file_name
-    batch = Batcher(model_api, file_path)
+    batch = Batcher(model_api, file_path_or_url)
     return batch.run()

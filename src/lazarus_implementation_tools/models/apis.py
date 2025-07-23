@@ -25,7 +25,13 @@ from lazarus_implementation_tools.config import (
     RIKY2_URL,
     WEBHOOK_URL,
 )
-from lazarus_implementation_tools.file_system.utils import get_filename, get_folder
+from lazarus_implementation_tools.file_system.utils import (
+    get_filename,
+    get_filename_from_url,
+    get_folder,
+    in_working,
+    is_url,
+)
 from lazarus_implementation_tools.models.constants import POST
 
 logger = logging.getLogger(__name__)
@@ -103,10 +109,16 @@ class ModelAPI:
 
         """
         self.file = file
-        self.return_file_name = f"{get_filename(file)}_{self.name}"
-        self.set_firebase_file_name()
 
-        self.download_folder = get_folder(self.file)
+        if is_url(file):
+            full_filename = get_filename_from_url(file)
+            self.return_file_name = f"{get_filename(full_filename)}_{self.name}"
+            self.download_folder = get_folder(in_working())
+        else:
+            self.return_file_name = f"{get_filename(file)}_{self.name}"
+            self.download_folder = get_folder(self.file)
+
+        self.set_firebase_file_name()
         self.return_file_path = f"{self.download_folder}/{self.return_file_name}.json"
 
     def set_firebase_file_name(self, file_name: Optional[str] = None):
@@ -119,7 +131,7 @@ class ModelAPI:
             file_name = str(uuid.uuid4())
         self.firebase_file_name = file_name
 
-    def run(self, file=None, prompt=None):
+    def run(self):
         """Runs the API request.
 
         :param file: The path to the file.
@@ -128,12 +140,6 @@ class ModelAPI:
         :returns: The response from the API.
 
         """
-        if file:
-            self.set_file(file)
-
-        if prompt:
-            self.prompt = prompt
-
         payload = self.build_payload()
         self.response = requests.request(
             self.method, self.url, headers=self.get_headers(), data=json.dumps(payload)
@@ -177,7 +183,7 @@ class Rikai2(ModelAPI):
         if not self.file:
             raise Exception("No file set")
 
-        if self.file.startswith("http"):
+        if is_url(self.file):
             payload["inputURL"] = self.file
             return payload
 
@@ -237,7 +243,7 @@ class Riky2(ModelAPI):
         if not self.file:
             raise Exception("No file set")
 
-        if self.file.startswith("http"):
+        if is_url(self.file):
             payload["inputURL"] = self.file
             return payload
 
@@ -286,7 +292,7 @@ class RikaiExtract(ModelAPI):
         if not self.file:
             raise Exception("No file set")
 
-        if self.file.startswith("http"):
+        if is_url(self.file):
             payload["inputURL"] = self.file
             return payload
 
@@ -329,7 +335,7 @@ class Pii(ModelAPI):
         if not self.file:
             raise Exception("No file set")
 
-        if self.file.startswith("http"):
+        if is_url(self.file):
             payload["inputURL"] = self.file
             return payload
 
@@ -363,7 +369,7 @@ class Forms(ModelAPI):
         if not self.file:
             raise Exception("No file set")
 
-        if self.file.startswith("http"):
+        if is_url(self.file):
             payload["inputURL"] = self.file
             return payload
 

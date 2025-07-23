@@ -23,8 +23,10 @@ DEBUG_MODE = os.environ.get("DEBUG_MODE", "").lower() == "true"
 
 
 # Local folders
-WORKING_FOLDER = normalize_path(os.environ.get("WORKING_FOLDER"))
-DOWNLOAD_FOLDER = normalize_path(os.environ.get("DOWNLOAD_FOLDER"))
+WORKING_FOLDER = normalize_path(os.environ.get("WORKING_FOLDER", "/tmp"))
+DOWNLOAD_FOLDER = normalize_path(
+    os.environ.get("DOWNLOAD_FOLDER", os.path.join(WORKING_FOLDER, "downloads"))
+)
 
 # Rikai2 Variables
 RIKAI2_ORG_ID = os.environ.get("RIKAI2_ORG_ID", "")
@@ -62,8 +64,15 @@ BATCH_TIMEOUT = int(os.environ.get("BATCH_TIMEOUT", 300))  # 5 minutes in second
 
 # Firebase Environment Variables
 FIREBASE_STORAGE_URL = os.environ.get("FIREBASE_STORAGE_URL", "")
-FIREBASE_WEBHOOK_OUTPUT_FOLDER = os.environ.get("FIREBASE_WEBHOOK_OUTPUT_FOLDER", "")
-FIREBASE_PERSONAL_ROOT_FOLDER = os.environ.get("FIREBASE_PERSONAL_ROOT_FOLDER", "")
+webhook_output = os.environ.get("FIREBASE_WEBHOOK_OUTPUT_FOLDER", "")
+FIREBASE_WEBHOOK_OUTPUT_FOLDER = (
+    webhook_output if webhook_output.endswith("/") else f"{webhook_output}/"
+)
+firebase_root = os.environ.get("FIREBASE_PERSONAL_ROOT_FOLDER", "")
+FIREBASE_PERSONAL_ROOT_FOLDER = (
+    firebase_root if firebase_root.endswith("/") else f"{firebase_root}/"
+)
+
 FIREBASE_KEY = os.path.join(PROJECT_ROOT_FOLDER, os.environ.get("FIREBASE_KEY"))
 
 

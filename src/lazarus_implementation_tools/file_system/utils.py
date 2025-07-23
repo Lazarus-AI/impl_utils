@@ -2,6 +2,8 @@ import glob
 import json
 import os
 import zipfile
+from urllib.parse import urlparse
+from uuid import uuid4
 
 from lazarus_implementation_tools.config import DOWNLOAD_FOLDER, WORKING_FOLDER
 
@@ -238,3 +240,23 @@ def load_json_from_file(json_file):
         data = file.read()
         json_data = json.loads(data)
         return json_data
+
+
+def is_url(url):
+    """Is this a url? :param url: Url to test"""
+    return url.lower().startswith("http")
+
+
+def get_filename_from_url(url):
+    """Extracts the filename from a given URL.
+
+    :param url: URL to parse
+
+    """
+    parsed_url = urlparse(url)
+    path = parsed_url.path
+    filename = os.path.basename(path)
+    if not filename:
+        short_uuid = str(uuid4())[:8]
+        filename = f"file_url_{short_uuid}"
+    return filename

@@ -13,19 +13,25 @@ logger = logging.getLogger(__name__)
 class FirebaseStorageManager:
     """A class for managing Firebase storage operations."""
 
-    def __init__(self, storage_url):
+    def __init__(
+        self, storage_url, firebase_credential_path=FIREBASE_KEY, working_folder=WORKING_FOLDER
+    ):
         """Initializes a new instance of the FirebaseStorageManager class.
 
         :param storage_url: (str) The URL of the Firebase storage bucket.
+        :param firebase_credential_path: (str) The path to the json file that provides
+            credentials to firebase
+        :param working_folder: (str) The folder in which you are working out of.
 
         """
-        cred = credentials.Certificate(FIREBASE_KEY)
+        cred = credentials.Certificate(firebase_credential_path)
         try:
             initialize_app(cred)
         except Exception:
             pass
 
         self.storage_url = storage_url
+        self.working_folder = working_folder
         self.bucket = storage.bucket(name=self.storage_url)
 
     def is_folder(self, blob):
@@ -103,7 +109,7 @@ class FirebaseStorageManager:
             blob name.
 
         """
-        relative_dir_path = local_file_path.replace(WORKING_FOLDER, "").strip("/")
+        relative_dir_path = local_file_path.replace(self.working_folder, "").strip("/")
         upload_path = str(os.path.join(data_path, relative_dir_path))
         blob = self.bucket.blob(upload_path)
         blob.upload_from_filename(local_file_path)
