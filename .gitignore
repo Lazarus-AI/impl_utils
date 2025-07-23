@@ -6,6 +6,7 @@
 *.csv
 .ipynb_checkpoints
 *.ipynb
+scratch_pad.ipynb
 
 working
 downloads

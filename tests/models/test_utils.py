@@ -19,7 +19,7 @@ class TestQueryRikai2:
     @mock.patch("lazarus_implementation_tools.models.batching.RunAndWait")
     def test_query_rikai2_defaults(self, mock_runner):
         results = query_rikai2(
-            file_path="file/path/to/pdf.pdf",
+            file_path_or_url="file/path/to/pdf.pdf",
             prompt="Query me this:",
         )
         result = results.pop(0)
@@ -46,7 +46,7 @@ class TestQueryRikai2:
         verbose = False
 
         results = query_rikai2(
-            file_path="file/path/to/pdf.pdf",
+            file_path_or_url="file/path/to/pdf.pdf",
             prompt="Query me this:",
             url=url,
             org_id=org_id,
@@ -81,7 +81,7 @@ class TestQueryRiky2:
     @mock.patch("lazarus_implementation_tools.models.batching.RunAndWait")
     def test_query_riky2_defaults(self, mock_runner):
         results = query_riky2(
-            file_path="file/path/to/pdf.pdf",
+            file_path_or_url="file/path/to/pdf.pdf",
             prompt="Query me this:",
         )
         result = results.pop(0)
@@ -100,7 +100,7 @@ class TestQueryRiky2:
         webhook = "webhook"
 
         results = query_riky2(
-            file_path="file/path/to/pdf.pdf",
+            file_path_or_url="file/path/to/pdf.pdf",
             prompt="Query me this:",
             url=url,
             org_id=org_id,
@@ -127,7 +127,7 @@ class TestQueryRikaiExtract:
     @mock.patch("lazarus_implementation_tools.models.batching.RunAndWait")
     def test_query_rikai_extract_defaults(self, mock_runner):
         results = query_rikai_extract(
-            file_path="file/path/to/pdf.pdf",
+            file_path_or_url="file/path/to/pdf.pdf",
             prompt={},
         )
         result = results.pop(0)
@@ -148,7 +148,7 @@ class TestQueryRikaiExtract:
         return_confidence = False
 
         results = query_rikai_extract(
-            file_path="file/path/to/pdf.pdf",
+            file_path_or_url="file/path/to/pdf.pdf",
             prompt="Query me this:",
             url=url,
             org_id=org_id,

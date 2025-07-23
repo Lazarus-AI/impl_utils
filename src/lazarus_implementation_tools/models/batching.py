@@ -14,7 +14,9 @@ from lazarus_implementation_tools.config import (
 from lazarus_implementation_tools.file_system.utils import (
     get_all_files,
     get_folder,
+    in_working,
     is_dir,
+    is_url,
     tidy_json_file,
 )
 from lazarus_implementation_tools.general.core import log_timing
@@ -34,7 +36,7 @@ class Batcher:
     def __init__(
         self,
         model_api: ModelAPI,
-        file_path: Union[list, str],
+        file_path_or_url: Union[list, str],
         prompt: Optional[str] = None,
     ):
         """Initializes the Batcher with a model API and one or more file paths.
@@ -45,7 +47,7 @@ class Batcher:
 
         """
         self.model_api = model_api
-        self.file_path = file_path
+        self.file_path_or_url = file_path_or_url
         self.prompt = prompt
         self.responses = []  # type: ignore
 
@@ -55,12 +57,12 @@ class Batcher:
         :returns: A list of file paths.
 
         """
-        if isinstance(self.file_path, list):
-            files = self.file_path
-        elif is_dir(self.file_path):
-            files = get_all_files(self.file_path)
+        if isinstance(self.file_path_or_url, list):
+            files = self.file_path_or_url
+        elif is_dir(self.file_path_or_url):
+            files = get_all_files(self.file_path_or_url)
         else:
-            files = [self.file_path]
+            files = [self.file_path_or_url]
         return files
 
     def run(self) -> List[ModelAPI]:
@@ -130,6 +132,7 @@ class RunAndWait(Runner):
         iterations = floor(BATCH_TIMEOUT / check_period)
         is_successful = False
         logging.info(f"Waiting to download: {self.data_path}")
+        print(f"Waiting to download: {self.data_path}")
         for i in range(iterations):
             if file_exists(self.data_path):
                 is_successful = True
@@ -160,7 +163,7 @@ class RunAndWait(Runner):
 
 
 class RunSync(Runner):
-    """A class for running a model API request and waiting for the response.
+    """A class for running a model API request and saving the response.
 
     This is currently highly opinionated towards firebase storage. TODO: Extend this
     object to use other storage systems.
@@ -168,7 +171,7 @@ class RunSync(Runner):
     """
 
     def __init__(self, model_api: ModelAPI):
-        """Initializes the RunAndWait with a model API.
+        """Initializes the RunSync with a model API.
 
         :param model_api: The model API to use for the request.
 
@@ -182,7 +185,11 @@ class RunSync(Runner):
 
     def save_file(self):
         """Saves the downloaded response file to the local filesystem."""
-        download_folder = get_folder(self.model_api.file)
+        if is_url(self.model_api.file):
+            download_folder = get_folder(in_working())
+        else:
+            download_folder = get_folder(self.model_api.file)
+
         self.model_api.return_file_path = (
             f"{download_folder}/{self.model_api.return_file_name}.json"
         )
