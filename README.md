@@ -70,7 +70,7 @@ To power PDF conversions locally, we need LibreOffice installed. You can do that
 brew install libreoffice
 ```
 
-### One Drive Capabilities
+### One Drive Setup
 
 One drive is a proper file system. To enable integrating with one drive with our package, the following steps must be completed:
 
@@ -87,7 +87,7 @@ One drive is a proper file system. To enable integrating with one drive with our
 8. Copy the "Application (client) ID" - this is your ONE_DRIVE_CLIENT_ID
 9. Copy the "Directory (tenant) ID" - this is your ONE_DRIVE_TENANT_ID
 10. For client secret:
-    1. In the left sidebar, click "Certificates & secrets"
+    1. In the left sidebar, click "Certificates & secrets" (or in the client credentials line on the main page)
     2. Click "+ New client secret"
     3. Add a description
     4. Choose an expiry period
@@ -105,7 +105,54 @@ One drive is a proper file system. To enable integrating with one drive with our
     6. Click "Add permissions"
 12. You can see the onedrive operations here: https://onedrive.live.com
 
-### Google Drive Capabilities
+
+### Sharepoint Setup
+
+Sharepoint is a proper file system. To enable integrating with one drive with our package, the following steps must be completed:
+
+1. Go to Azure Portal (https://portal.azure.com/)
+2. Sign in with your Microsoft account
+3. In the Azure Portal, search for "App registrations" in the top search bar
+4. Click on "App registrations" from the results
+5. Click "+ New registration" button
+6. Configure the registration:
+    1. Name: Choose a name for your app (e.g., "My SharePoint Integration")
+    2. Select "Accounts in any organizational directory (Any Azure AD directory - Multitenant)"
+    3. For Redirect URI:
+        1. Select "Web" from the dropdown
+        2. Enter http://localhost:3000/auth/callback (this is your SHAREPOINT_REDIRECT_URI)
+        3. Click Register
+7. Copy the "Application (client) ID" - this is your SHAREPOINT_CLIENT_ID
+8. Copy the "Directory (tenant) ID" - this is your SHAREPOINT_TENANT_ID
+9. For client secret:
+    1. In the left sidebar, click "Certificates & secrets" (or in the client credentials line on the main page)
+    2. Click "+ New client secret"
+    3. Add a description (e.g., "SharePoint API Secret")
+    4. Choose an expiry period
+    5. Click "Add"
+    6. IMMEDIATELY COPY THE SECRET VALUE - this is your SHAREPOINT_CLIENT_SECRET (you will not see this value again)
+10. Set API Permissions:
+    1. In the left sidebar, click "API permissions"
+    2. Click "+ Add a permission"
+    3. Select "Microsoft Graph"
+    4. Choose "Delegated permissions"
+    5. Search for and add these permissions:
+        1. Sites.ReadWrite.All (Read and write items in all site collections)
+        2. Sites.Manage.All (Create, edit, and delete items and lists in all site collections)
+        3. Files.ReadWrite.All (Read and write all files user can access)
+        4. Files.ReadWrite
+        5. User.Read (Sign in and read user profile)
+    6. Click "Add permissions"
+11. Create the Sharepoint website (it's a website, but you're only using the Documents portion of it)
+    1. Go to https://www.office.com and sign in with your work account
+    2. Look for the SharePoint app in your app launcher (If you don't see SharePoint, your organization might not have a Microsoft 365 subscription that includes SharePoint)
+    3. Click Create a New Site
+    4. Choose Team Site
+    5. Fill in Site Name
+    6. Obtain SHAREPOINT_SITE_NAME from the site url suggested
+    7. Add team members from your organization.
+
+### Google Drive Setup
 
 Google Drive is an incomplete file system, but useful nevertheless. To enable integrating with one drive with our package, the following steps must be completed:
 
