@@ -136,18 +136,13 @@ class SharePointClient:
                     else:
                         raise Exception("Could not determine SharePoint domain")
                 except Exception as e:
-                    print(f"Could not determine domain from user info: {e}")
                     # Fallback to tenant-based approach
                     raise Exception("Could not determine SharePoint domain")
-
-            print(f"Attempting to connect to site: {site_path}")
 
             # Get site ID
             site_response = self._make_request("GET", site_path)
             site_data = site_response.json()
             self.site_id = site_data.get("id")
-
-            print(f"Successfully connected to site ID: {self.site_id}")
 
             # Get default document library drive ID
             drives_response = self._make_request("GET", f"/sites/{self.site_id}/drives")
@@ -155,26 +150,21 @@ class SharePointClient:
 
             # Find the Documents library
             for drive in drives:
-                print(f"Found drive: {drive.get('name')} (type: {drive.get('driveType')})")
                 if drive.get("name") == "Documents" or "documentLibrary" in drive.get(
                     "driveType", ""
                 ):
                     self.drive_id = drive.get("id")
-                    print(f"Using Documents library with drive ID: {self.drive_id}")
                     break
 
             if not self.drive_id and drives:
                 # Fallback to first drive if Documents not found
                 self.drive_id = drives[0].get("id")
-                print(f"Using first available drive with ID: {self.drive_id}")
 
             if not self.drive_id:
-                print("Warning: No document library found in the site")
-
+                pass
         except Exception as e:
             # Log error but don't fail authentication
-            print(f"Warning: Could not initialize site info: {str(e)}")
-            print("You may need to specify the full SharePoint URL or check site permissions")
+            pass
 
     def refresh_access_token(self):
         """Refresh the access token"""
