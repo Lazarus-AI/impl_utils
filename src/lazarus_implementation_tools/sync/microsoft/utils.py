@@ -1,6 +1,7 @@
 from typing import Any, List, Optional
 
 from lazarus_implementation_tools.sync.microsoft.onedrive import OneDriveClient
+from lazarus_implementation_tools.sync.microsoft.sharepoint import SharePointClient
 
 
 class OneDriveUtils:
@@ -181,6 +182,169 @@ class OneDriveUtils:
         :param scope: Scope of link ('anonymous' or 'organization')
 
         :returns: Sharing link information
+
+        """
+        return self.client.create_sharing_link(file_path, link_type, scope)
+
+
+class SharePointUtils:
+    def __init__(self, client_id: str, client_secret: str, tenant_id: str, site_name: str):
+        """Initialize the SharePointUtils class.
+
+        :param client_id: Client ID for SharePoint authentication
+        :param client_secret: Client secret for SharePoint authentication
+        :param tenant_id: Tenant ID for SharePoint authentication
+        :param site_name: SharePoint site name (from the URL)
+
+        """
+        self.client = SharePointClient(client_id, client_secret, tenant_id, site_name)
+        self.site_name = site_name
+
+    def authenticate(
+        self, auth_code: str, redirect_uri: str, scopes: Optional[List[str]] = None
+    ) -> Any:
+        """Authenticate with SharePoint using authorization code.
+
+        :param auth_code: Authorization code from OAuth flow
+        :param redirect_uri: Redirect URI used in OAuth flow
+        :param scopes: List of scopes to request
+
+        :returns: True if authentication successful
+
+        """
+        return self.client.authenticate_with_code(auth_code, redirect_uri, scopes)
+
+    def upload_file(self, local_path: str, remote_path: str) -> Any:
+        """Upload a file to SharePoint Documents library.
+
+        :param local_path: Local file path
+        :param remote_path: Remote path in SharePoint (e.g., "/Documents/myfile.txt")
+
+        :returns: File metadata dict with success status
+
+        """
+        return self.client.upload_file(local_path, remote_path)
+
+    def download_file(self, remote_path: str, local_path: Optional[str] = None) -> Any:
+        """Download a file from SharePoint.
+
+        :param remote_path: Remote file path or file ID
+        :param local_path: Local path to save file (optional)
+
+        :returns: Result dict with success status and file content
+
+        """
+        return self.client.download_file_wrapper(remote_path, local_path)
+
+    def move_file(
+        self, source_path: str, destination_path: str, new_name: Optional[str] = None
+    ) -> Any:
+        """Move a file to a new location in SharePoint.
+
+        :param source_path: Source file path or ID
+        :param destination_path: Destination folder path or ID
+        :param new_name: New file name (optional)
+
+        :returns: Result dict with success status
+
+        """
+        return self.client.move_item_wrapper(source_path, destination_path, new_name)
+
+    def delete_file(self, file_path: str) -> Any:
+        """Delete a file from SharePoint.
+
+        :param file_path: File path or ID to delete
+
+        :returns: Result dict with success status
+
+        """
+        return self.client.delete_item_wrapper(file_path)
+
+    def delete_folder(self, folder_path: str, force: bool = False) -> Any:
+        """Delete a folder from SharePoint.
+
+        :param folder_path: Folder path or ID to delete
+        :param force: If True, delete even if folder is not empty
+
+        :returns: Result dict with success status
+
+        """
+        return self.client.delete_folder(folder_path, force)
+
+    def rename_file(self, file_path: str, new_name: str) -> Any:
+        """Rename a file in SharePoint.
+
+        :param file_path: Current file path or ID
+        :param new_name: New name for the file
+
+        :returns: Result dict with new file info
+
+        """
+        return self.client.rename_file(file_path, new_name)
+
+    def rename_folder(self, folder_path: str, new_name: str) -> Any:
+        """Rename a folder in SharePoint.
+
+        :param folder_path: Current folder path or ID
+        :param new_name: New name for the folder
+
+        :returns: Result dict with new folder info
+
+        """
+        return self.client.rename_folder(folder_path, new_name)
+
+    def create_folder(self, folder_name: str, parent_path: str = "/Documents") -> Any:
+        """Create a new folder in SharePoint Documents library.
+
+        :param folder_name: Name of the folder to create
+        :param parent_path: Parent folder path (default: /Documents)
+
+        :returns: Folder metadata dict with success status
+
+        """
+        return self.client.create_folder_wrapper(folder_name, parent_path)
+
+    def list_files(self, folder_path: str = "/Documents") -> Any:
+        """List files and folders in a SharePoint directory.
+
+        :param folder_path: Folder path to list (default: /Documents)
+
+        :returns: Dict with lists of files and folders
+
+        """
+        return self.client.list_files(folder_path)
+
+    def search_files(self, query: str, folder_path: Optional[str] = None) -> Any:
+        """Search for files and folders in SharePoint.
+
+        :param query: Search query
+        :param folder_path: Folder to search in (optional, searches all if None)
+
+        :returns: Search results with success status
+
+        """
+        return self.client.search_files(query, folder_path)
+
+    def get_file_info(self, file_path: str) -> Any:
+        """Get detailed information about a file or folder.
+
+        :param file_path: File path or ID
+
+        :returns: File information dict with success status
+
+        """
+        return self.client.get_file_info(file_path)
+
+    def create_sharing_link(
+        self, file_path: str, link_type: str = "view", scope: str = "organization"
+    ) -> Any:
+        """Create a sharing link for a file.
+
+        :param file_path: File path or ID
+        :param link_type: Type of link ('view' or 'edit')
+        :param scope: Scope of link ('anonymous' or 'organization')
+
+        :returns: Sharing link information with success status
 
         """
         return self.client.create_sharing_link(file_path, link_type, scope)
