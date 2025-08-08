@@ -207,8 +207,7 @@ class SharePointUtils:
 
         :param auth_code: Authorization code from OAuth flow
         :param redirect_uri: Redirect URI used in OAuth flow
-        :param scopes: List of scopes to request (defaults to Sites.ReadWrite.All,
-            Files.ReadWrite.All)
+        :param scopes: List of scopes to request
 
         :returns: True if authentication successful
 
@@ -337,7 +336,7 @@ class SharePointUtils:
         return self.client.get_file_info(file_path)
 
     def create_sharing_link(
-        self, file_path: str, link_type: str = "view", scope: str = "anonymous"
+        self, file_path: str, link_type: str = "view", scope: str = "organization"
     ) -> Any:
         """Create a sharing link for a file.
 
