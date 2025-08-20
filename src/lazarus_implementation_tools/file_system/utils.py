@@ -4,6 +4,7 @@ import os
 import zipfile
 from urllib.parse import urlparse
 from uuid import uuid4
+from pathlib import Path
 
 from lazarus_implementation_tools.config import DOWNLOAD_FOLDER, WORKING_FOLDER
 
@@ -260,3 +261,16 @@ def get_filename_from_url(url):
         short_uuid = str(uuid4())[:8]
         filename = f"file_url_{short_uuid}"
     return filename
+
+def get_absolute_path(file_path: str) -> str:
+    """Returns the absolute path of a given file path.
+
+    If the file path is relative, it will be made absolute.
+    If the file path is absolute, it will be returned as is.
+
+    :param file_path: The file path.
+
+    :returns: The absolute path of the file path.
+
+    """
+    return Path(file_path).resolve()
