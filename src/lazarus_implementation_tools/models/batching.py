@@ -2,6 +2,7 @@ import json
 import logging
 import threading
 import time
+from copy import deepcopy
 from http import HTTPStatus
 from math import floor
 from shutil import move
@@ -71,7 +72,7 @@ class Batcher:
         threads = []
         clients = []
         for file in files:
-            client = self.model_api
+            client = deepcopy(self.model_api)
             client.set_file(file)
             client.prompt = self.prompt
             if client.is_async:
@@ -154,6 +155,7 @@ class RunAndWait(Runner):
         response = self.send()
         if response.status_code != HTTPStatus.OK:
             # Don't wait for the file if the API call failed.
+            logger.error(response.content)
             return
         is_successful = self.wait()
         if is_successful:
