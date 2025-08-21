@@ -145,7 +145,7 @@ class ModelAPI:
             self.method, self.url, headers=self.get_headers(), data=json.dumps(payload)
         )
         if self.response.status_code != HTTPStatus.OK:
-            logging.info(f"{self.response.status_code}: {self.response.json()}")
+            logging.info(f"{self.response.status_code}: {self.response.content}")
 
         return self.response
 
