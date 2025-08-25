@@ -139,11 +139,8 @@ Sharepoint is a proper file system. To enable integrating with one drive with ou
     3. Select "Microsoft Graph"
     4. Choose "Delegated permissions"
     5. Search for and add these permissions:
-        1. Sites.ReadWrite.All (Read and write items in all site collections)
-        2. Sites.Manage.All (Create, edit, and delete items and lists in all site collections)
-        3. Files.ReadWrite.All (Read and write all files user can access)
-        4. Files.ReadWrite
-        5. User.Read (Sign in and read user profile)
+        1. Files.ReadWrite
+        2. User.Read (Sign in and read user profile)
     6. Click "Add permissions"
 11. Create the Sharepoint website (it's a website, but you're only using the Documents portion of it)
     1. Go to https://www.office.com and sign in with your work account
