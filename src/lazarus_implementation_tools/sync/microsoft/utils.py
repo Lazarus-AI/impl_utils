@@ -1,5 +1,6 @@
-from typing import Any, List, Optional
+from typing import Any, Dict, List, Optional
 
+from lazarus_implementation_tools.sync.microsoft.o365_email import O365EmailClient
 from lazarus_implementation_tools.sync.microsoft.onedrive import OneDriveClient
 from lazarus_implementation_tools.sync.microsoft.sharepoint import SharePointClient
 
@@ -348,3 +349,165 @@ class SharePointUtils:
 
         """
         return self.client.create_sharing_link(file_path, link_type, scope)
+
+
+class O365EmailUtils:
+    """Office 365 Email utilities wrapper for simplified email operations"""
+
+    def __init__(
+        self,
+        client_id: str,
+        client_secret: str,
+        tenant_id: str,
+        user_principal_name: str,
+        storage_path: str = "stored_emails",
+    ):
+        """Initialize the O365EmailUtils class
+
+        Args:
+            client_id: Client ID for O365 authentication client_secret: Client secret
+            for O365 authentication tenant_id: Tenant ID for O365 authentication
+            user_principal_name: User's email address storage_path: Path for storing
+            emails locally
+
+        """
+        self.client = O365EmailClient(client_id, client_secret, tenant_id, user_principal_name)
+        self.user_principal_name = user_principal_name
+        self.client.init_email_storage(storage_path)
+
+    def authenticate(self, auth_code: str, redirect_uri: str, scopes: Optional[List[str]] = None):
+        """Authenticate with Office 365 using authorization code
+
+        Args:
+            auth_code: Authorization code from OAuth flow redirect_uri: Redirect URI
+            used in OAuth flow scopes: List of scopes to request
+
+        Returns:
+            True if authentication successful
+
+        """
+        # Call client authentication method
+        return self.client.authenticate_with_code(auth_code, redirect_uri, scopes)
+
+    def get_inbox_emails(
+        self,
+        limit: int = 50,
+        unread_only: bool = False,
+        include_attachments: bool = True,
+        days_back: Optional[int] = None,
+    ) -> Dict[str, Any]:
+        """Get emails from inbox
+
+        Args:
+            limit: Maximum number of emails to retrieve unread_only: Only get unread
+            emails include_attachments: Include attachment data days_back: Only get
+            emails from the last N days
+
+        Returns:
+            Dict with success status and messages
+
+        """
+        # Call client get_inbox_emails method
+        return self.client.get_inbox_emails(limit, unread_only, include_attachments, days_back)
+
+    def send_email(
+        self,
+        to_recipients: List[str],
+        subject: str,
+        body: str,
+        cc_recipients: Optional[List[str]] = None,
+        bcc_recipients: Optional[List[str]] = None,
+        attachments: Optional[List[Dict]] = None,
+        is_html: bool = False,
+    ) -> Dict[str, Any]:
+        """Send an email
+
+        Args:
+            to_recipients: List of recipient emails subject: Email subject body: Email
+            body cc_recipients: CC recipients bcc_recipients: BCC recipients
+            attachments: List of attachments (with 'name' and 'content' or 'path')
+            is_html: Whether body is HTML
+
+        Returns:
+            Result dict with success status
+
+        """
+        # Call client send_email method
+        return self.client.send_email(
+            to_recipients, subject, body, cc_recipients, bcc_recipients, attachments, is_html
+        )
+
+    def mark_emails_as_read(self, message_ids: List[str]) -> Dict[str, Any]:
+        """Mark multiple emails as read
+
+        Args:
+            message_ids: List of message IDs
+
+        Returns:
+            Result dict with success/failure counts
+
+        """
+        # Call client mark_emails_as_read method
+        return self.client.mark_emails_as_read(message_ids)
+
+    def search_emails(
+        self, query: str, folder: Optional[str] = None, limit: int = 50
+    ) -> Dict[str, Any]:
+        """Search for emails
+
+        Args:
+            query: Search query folder: Folder to search in (None = all) limit: Maximum
+            results
+
+        Returns:
+            Search results
+
+        """
+        # Call client search_emails method
+        return self.client.search_emails(query, folder, limit)
+
+    def store_emails_with_attachments(
+        self,
+        limit: int = 50,
+        unread_only: bool = True,
+        days_back: Optional[int] = None,
+        mark_as_read: bool = False,
+    ) -> Dict[str, Any]:
+        """Store emails with attachments to local storage
+
+        Args:
+            limit: Number of emails to process unread_only: Only process unread emails
+            days_back: Only process emails from last N days mark_as_read: Mark emails as
+            read after storing
+
+        Returns:
+            Processing results
+
+        """
+        # Call client store_emails_with_attachments method
+        return self.client.store_emails_with_attachments(
+            limit, unread_only, days_back, mark_as_read
+        )
+
+    def get_email_statistics(self, days_back: int = 30) -> Dict[str, Any]:
+        """Get email statistics
+
+        Args:
+            days_back: Number of days to analyze
+
+        Returns:
+            Email statistics
+
+        """
+        # Call client get_email_statistics method
+        return self.client.get_email_statistics(days_back)
+
+    def get_mailbox_info(self) -> Dict[str, Any]:
+        """Get mailbox settings and information
+
+        Returns:
+            Mailbox information
+
+        """
+        # Call client get_mailbox_info method
+        return self.client.get_mailbox_info()
