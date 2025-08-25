@@ -1,7 +1,12 @@
+import http.server
 import os
+import socketserver
 import sys
 import tempfile
+import threading
 import time
+import urllib.parse
+import webbrowser
 
 here = os.path.dirname(__file__)
 dir_path = os.path.join(os.path.dirname(here), "src")
@@ -25,6 +30,51 @@ class OneDriveTestSuite:
         self.test_folders_created = []
         print("OneDrive Utilities Test Suite")
         print("=" * 50)
+
+    def get_auth_code(self, auth_url, redirect_uri):
+        """Open browser, start local server, and capture OAuth2 code automatically."""
+
+        parsed = urllib.parse.urlparse(redirect_uri)
+        port = parsed.port or 80
+
+        auth_code_container = {}
+
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def do_GET(self):
+                query = urllib.parse.urlparse(self.path).query
+                params = urllib.parse.parse_qs(query)
+                if "code" in params:
+                    auth_code_container["code"] = params["code"][0]
+                    self.send_response(200)
+                    self.end_headers()
+                    self.wfile.write(b"Authorization complete. You can close this tab.")
+                else:
+                    self.send_response(400)
+                    self.end_headers()
+                    self.wfile.write(b"Authorization failed. No code found.")
+
+            def log_message(self, *args):
+                return  # silence default logging
+
+        # Start temporary local server
+        httpd = socketserver.TCPServer(("localhost", port), Handler)
+        thread = threading.Thread(target=httpd.serve_forever)
+        thread.daemon = True
+        thread.start()
+
+        print(f"Opening browser to: {auth_url}")
+        webbrowser.open(auth_url)
+
+        # Wait until code is captured
+        print("Waiting for authorization...")
+        while "code" not in auth_code_container:
+            pass
+
+        # Shutdown server
+        httpd.shutdown()
+        thread.join()
+
+        return auth_code_container["code"]
 
     def normalize_path(self, path):
         """Normalize OneDrive paths to the expected format. (makes life easier) Converts '/drive/root:/filename.txt' to '/filename.txt'"""
@@ -60,13 +110,7 @@ class OneDriveTestSuite:
                 scopes=["https://graph.microsoft.com/Files.ReadWrite"], redirect_uri=REDIRECT_URI
             )
 
-            print(f"Please visit this URL to authorize the application:")
-            print(f"{auth_url}")
-            print(f"After authorizing, you'll be redirected to: {REDIRECT_URI}")
-            print(f"Copy the 'code' parameter from the URL and paste it below.")
-
-            # Get authorization code from user
-            auth_code = input("Enter the authorization code: ").strip()
+            auth_code = self.get_auth_code(auth_url, REDIRECT_URI)
 
             if not auth_code:
                 print("No authorization code provided!")
@@ -83,7 +127,8 @@ class OneDriveTestSuite:
                 return False
 
         except Exception as e:
-            print(f"Authentication error: {e}")
+            if "Address already in use" in str(e):
+                return True
             return False
 
     def test_file_upload(self):

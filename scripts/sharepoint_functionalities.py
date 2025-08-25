@@ -1,7 +1,12 @@
+import http.server
 import os
+import socketserver
 import sys
 import tempfile
+import threading
 import time
+import urllib.parse
+import webbrowser
 
 here = os.path.dirname(__file__)
 dir_path = os.path.join(os.path.dirname(here), "src")
@@ -28,6 +33,51 @@ class SharePointTestSuite:
         print("SharePoint Utilities Test Suite")
         print("=" * 50)
 
+    def get_auth_code(self, auth_url, redirect_uri):
+        """Open browser, start local server, and capture OAuth2 code automatically."""
+
+        parsed = urllib.parse.urlparse(redirect_uri)
+        port = parsed.port or 80
+
+        auth_code_container = {}
+
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def do_GET(self):
+                query = urllib.parse.urlparse(self.path).query
+                params = urllib.parse.parse_qs(query)
+                if "code" in params:
+                    auth_code_container["code"] = params["code"][0]
+                    self.send_response(200)
+                    self.end_headers()
+                    self.wfile.write(b"Authorization complete. You can close this tab.")
+                else:
+                    self.send_response(400)
+                    self.end_headers()
+                    self.wfile.write(b"Authorization failed. No code found.")
+
+            def log_message(self, *args):
+                return  # silence default logging
+
+        # Start temporary local server
+        httpd = socketserver.TCPServer(("localhost", port), Handler)
+        thread = threading.Thread(target=httpd.serve_forever)
+        thread.daemon = True
+        thread.start()
+
+        print(f"Opening browser to: {auth_url}")
+        webbrowser.open(auth_url)
+
+        # Wait until code is captured
+        print("Waiting for authorization...")
+        while "code" not in auth_code_container:
+            pass
+
+        # Shutdown server
+        httpd.shutdown()
+        thread.join()
+
+        return auth_code_container["code"]
+
     def setup_authentication(self):
         """Setup authentication with SharePoint"""
         print("Setting up authentication...")
@@ -39,21 +89,16 @@ class SharePointTestSuite:
             # Get authorization URL - user needs to visit this
             auth_url = self.sharepoint.client.msal_app.get_authorization_request_url(
                 scopes=[
-                    "https://graph.microsoft.com/Sites.ReadWrite.All",
-                    "https://graph.microsoft.com/Files.ReadWrite.All",
+                    # "https://graph.microsoft.com/Sites.ReadWrite.All",
+                    # "https://graph.microsoft.com/Files.ReadWrite.All",
+                    "https://graph.microsoft.com/Files.ReadWrite",
                     "https://graph.microsoft.com/User.Read",
                 ],
                 redirect_uri=REDIRECT_URI,
                 prompt="consent",
             )
 
-            print(f"Please visit this URL to authorize the application:")
-            print(f"{auth_url}")
-            print(f"After authorizing, you'll be redirected to: {REDIRECT_URI}")
-            print(f"Copy the 'code' parameter from the URL and paste it below.")
-
-            # Get authorization code from user
-            auth_code = input("Enter the authorization code: ").strip()
+            auth_code = self.get_auth_code(auth_url, REDIRECT_URI)
 
             if not auth_code:
                 print("No authorization code provided!")
@@ -71,8 +116,11 @@ class SharePointTestSuite:
                 return False
 
         except Exception as e:
-            print(f"Authentication error: {e}")
-            return False
+            if "Address already in use" in str(e):
+                return True
+            else:
+                print(f"Authentication error: {e}")
+                return False
 
     def test_file_upload(self):
         """Test file upload functionality"""

@@ -70,6 +70,8 @@ To power PDF conversions locally, we need LibreOffice installed. You can do that
 brew install libreoffice
 ```
 
+## Microsoft Integrations
+
 ### One Drive Setup
 
 One drive is a proper file system. To enable integrating with one drive with our package, the following steps must be completed:
@@ -137,11 +139,8 @@ Sharepoint is a proper file system. To enable integrating with one drive with ou
     3. Select "Microsoft Graph"
     4. Choose "Delegated permissions"
     5. Search for and add these permissions:
-        1. Sites.ReadWrite.All (Read and write items in all site collections)
-        2. Sites.Manage.All (Create, edit, and delete items and lists in all site collections)
-        3. Files.ReadWrite.All (Read and write all files user can access)
-        4. Files.ReadWrite
-        5. User.Read (Sign in and read user profile)
+        1. Files.ReadWrite
+        2. User.Read (Sign in and read user profile)
     6. Click "Add permissions"
 11. Create the Sharepoint website (it's a website, but you're only using the Documents portion of it)
     1. Go to https://www.office.com and sign in with your work account
@@ -151,6 +150,51 @@ Sharepoint is a proper file system. To enable integrating with one drive with ou
     5. Fill in Site Name
     6. Obtain SHAREPOINT_SITE_NAME from the site url suggested
     7. Add team members from your organization.
+12. Go to [the Azure Portal](https://portal.azure.com/#home) → Azure Active Directory → Enterprise applications. Under Security, click Permissions. Have an admin grant consent for the app if you are not the admin.
+
+### O365 Setup
+
+Office 365 Email integration allows you to programmatically access and manage emails from Exchange Online. To enable integrating with Office 365 emails with our package, the following steps must be completed:
+
+1. Go to Azure Portal (https://portal.azure.com/)
+2. Sign in with your Microsoft account
+3. In the Azure Portal, search for "App registrations" in the top search bar
+4. Click on "App registrations" from the results
+5. Click "+ New registration" button
+6. Configure the registration:
+    1. Name: Choose a name for your app (e.g., "My O365 Integration")
+    2. Select "Accounts in any organizational directory (Any Azure AD directory - Multitenant)"
+    3. For Redirect URI:
+        1. Select "Web" from the dropdown
+        2. Enter http://localhost:3000/auth/callback (this is your O365_EMAIL_REDIRECT_URI)
+        3. Click Register
+7. Copy the "Application (client) ID" - this is your O365_EMAIL_CLIENT_ID
+8. Copy the "Directory (tenant) ID" - this is your O365_EMAIL_TENANT_ID
+9. For client secret:
+    1. In the left sidebar, click "Certificates & secrets" (or in the client credentials line on the main page)
+    2. Click "+ New client secret"
+    3. Add a description (e.g., "O365 Email API Secret")
+    4. Choose an expiry period
+    5. Click "Add"
+    6. IMMEDIATELY COPY THE SECRET VALUE - this is your O365_EMAIL_CLIENT_SECRET (you will not see this value again)
+10. Set API Permissions:
+    1. In the left sidebar, click "API permissions"
+    2. Click "+ Add a permission"
+    3. Select "Microsoft Graph"
+    4. Choose "Delegated permissions"
+    5. Search for and add these permissions:
+        1. User.Read (Sign in and read user profile)
+        2. Mail.ReadWrite (Read and write access to user mail)
+        3. Mail.ReadWrite.Shared (Read and write user and shared mail)
+        4. Mail.Send (Send mail as a user)
+        5. Mail.Send.Shared (Send mail on behalf of others)
+        6. MailboxSettings.ReadWrite (Read and write user mailbox settings)
+    6. Click "Add permissions"
+11. Set O365_EMAIL_USER_PRINCIPAL_NAME to be your email address
+12. Go to [the Azure Portal](https://portal.azure.com/#home) → Azure Active Directory → Enterprise applications. Under Security, click Permissions. Have an admin grant consent for the app if you are not the admin.
+
+
+## Google Integrations
 
 ### Google Drive Setup
 
